@@ -4,7 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NoSqlExplorer.WpfClient"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:m="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:vm="clr-namespace:NoSqlExplorer.WpfClient.ViewModels"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="NoSQL Explorer" Height="700" Width="1000"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -13,37 +15,91 @@
         TextOptions.TextFormattingMode="Ideal" 
         TextOptions.TextRenderingMode="Auto"        
         Background="{DynamicResource MaterialDesignPaper}"
-        FontFamily="{StaticResource MaterialDesignFont}">
-    <materialDesign:DialogHost Identifier="RootDialog" SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
-        <materialDesign:DrawerHost>
-            <DockPanel>
-                <materialDesign:ColorZone Padding="16" materialDesign:ShadowAssist.ShadowDepth="Depth2"
+        FontFamily="{StaticResource MaterialDesignFont}"
+        d:DataContext="{d:DesignInstance vm:MainWindowViewModel}"
+        DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Font.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
+                <ResourceDictionary>
+                    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+                    <system:String x:Key="AppName">NoSQL Explorer</system:String>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+        
+    </Window.Resources>
+    <Grid>
+        <m:DialogHost Identifier="RootDialog" SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
+            <m:DrawerHost>
+                <DockPanel>
+                    <m:ColorZone Padding="16" m:ShadowAssist.ShadowDepth="Depth2"
                                             Mode="PrimaryMid" DockPanel.Dock="Top">
-                    <DockPanel>
-                        <materialDesign:PopupBox DockPanel.Dock="Right" PlacementMode="BottomAndAlignRightEdges" StaysOpen="False">
-                            <StackPanel>
-                                <Button Content="About"/>
-                            </StackPanel>
-                        </materialDesign:PopupBox>
-                        
-                        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <materialDesign:PackIcon Grid.Column="0" Kind="CloudSync" Height="32" Width="32" Margin="0 0 10 0" />
-                            <TextBlock Grid.Column="1" FontSize="22" VerticalAlignment="Center">NoSQL Explorer</TextBlock>
-                        </Grid>
-                        
-                        
-                    </DockPanel>
-                </materialDesign:ColorZone>
-                <Grid>
-                    <ContentControl Margin="16" Content="{Binding ElementName=DemoItemsListBox, Path=SelectedItem.Content}" />
-                    <materialDesign:Snackbar MessageQueue="{materialDesign:MessageQueue}" x:Name="MainSnackbar" />
-                </Grid>
-            </DockPanel>
+                        <DockPanel>
+                            <m:PopupBox DockPanel.Dock="Right" PlacementMode="BottomAndAlignRightEdges" StaysOpen="False">
+                                <StackPanel>
+                                    <Button Content="About" Command="{x:Static m:DialogHost.OpenDialogCommand}">
+                                        <Button.CommandParameter>
+                                            <StackPanel Margin="16">
+                                                <TextBlock Style="{StaticResource MaterialDesignHeadlineTextBlock}" Margin="0 0 0 10" Text="{StaticResource AppName}" />
+                                                <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}">A tool for testing NoSQL databases.</TextBlock>
+                                                <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}">&#xA9; 2016</TextBlock>
+                                                
+                                                <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                                        IsCancel="True" 
+                                                        Margin="0 10 0 0"
+                                                        Command="{x:Static m:DialogHost.CloseDialogCommand}"
+                                                        HorizontalAlignment="Center">CLOSE</Button>
+                                            </StackPanel>
+                                        </Button.CommandParameter>
+                                    </Button>
+                                </StackPanel>
+                            </m:PopupBox>
 
-        </materialDesign:DrawerHost>
-    </materialDesign:DialogHost>
+                            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <m:PackIcon Grid.Column="0" Kind="CloudSync" Height="32" Width="32" Margin="0 0 10 0" />
+                                <TextBlock Grid.Column="1" FontSize="22" VerticalAlignment="Center" Text="{StaticResource AppName}" />
+                            </Grid>
+
+
+                        </DockPanel>
+                    </m:ColorZone>
+                    <Grid>
+                        <!-- TODO: place ContentControl for UserControl here -->
+                        <Grid>
+                            <Button Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                                    Content="CLICK ME!" Width="200" Command="{Binding DemoCommand}" />
+                        </Grid>
+                        <m:Snackbar MessageQueue="{m:MessageQueue}" x:Name="MainSnackbar" />
+                    </Grid>
+                </DockPanel>
+
+            </m:DrawerHost>
+        </m:DialogHost>
+
+        <Grid x:Name="Overlay" Panel.ZIndex="1000" Visibility="{Binding Path=IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid.Background>
+                <SolidColorBrush Color="Black" Opacity=".2"/>
+            </Grid.Background>
+
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 200 0 0">
+                <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"                     
+                             Value="0"
+                             IsIndeterminate="True"
+                             VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="12 12 12 12"/>   
+                <TextBlock Text="{Binding IsLoadingReason}" Style="{StaticResource MaterialDesignBody2TextBlock}" />
+            </StackPanel>
+
+        </Grid>
+    </Grid>
 </Window>
+
+
+
