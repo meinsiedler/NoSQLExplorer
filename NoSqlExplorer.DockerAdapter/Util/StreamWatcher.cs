@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace NoSqlExplorer.DockerAdapter.Util
@@ -15,8 +16,9 @@ namespace NoSqlExplorer.DockerAdapter.Util
     private readonly Stream stream;
 
     private byte[] buffer = new byte[512];
+    private CancellationTokenSource cts;
 
-    public StreamWatcher(Stream stream)
+    public StreamWatcher(Stream stream, System.Threading.CancellationTokenSource cts = null)
     {
       if (stream == null)
       {
@@ -24,6 +26,7 @@ namespace NoSqlExplorer.DockerAdapter.Util
       }
 
       this.stream = stream;
+      this.cts = cts;
     }
 
     protected void OnMessageAvailable(MessageReceivedEventArgs e)
@@ -54,7 +57,7 @@ namespace NoSqlExplorer.DockerAdapter.Util
 
           specialChars++;
           return false;
-        }).ToArray(), 0, bytesRead-specialChars);
+        }).ToArray(), 0, bytesRead - specialChars);
         this.OnMessageAvailable(new MessageReceivedEventArgs(bytesRead, message));
       }
 
@@ -68,6 +71,11 @@ namespace NoSqlExplorer.DockerAdapter.Util
 
     public void Start()
     {
+      if (this.cts != null && this.cts.IsCancellationRequested)
+      {
+        throw new InvalidOperationException("stream was already cancelled");
+      }
+
       this.read = true;
       WatchNext();
     }
@@ -75,6 +83,7 @@ namespace NoSqlExplorer.DockerAdapter.Util
     public void Stop()
     {
       this.read = false;
+      this.cts?.Cancel();
     }
   }
 }

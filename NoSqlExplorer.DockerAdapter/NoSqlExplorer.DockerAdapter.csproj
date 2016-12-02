@@ -56,7 +56,6 @@
     <Compile Include="DockerContainer.cs" />
     <Compile Include="DockerContainerStatus.cs" />
     <Compile Include="DockerInstance.cs" />
-    <Compile Include="IDockerInstance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\MessageAvailableEventArgs.cs" />
     <Compile Include="Util\StreamWatcher.cs" />
