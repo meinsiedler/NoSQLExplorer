@@ -40,6 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\OAuth.cs" />
+    <Compile Include="Model\OAuthTokens.cs" />
+    <Compile Include="Model\Twitter.cs" />
     <Compile Include="TwitterReader.cs" />
     <Compile Include="ITwitterReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

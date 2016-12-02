@@ -22,7 +22,7 @@ namespace NoSqlExplorer.TwitterReader.Tests
       var lines = new List<string>();
 
       reader.OnNewTweet += line => lines.Add(line);
-      reader.Start();
+      await reader.StartAsync("", "");
       await Task.Delay(20);
 
       Assert.That(reader.IsRunning);
@@ -41,7 +41,7 @@ namespace NoSqlExplorer.TwitterReader.Tests
     {
       ITwitterReader reader = new TwitterReader("https://twitter.crate.io/api/v1/sample");
 
-      var ex = Assert.Throws<WebException>(() => reader.Start());
+      var ex = Assert.Throws<WebException>(async () => await reader.StartAsync("", ""));
       Assert.That(ex.Message, Contains.Substring("(401)"));
     }
   }

@@ -8,7 +8,7 @@ namespace NoSqlExplorer.TwitterReader
 {
   public interface ITwitterReader
   {
-    void Start();
+    Task StartAsync(string accessToken, string accessTokenSecret);
     void Stop();
 
     event Action<string> OnNewTweet;

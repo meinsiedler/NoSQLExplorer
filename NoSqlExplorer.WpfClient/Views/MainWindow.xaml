@@ -8,7 +8,9 @@
         xmlns:vm="clr-namespace:NoSqlExplorer.WpfClient.ViewModels"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="NoSQL Explorer" Height="700" Width="1000"
+        d:DesignWidth="1200" d:DesignHeight="700"
+        Title="NoSQL Explorer" Height="700" Width="1200"
+        WindowState="Maximized"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
@@ -24,6 +26,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Font.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ProgressBar.xaml" />
                 <ResourceDictionary>
                     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
                     <system:String x:Key="AppName">NoSQL Explorer</system:String>
@@ -73,9 +76,37 @@
                     </m:ColorZone>
                     <Grid>
                         <!-- TODO: place ContentControl for UserControl here -->
-                        <Grid>
-                            <Button Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                                    Content="CLICK ME!" Width="200" Command="{Binding DemoCommand}" />
+                        <Grid Margin="15">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
+                                <Button Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                                        Content="GET TWITTER PIN"
+                                        Width="200"
+                                        Command="{Binding GetPinCommand}" />
+
+                                <TextBox Width="120" Margin="10 0 10 0" m:HintAssist.Hint="PIN" FontSize="22"
+                                         Text="{Binding Pin, UpdateSourceTrigger=PropertyChanged}"/>
+                                
+                                <Button Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                                        Content="LOAD FEEDS"
+                                        Width="200"
+                                        Command="{Binding StartFeedReadingCommand}" />
+
+                                <Button Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                                        Content="STOP LOADING"
+                                        Width="200"
+                                        Margin="10 0 10 0"
+                                        Command="{Binding StopFeedReadingCommand}" />
+
+                                <TextBlock Style="{StaticResource MaterialDesignDisplay1TextBlock}">
+                                    <TextBlock Text="{Binding FeedsCount}" />
+                                    <TextBlock Text="feeds loaded" />
+                                </TextBlock>
+                            </StackPanel>
                         </Grid>
                         <m:Snackbar MessageQueue="{m:MessageQueue}" x:Name="MainSnackbar" />
                     </Grid>
