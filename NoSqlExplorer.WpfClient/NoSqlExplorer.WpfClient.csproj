@@ -129,7 +129,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\NoSqlExplorer.DockerAdapter\NoSqlExplorer.DockerAdapter.csproj">
+      <Project>{c09ed21a-f3a2-4e52-9c0b-325815059dfd}</Project>
+      <Name>NoSqlExplorer.DockerAdapter</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

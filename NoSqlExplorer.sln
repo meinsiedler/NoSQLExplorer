@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSqlExplorer.WpfClient", "NoSqlExplorer.WpfClient\NoSqlExplorer.WpfClient.csproj", "{386949F2-4A1B-4456-9DF2-E9DC9B39DF0C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSqlExplorer.DockerAdapter", "NoSqlExplorer.DockerAdapter\NoSqlExplorer.DockerAdapter.csproj", "{C09ED21A-F3A2-4E52-9C0B-325815059DFD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{386949F2-4A1B-4456-9DF2-E9DC9B39DF0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{386949F2-4A1B-4456-9DF2-E9DC9B39DF0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{386949F2-4A1B-4456-9DF2-E9DC9B39DF0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C09ED21A-F3A2-4E52-9C0B-325815059DFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C09ED21A-F3A2-4E52-9C0B-325815059DFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C09ED21A-F3A2-4E52-9C0B-325815059DFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C09ED21A-F3A2-4E52-9C0B-325815059DFD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
