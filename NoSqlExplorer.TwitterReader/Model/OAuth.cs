@@ -13,40 +13,34 @@ namespace NoSqlExplorer.TwitterReader.Model
     static OAuth()
     {
       ServicePointManager.Expect100Continue = false;
-      ConsumerKey = "5yew21Cqdx1h8Ivqf6iTpytky";
-      ConsumerSecret = "luP2AMdMvprMkQkmE4wFtXi6pDHBLd9xOjUojcHfuItpWU6efC";
     }
 
-    public OAuth(string accessToken, string accessTokenSecret)
+    public OAuth(string consumerKey, string consumerSecret)
     {
-      AccessToken = accessToken;
-      AccessTokenSecret = accessTokenSecret;
+      ConsumerKey = consumerKey;
+      ConsumerSecret = consumerSecret;
     }
 
-    private static string ConsumerKey { get; }
-    private static string ConsumerSecret { get; }
-    public string AccessTokenSecret { get; private set; }
-    public string AccessToken { get; private set; }
-    public string ScreenName { get; private set; }
-    public static string TestUserName { private get; set; }
+    private string ConsumerKey { get; }
+    private string ConsumerSecret { get; }
 
     public static string UrlEncode(string value)
     {
       return Uri.EscapeDataString(value);
     }
 
-    public static string Nonce()
+    public string Nonce()
     {
       return Guid.NewGuid().ToString();
     }
 
-    public static string TimeStamp()
+    public string TimeStamp()
     {
       var timespan = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
       return Convert.ToInt64(timespan.TotalSeconds).ToString(CultureInfo.InvariantCulture);
     }
 
-    public static string Signature(string httpMethod, string url, string nonce, string timestamp, string accessToken, string accessTokenSecret, IEnumerable<string[]> parameters)
+    public string Signature(string httpMethod, string url, string nonce, string timestamp, string accessToken, string accessTokenSecret, IEnumerable<string[]> parameters)
     {
       var parameterList = OrderedParameters(nonce, timestamp, accessToken, null, parameters);
       var parameterStrings = parameterList.Select(p => $"{p.Item1}={p.Item2}");
@@ -59,7 +53,7 @@ namespace NoSqlExplorer.TwitterReader.Model
       }
     }
 
-    public static string AuthorizationHeader(string nonce, string timestamp, string accessToken, string signature, IEnumerable<string[]> parameters = null)
+    public string AuthorizationHeader(string nonce, string timestamp, string accessToken, string signature, IEnumerable<string[]> parameters = null)
     {
       var parameterList = OrderedParameters(nonce, timestamp, accessToken, signature, parameters);
       var parameterStrings = parameterList.Select(p => $"{p.Item1}=\"{p.Item2}\"");
@@ -67,7 +61,7 @@ namespace NoSqlExplorer.TwitterReader.Model
       return header;
     }
 
-    private static IEnumerable<Tuple<string, string>> OrderedParameters(string nonce, string timestamp, string accessToken, string signature, IEnumerable<string[]> parameters)
+    private IEnumerable<Tuple<string, string>> OrderedParameters(string nonce, string timestamp, string accessToken, string signature, IEnumerable<string[]> parameters)
     {
       var components = new List<Tuple<string, string>>
             {

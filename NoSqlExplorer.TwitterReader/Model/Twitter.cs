@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using NoSqlExplorer.TwitterReader.Configuration;
 
 namespace NoSqlExplorer.TwitterReader.Model
 {
@@ -12,16 +13,17 @@ namespace NoSqlExplorer.TwitterReader.Model
       return await request();
     }
 
-    public static async Task<OAuthTokens> GetRequestToken()
+    public static async Task<OAuthTokens> GetRequestToken(ITwitterConfigSettings configSettings)
     {
       return await RequestHandler(async () =>
       {
         const string requestTokenUrl = "https://api.twitter.com/oauth/request_token";
-        var nonce = OAuth.Nonce();
-        var timestamp = OAuth.TimeStamp();
+        var oauth = OAuthFactory.CreateOAuth(configSettings);
+        var nonce = oauth.Nonce();
+        var timestamp = oauth.TimeStamp();
         var parameters = new[] { new[] { "oauth_callback", "oob" } };
-        var signature = OAuth.Signature("POST", requestTokenUrl, nonce, timestamp, "", "", parameters);
-        var authorizationHeader = OAuth.AuthorizationHeader(nonce, timestamp, null, signature, parameters);
+        var signature = oauth.Signature("POST", requestTokenUrl, nonce, timestamp, "", "", parameters);
+        var authorizationHeader = oauth.AuthorizationHeader(nonce, timestamp, null, signature, parameters);
 
         var request = System.Net.WebRequest.Create(new Uri(requestTokenUrl));
         request.Method = "POST";
@@ -41,16 +43,22 @@ namespace NoSqlExplorer.TwitterReader.Model
       });
     }
 
-    public static async Task<OAuthTokens> GetAccessToken(string accessToken, string accessTokenSecret, string oauthVerifier)
+    public static string GetRequestUrl(OAuthTokens tokens)
+    {
+      return "https://api.twitter.com/oauth/authenticate?oauth_token=" + tokens.OAuthToken;
+    }
+
+    public static async Task<OAuthTokens> GetAccessToken(ITwitterConfigSettings configSettings, string accessToken, string accessTokenSecret, string oauthVerifier)
     {
       return await RequestHandler(async () =>
       {
         const string requestTokenUrl = "https://api.twitter.com/oauth/access_token";
-        var nonce = OAuth.Nonce();
-        var timestamp = OAuth.TimeStamp();
+        var oauth = OAuthFactory.CreateOAuth(configSettings);
+        var nonce = oauth.Nonce();
+        var timestamp = oauth.TimeStamp();
         var parameters = new[] { new[] { "oauth_verifier", oauthVerifier } };
-        var signature = OAuth.Signature("POST", requestTokenUrl, nonce, timestamp, accessToken, accessTokenSecret, parameters);
-        var authorizationHeader = OAuth.AuthorizationHeader(nonce, timestamp, accessToken, signature, parameters);
+        var signature = oauth.Signature("POST", requestTokenUrl, nonce, timestamp, accessToken, accessTokenSecret, parameters);
+        var authorizationHeader = oauth.AuthorizationHeader(nonce, timestamp, accessToken, signature, parameters);
 
         var request = System.Net.WebRequest.Create(new Uri(requestTokenUrl));
         request.Method = "POST";

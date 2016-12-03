@@ -10,18 +10,22 @@ using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using MaterialDesignThemes.Wpf;
 using NoSqlExplorer.TwitterReader;
+using NoSqlExplorer.TwitterReader.Configuration;
 using NoSqlExplorer.TwitterReader.Model;
+using NoSqlExplorer.WpfClient.Configuration;
 using NoSqlExplorer.WpfClient.Messages;
 
 namespace NoSqlExplorer.WpfClient.ViewModels
 {
   public class MainWindowViewModel : ViewModelBase
   {
+    private readonly ITwitterConfigSettings _twitterConfigSettings;
     private readonly ITwitterReader _twitterReader;
 
     public MainWindowViewModel()
     {
-      _twitterReader = new TwitterReader.TwitterReader("https://stream.twitter.com/1.1/statuses/sample.json");
+      _twitterConfigSettings = new AppConfigSettings();
+      _twitterReader = new TwitterReader.TwitterReader(_twitterConfigSettings);
       _twitterReader.OnNewTweet += tweet => Dispatcher.CurrentDispatcher.Invoke(() => FeedsCount++);
       RegisterMessages();
     }
@@ -106,10 +110,8 @@ namespace NoSqlExplorer.WpfClient.ViewModels
     {
       try
       {
-        Tokens = await Twitter.GetRequestToken();
-        var url = "https://api.twitter.com/oauth/authenticate?oauth_token=" + Tokens.OAuthToken;
-
-        Process.Start(new ProcessStartInfo(url));
+        Tokens = await Twitter.GetRequestToken(_twitterConfigSettings);
+        Process.Start(new ProcessStartInfo(Twitter.GetRequestUrl(Tokens)));
       }
       catch (AggregateException ex)
       {
@@ -121,7 +123,7 @@ namespace NoSqlExplorer.WpfClient.ViewModels
     {
       try
       {
-        var tokens = await Twitter.GetAccessToken(Tokens.OAuthToken, Tokens.OAuthSecret, Pin);
+        var tokens = await Twitter.GetAccessToken(_twitterConfigSettings, Tokens.OAuthToken, Tokens.OAuthSecret, Pin);
         Pin = string.Empty;
         if (tokens == null) return;
 
@@ -133,16 +135,16 @@ namespace NoSqlExplorer.WpfClient.ViewModels
         }
         else
         {
-          MessageQueue.Enqueue("You are not propertly authenticated with your Twitter account.", "OK", () => { });
+          MessageQueue.Enqueue("You are not propertly authenticated with your Twitter account.", "DISMISS", () => { });
         }
       }
       catch (WebException ex) when (ex.Message.Contains("401"))
       {
-        MessageQueue.Enqueue("Got an 401 unauthorized error. Are you properly authenticated and did you use a new PIN?", "OK", () => { });
+        MessageQueue.Enqueue("Got an 401 unauthorized error. Are you properly authenticated and did you use a new PIN?", "DISMISS", () => { });
       }
       catch (Exception ex)
       {
-        MessageQueue.Enqueue("An error occured. Are you using a correct PIN?", "OK", () => { });
+        MessageQueue.Enqueue("An error occured. Are you using a correct PIN?", "DISMISS", () => { });
       }
     }
 

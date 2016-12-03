@@ -7,6 +7,7 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using NoSqlExplorer.TwitterReader.Configuration;
 using NoSqlExplorer.TwitterReader.Model;
 
 namespace NoSqlExplorer.TwitterReader
@@ -14,12 +15,12 @@ namespace NoSqlExplorer.TwitterReader
   public class TwitterReader : ITwitterReader
   {
     private readonly object _lock = new object();
-    private readonly string _apiUrl;
+    private readonly ITwitterConfigSettings _configSettings;
     private CancellationTokenSource _cancellationTokenSource;
 
-    public TwitterReader(string apiUrl)
+    public TwitterReader(ITwitterConfigSettings configSettings)
     {
-      _apiUrl = apiUrl;
+      _configSettings = configSettings;
     }
 
     public async Task StartAsync(string accessToken, string accessTokenSecret)
@@ -28,13 +29,13 @@ namespace NoSqlExplorer.TwitterReader
       var token = _cancellationTokenSource.Token;
 
 
-      var oauth = new OAuth(accessToken, accessTokenSecret);
-      var nonce = OAuth.Nonce();
-      var timestamp = OAuth.TimeStamp();
-      var signature = OAuth.Signature("GET", _apiUrl, nonce, timestamp, oauth.AccessToken, oauth.AccessTokenSecret, parameters: Enumerable.Empty<string[]>());
-      var authorizeHeader = OAuth.AuthorizationHeader(nonce, timestamp, oauth.AccessToken, signature);
+      var oauth = new OAuth(_configSettings.TwitterConsumerKey, _configSettings.TwitterConsumerSecret);
+      var nonce = oauth.Nonce();
+      var timestamp = oauth.TimeStamp();
+      var signature = oauth.Signature("GET", _configSettings.TwitterFeedUrl, nonce, timestamp, accessToken, accessTokenSecret, parameters: Enumerable.Empty<string[]>());
+      var authorizeHeader = oauth.AuthorizationHeader(nonce, timestamp, accessToken, signature);
 
-      var request = (HttpWebRequest)WebRequest.Create(_apiUrl);
+      var request = (HttpWebRequest)WebRequest.Create(_configSettings.TwitterFeedUrl);
       request.Headers.Add("Authorization", authorizeHeader);
       request.Method = "GET";
 
