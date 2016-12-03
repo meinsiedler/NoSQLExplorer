@@ -7,6 +7,7 @@
         xmlns:m="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:vm="clr-namespace:NoSqlExplorer.WpfClient.ViewModels"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:converter="clr-namespace:NoSqlExplorer.WpfClient.Converter"
         mc:Ignorable="d"
         d:DesignWidth="1200" d:DesignHeight="700"
         Title="NoSQL Explorer" Height="700" Width="1200"
@@ -28,7 +29,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ProgressBar.xaml" />
                 <ResourceDictionary>
-                    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+                    <converter:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
                     <system:String x:Key="AppName">NoSQL Explorer</system:String>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
@@ -75,7 +76,6 @@
                         </DockPanel>
                     </m:ColorZone>
                     <Grid>
-                        <!-- TODO: place ContentControl for UserControl here -->
                         <Grid Margin="15">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
@@ -94,17 +94,19 @@
                                 <Button Style="{StaticResource MaterialDesignRaisedAccentButton}"
                                         Content="LOAD FEEDS"
                                         Width="200"
-                                        Command="{Binding StartFeedReadingCommand}" />
+                                        Visibility="{Binding IsFeedReadingRunning, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=true}"
+                                        Command="{Binding StartFeedReadingCommand}">
+                                </Button>
 
                                 <Button Style="{StaticResource MaterialDesignRaisedAccentButton}"
                                         Content="STOP LOADING"
                                         Width="200"
-                                        Margin="10 0 10 0"
+                                        Visibility="{Binding IsFeedReadingRunning, Converter={StaticResource BooleanToVisibilityConverter}}"
                                         Command="{Binding StopFeedReadingCommand}" />
 
-                                <TextBlock Style="{StaticResource MaterialDesignDisplay1TextBlock}">
+                                <TextBlock Style="{StaticResource MaterialDesignDisplay1TextBlock}" Margin="10 0 0 0">
                                     <TextBlock Text="{Binding FeedsCount}" />
-                                    <TextBlock Text="feeds loaded" />
+                                    <TextBlock Text="tweets loaded" />
                                 </TextBlock>
                             </StackPanel>
                         </Grid>
