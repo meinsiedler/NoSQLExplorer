@@ -12,6 +12,7 @@
         d:DesignWidth="1200" d:DesignHeight="700"
         Title="NoSQL Explorer" Height="700" Width="1200"
         WindowState="Maximized"
+        Icon="../Images/cloud-sync.png"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"

@@ -142,7 +142,7 @@ namespace NoSqlExplorer.WpfClient.ViewModels
       }
       catch (Exception ex)
       {
-        MessageQueue.Enqueue($"An error occured. Are you using a correct PIN?", "OK", () => {});
+        MessageQueue.Enqueue("An error occured. Are you using a correct PIN?", "OK", () => { });
       }
     }
 
