@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSqlExplorer.WpfClient", "NoSqlExplorer.WpfClient\NoSqlExplorer.WpfClient.csproj", "{386949F2-4A1B-4456-9DF2-E9DC9B39DF0C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSqlExplorer.TwitterReader", "NoSqlExplorer.TwitterReader\NoSqlExplorer.TwitterReader.csproj", "{EF8AEBBD-FB6E-4E62-B10D-BDFD17E38C39}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{386949F2-4A1B-4456-9DF2-E9DC9B39DF0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{386949F2-4A1B-4456-9DF2-E9DC9B39DF0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{386949F2-4A1B-4456-9DF2-E9DC9B39DF0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF8AEBBD-FB6E-4E62-B10D-BDFD17E38C39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF8AEBBD-FB6E-4E62-B10D-BDFD17E38C39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF8AEBBD-FB6E-4E62-B10D-BDFD17E38C39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF8AEBBD-FB6E-4E62-B10D-BDFD17E38C39}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

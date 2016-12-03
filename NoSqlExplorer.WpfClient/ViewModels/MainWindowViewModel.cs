@@ -1,21 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Diagnostics;
+using System.Net;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using MaterialDesignThemes.Wpf;
+using NoSqlExplorer.TwitterReader;
+using NoSqlExplorer.TwitterReader.Configuration;
+using NoSqlExplorer.TwitterReader.Model;
+using NoSqlExplorer.WpfClient.Configuration;
 using NoSqlExplorer.WpfClient.Messages;
 
 namespace NoSqlExplorer.WpfClient.ViewModels
 {
   public class MainWindowViewModel : ViewModelBase
   {
+    private readonly ITwitterConfigSettings _twitterConfigSettings;
+    private readonly ITwitterReader _twitterReader;
+
     public MainWindowViewModel()
     {
+      _twitterConfigSettings = new AppConfigSettings();
+      _twitterReader = new TwitterReader.TwitterReader(_twitterConfigSettings);
+      _twitterReader.OnNewTweet += tweet => Dispatcher.CurrentDispatcher.Invoke(() => FeedsCount++);
       RegisterMessages();
     }
 
@@ -42,14 +53,106 @@ namespace NoSqlExplorer.WpfClient.ViewModels
       set { Set(ref _isLoadingReason, value); }
     }
 
-    private ICommand _demoCommand;
-    public ICommand DemoCommand => _demoCommand ?? (_demoCommand = new RelayCommand(Demo));
+    public SnackbarMessageQueue MessageQueue { get; } = new SnackbarMessageQueue();
 
-    private async void Demo()
+    private string _pin;
+    public string Pin
     {
-      Messenger.Default.Send(new IsLoadingMessage {IsLoading = true, Reason = "I'm loading ..."});
-      await Task.Delay(2000);
-      Messenger.Default.Send(new IsLoadingMessage {IsLoading = false});
+      get { return _pin; }
+      set { Set(ref _pin, value); }
+    }
+
+    private string _webAddress;
+    public string WebAddress
+    {
+      get { return _webAddress; }
+      set { Set(ref _webAddress, value); }
+    }
+
+    private OAuthTokens _tokens;
+    private OAuthTokens Tokens
+    {
+      get { return _tokens; }
+      set { Set(ref _tokens, value); }
+    }
+
+    private string _accessToken;
+    public string AccessToken
+    {
+      get { return _accessToken; }
+      set { Set(ref _accessToken, value); }
+    }
+
+    private bool _isFeedReadingRunning;
+    public bool IsFeedReadingRunning
+    {
+      get { return _isFeedReadingRunning; }
+      set { Set(ref _isFeedReadingRunning, value); }
+    }
+
+    private int _feedsCount;
+    public int FeedsCount
+    {
+      get { return _feedsCount; }
+      set { Set(ref _feedsCount, value); }
+    }
+
+    private ICommand _getPinCommand;
+    public ICommand GetPinCommand => _getPinCommand ?? (_getPinCommand = new RelayCommand(GetPin));
+
+    private ICommand _startFeedReadingCommand;
+    public ICommand StartFeedReadingCommand => _startFeedReadingCommand ?? (_startFeedReadingCommand = new RelayCommand(async () => await StartReadingFeed(), () => !string.IsNullOrEmpty(Pin) && !IsFeedReadingRunning));
+
+    private ICommand _stopFeedReadingCommand;
+    public ICommand StopFeedReadingCommand => _stopFeedReadingCommand ?? (_stopFeedReadingCommand = new RelayCommand(StopReadingFeed, () => IsFeedReadingRunning));
+
+    private async void GetPin()
+    {
+      try
+      {
+        Tokens = await Twitter.GetRequestToken(_twitterConfigSettings);
+        Process.Start(new ProcessStartInfo(Twitter.GetRequestUrl(Tokens)));
+      }
+      catch (AggregateException ex)
+      {
+        Trace.TraceError(ex.Message, ex);
+      }
+    }
+
+    private async Task StartReadingFeed()
+    {
+      try
+      {
+        var tokens = await Twitter.GetAccessToken(_twitterConfigSettings, Tokens.OAuthToken, Tokens.OAuthSecret, Pin);
+        Pin = string.Empty;
+        if (tokens == null) return;
+
+        if (!string.IsNullOrEmpty(tokens.UserId))
+        {
+          IsFeedReadingRunning = true;
+          MessageQueue.Enqueue("Loading of Twitter messages started.");
+          await _twitterReader.StartAsync(tokens.OAuthToken, tokens.OAuthSecret);
+        }
+        else
+        {
+          MessageQueue.Enqueue("You are not propertly authenticated with your Twitter account.", "DISMISS", () => { });
+        }
+      }
+      catch (WebException ex) when (ex.Message.Contains("401"))
+      {
+        MessageQueue.Enqueue("Got an 401 unauthorized error. Are you properly authenticated and did you use a new PIN?", "DISMISS", () => { });
+      }
+      catch (Exception ex)
+      {
+        MessageQueue.Enqueue("An error occured. Are you using a correct PIN?", "DISMISS", () => { });
+      }
+    }
+
+    private void StopReadingFeed()
+    {
+      _twitterReader.Stop();
+      IsFeedReadingRunning = false;
+      MessageQueue.Enqueue("Loading of Twitter messages stopped.");
     }
   }
 }
