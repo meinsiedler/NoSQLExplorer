@@ -8,6 +8,7 @@ using System.Windows.Threading;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
+using MaterialDesignThemes.Wpf;
 using NoSqlExplorer.TwitterReader;
 using NoSqlExplorer.TwitterReader.Model;
 using NoSqlExplorer.WpfClient.Messages;
@@ -47,6 +48,8 @@ namespace NoSqlExplorer.WpfClient.ViewModels
       get { return _isLoadingReason; }
       set { Set(ref _isLoadingReason, value); }
     }
+
+    public SnackbarMessageQueue MessageQueue { get; } = new SnackbarMessageQueue();
 
     private string _pin;
     public string Pin
@@ -125,22 +128,21 @@ namespace NoSqlExplorer.WpfClient.ViewModels
         if (!string.IsNullOrEmpty(tokens.UserId))
         {
           IsFeedReadingRunning = true;
+          MessageQueue.Enqueue("Loading of Twitter messages started.");
           await _twitterReader.StartAsync(tokens.OAuthToken, tokens.OAuthSecret);
         }
         else
         {
-          MessageBox.Show("Not authenticated ...");
+          MessageQueue.Enqueue("You are not propertly authenticated with your Twitter account.", "OK", () => { });
         }
       }
       catch (WebException ex) when (ex.Message.Contains("401"))
       {
-        MessageBox.Show("Got an 401 unauthorized error. Are you properly authenticated and did you use a new PIN?", "Error",
-          MessageBoxButton.OK, MessageBoxImage.Error);
+        MessageQueue.Enqueue("Got an 401 unauthorized error. Are you properly authenticated and did you use a new PIN?", "OK", () => { });
       }
       catch (Exception ex)
       {
-        MessageBox.Show($"An exception occured. Details: {Environment.NewLine}{ex.Message}", "Error",
-          MessageBoxButton.OK, MessageBoxImage.Error);
+        MessageQueue.Enqueue($"An error occured. Are you using a correct PIN?", "OK", () => {});
       }
     }
 
@@ -148,6 +150,7 @@ namespace NoSqlExplorer.WpfClient.ViewModels
     {
       _twitterReader.Stop();
       IsFeedReadingRunning = false;
+      MessageQueue.Enqueue("Loading of Twitter messages stopped.");
     }
   }
 }

@@ -90,7 +90,7 @@
 
                                 <TextBox Width="120" Margin="10 0 10 0" m:HintAssist.Hint="PIN" FontSize="22"
                                          Text="{Binding Pin, UpdateSourceTrigger=PropertyChanged}"/>
-                                
+
                                 <Button Style="{StaticResource MaterialDesignRaisedAccentButton}"
                                         Content="LOAD FEEDS"
                                         Width="200"
@@ -110,7 +110,7 @@
                                 </TextBlock>
                             </StackPanel>
                         </Grid>
-                        <m:Snackbar MessageQueue="{m:MessageQueue}" x:Name="MainSnackbar" />
+                        <m:Snackbar MessageQueue="{Binding MessageQueue}" x:Name="MainSnackbar" />
                     </Grid>
                 </DockPanel>
 
