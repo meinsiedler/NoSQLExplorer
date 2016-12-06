@@ -113,9 +113,9 @@ namespace NoSqlExplorer.WpfClient.ViewModels
         Tokens = await Twitter.GetRequestToken(_twitterConfigSettings);
         Process.Start(new ProcessStartInfo(Twitter.GetRequestUrl(Tokens)));
       }
-      catch (AggregateException ex)
+      catch (WebException ex) when (ex.Message.Contains("401"))
       {
-        Trace.TraceError(ex.Message, ex);
+        MessageQueue.Enqueue("Got an 401 unauthorized error. Did you set up the Twitter consumer key and consumer secret correctly?", "DISMISS", () => { });
       }
     }
 
