@@ -124,15 +124,17 @@
                                     </StackPanel>
                                 </Grid>
                             </m:Card>
-                            
-                            <ItemsControl Grid.Column="1" Margin="10 0 0 0"
-                                          ItemsSource="{Binding DockerInstanceViewModels}" HorizontalContentAlignment="Stretch">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <WrapPanel />
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                            </ItemsControl>
+                            <ScrollViewer Grid.Column="1" Margin="10 0 0 0"
+                                          HorizontalScrollBarVisibility="Disabled"
+                                          VerticalScrollBarVisibility="Auto">
+                                <ItemsControl ItemsSource="{Binding DockerInstanceViewModels}" HorizontalContentAlignment="Stretch">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                </ItemsControl>
+                            </ScrollViewer>
                         </Grid>
                         <m:Snackbar MessageQueue="{Binding MessageQueue}" x:Name="MainSnackbar" />
                     </Grid>
