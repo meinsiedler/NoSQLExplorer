@@ -10,12 +10,13 @@ namespace NoSqlExplorer.DockerAdapter.Util
 
   public class MessageReceivedEventArgs : EventArgs
   {
-    public MessageReceivedEventArgs(int messageSize, string message) : base()
+    public MessageReceivedEventArgs(int messageSize, string message)
     {
+      this.MessageSize = messageSize;
       this.Message = message;
     }
 
-    public string Message { get; private set; }
-    public int MessageSize { get; private set; }
+    public string Message { get; }
+    public int MessageSize { get; }
   }
 }

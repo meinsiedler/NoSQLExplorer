@@ -19,7 +19,7 @@ namespace NoSqlExplorer.DockerAdapter
       this.client = new DockerClientConfiguration(new Uri($"http://{host}:{port}"), credentials).CreateClient();
     }
 
-    public async Task<IEnumerable<DockerContainer>> GetContainers()
+    public async Task<IEnumerable<DockerContainer>> GetContainersAsync()
     {
       var containers = await client.Containers.ListContainersAsync(new ContainersListParameters
       {

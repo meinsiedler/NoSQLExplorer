@@ -23,14 +23,14 @@ namespace NoSqlExplorer.DockerAdapter
     public DockerContainerState State { get; internal set; }
     public string Status { get; internal set; }
 
-    public async Task<bool> Start()
+    public async Task<bool> StartAsync()
     {
       var started = await this.client.Containers.StartContainerAsync(this.Id, new ContainerStartParameters());
       this.State = started ? DockerContainerState.Started : DockerContainerState.Exited;
       return started;
     }
 
-    public async Task<bool> Stop()
+    public async Task<bool> StopAsync()
     {
       return await this.client.Containers.StopContainerAsync(this.Id, new ContainerStopParameters(), System.Threading.CancellationToken.None);
     }

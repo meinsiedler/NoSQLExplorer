@@ -12,21 +12,19 @@ namespace NoSqlExplorer.DockerAdapter.Util
   {
     public event MessageReceivedEventHandler MessageReceived;
 
-    private bool read;
     private readonly Stream stream;
 
     private byte[] buffer = new byte[512];
-    private CancellationTokenSource cts;
+    private CancellationTokenSource cts = new CancellationTokenSource();
 
-    public StreamWatcher(Stream stream, System.Threading.CancellationTokenSource cts = null)
+    public StreamWatcher(Stream stream)
     {
       if (stream == null)
       {
-        throw new ArgumentNullException("stream");
+        throw new ArgumentNullException(nameof(stream));
       }
 
       this.stream = stream;
-      this.cts = cts;
     }
 
     protected void OnMessageAvailable(MessageReceivedEventArgs e)
@@ -34,34 +32,32 @@ namespace NoSqlExplorer.DockerAdapter.Util
       MessageReceived?.Invoke(this, e);
     }
 
-    protected async void WatchNext()
+    protected async void WatchAsync()
     {
-      if (!read)
+      while (!this.cts.IsCancellationRequested)
       {
-        return;
-      }
-      var bytesRead = await stream.ReadAsync(buffer, 0, 512);
-      if (bytesRead == 0)
-      {
-        await Task.Delay(250);
-      }
-      else
-      {
-        int specialChars = 0;
-        var message = Encoding.ASCII.GetString(buffer.Where(c =>
+        var bytesRead = await stream.ReadAsync(buffer, 0, 512); // TODO: can a message be more than 512 bytes long?
+        if (bytesRead == 0)
         {
-          if (!IsSpecialChar(c))
+          await Task.Delay(250);
+        }
+        else
+        {
+          int specialChars = 0;
+          var message = await Task.Run(() => Encoding.ASCII.GetString(buffer.Where(c =>
           {
+            if (IsSpecialChar(c))
+            {
+              specialChars++;
+              return false;
+            }
+
             return true;
-          }
+          }).ToArray(), 0, bytesRead - specialChars));
 
-          specialChars++;
-          return false;
-        }).ToArray(), 0, bytesRead - specialChars);
-        this.OnMessageAvailable(new MessageReceivedEventArgs(bytesRead, message));
+          this.OnMessageAvailable(new MessageReceivedEventArgs(bytesRead, message));
+        }
       }
-
-      WatchNext();
     }
 
     private bool IsSpecialChar(byte c)
@@ -71,19 +67,17 @@ namespace NoSqlExplorer.DockerAdapter.Util
 
     public void Start()
     {
-      if (this.cts != null && this.cts.IsCancellationRequested)
+      if (this.cts.IsCancellationRequested)
       {
         throw new InvalidOperationException("stream was already cancelled");
       }
 
-      this.read = true;
-      WatchNext();
+      WatchAsync();
     }
 
     public void Stop()
     {
-      this.read = false;
-      this.cts?.Cancel();
+      this.cts.Cancel();
     }
   }
 }
