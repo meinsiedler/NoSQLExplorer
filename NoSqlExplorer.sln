@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSqlExplorer.WpfClient", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSqlExplorer.DockerAdapter", "NoSqlExplorer.DockerAdapter\NoSqlExplorer.DockerAdapter.csproj", "{C09ED21A-F3A2-4E52-9C0B-325815059DFD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSqlExplorer.TwitterReader", "NoSqlExplorer.TwitterReader\NoSqlExplorer.TwitterReader.csproj", "{EF8AEBBD-FB6E-4E62-B10D-BDFD17E38C39}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{C09ED21A-F3A2-4E52-9C0B-325815059DFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C09ED21A-F3A2-4E52-9C0B-325815059DFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C09ED21A-F3A2-4E52-9C0B-325815059DFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF8AEBBD-FB6E-4E62-B10D-BDFD17E38C39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF8AEBBD-FB6E-4E62-B10D-BDFD17E38C39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF8AEBBD-FB6E-4E62-B10D-BDFD17E38C39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF8AEBBD-FB6E-4E62-B10D-BDFD17E38C39}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
