@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.ObjectModel;
+using System.Configuration;
 using System.Diagnostics;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
@@ -9,6 +12,8 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using MaterialDesignThemes.Wpf;
+using NoSqlExplorer.DockerAdapter;
+using NoSqlExplorer.DockerAdapter.ConfigSection;
 using NoSqlExplorer.TwitterReader;
 using NoSqlExplorer.TwitterReader.Configuration;
 using NoSqlExplorer.TwitterReader.Model;
@@ -28,6 +33,14 @@ namespace NoSqlExplorer.WpfClient.ViewModels
       _twitterReader = new TwitterReader.TwitterReader(_twitterConfigSettings);
       _twitterReader.OnNewTweet += tweet => Dispatcher.CurrentDispatcher.Invoke(() => FeedsCount++);
       RegisterMessages();
+      LoadDockerInstances();
+    }
+
+    private void LoadDockerInstances()
+    {
+      var cfg = ConfigurationManager.GetSection(DockerConfigSection.SectionName) as DockerConfigSection;
+      var dockerInstanceViewModels = cfg.DockerInstances.Select((i, idx) => new DockerInstanceViewModel(new DockerInstance(i.Host, i.Port, i.Username, i.Password), idx + 1));
+      DockerInstanceViewModels = new ObservableCollection<DockerInstanceViewModel>(dockerInstanceViewModels);
     }
 
     private void RegisterMessages()
@@ -154,5 +167,12 @@ namespace NoSqlExplorer.WpfClient.ViewModels
       IsFeedReadingRunning = false;
       MessageQueue.Enqueue("Loading of Twitter messages stopped.");
     }
+
+    private ObservableCollection<DockerInstanceViewModel> _dockerInstanceViewModels; 
+    public ObservableCollection<DockerInstanceViewModel> DockerInstanceViewModels
+    {
+      get { return _dockerInstanceViewModels; }
+      set { Set(ref _dockerInstanceViewModels, value); }
+    } 
   }
 }

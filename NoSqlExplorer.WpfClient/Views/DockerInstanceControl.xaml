@@ -1,0 +1,42 @@
+﻿<UserControl x:Class="NoSqlExplorer.WpfClient.Views.DockerInstanceControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:NoSqlExplorer.WpfClient.Views"
+             xmlns:viewModels="clr-namespace:NoSqlExplorer.WpfClient.ViewModels"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="450"
+             d:DataContext="{d:DesignInstance viewModels:DockerInstanceViewModel}">
+    <materialDesign:Card Margin="4 4 4 4" Padding="0" Width="400">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Margin="16 16 16 4" Style="{StaticResource MaterialDesignHeadlineTextBlock}">
+                <TextBlock>Docker Instance</TextBlock>
+                <TextBlock Text="{Binding Number}" />
+            </TextBlock>
+            <Separator Grid.Row="1" Style="{StaticResource MaterialDesignDarkSeparator}"/>
+            <TextBlock Grid.Row="2" Margin="16 0 16 8" VerticalAlignment="Center" HorizontalAlignment="Left" Style="{StaticResource MaterialDesignBody1TextBlock}">
+                <TextBlock Text="{Binding Host}" />
+                <TextBlock Text=":" />
+                <TextBlock Text="{Binding Port}" />
+            </TextBlock>
+            <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="16 0 16 8" HorizontalAlignment="Right">
+                <Button HorizontalAlignment="Right" Style="{StaticResource MaterialDesignToolForegroundButton}" Width="30" Padding="2 0 2 0"
+                        materialDesign:RippleAssist.IsCentered="True" ToolTip="Start">
+                    <materialDesign:PackIcon Kind="PlayCircleOutline" />
+                </Button>
+            </StackPanel>
+            <StackPanel Grid.Row="3" Margin="16 0 16 8">
+                <TextBlock FontWeight="Bold">Health</TextBlock>
+                <TextBlock TextWrapping="Wrap" VerticalAlignment="Center">Stopped</TextBlock>
+            </StackPanel>
+        </Grid>
+    </materialDesign:Card>
+</UserControl>

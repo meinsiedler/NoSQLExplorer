@@ -1,0 +1,8 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:viewModels="clr-namespace:NoSqlExplorer.WpfClient.ViewModels"
+                    xmlns:views="clr-namespace:NoSqlExplorer.WpfClient.Views">
+    <DataTemplate DataType="{x:Type viewModels:DockerInstanceViewModel}">
+        <views:DockerInstanceControl />
+    </DataTemplate>
+</ResourceDictionary>

@@ -13,8 +13,13 @@ namespace NoSqlExplorer.DockerAdapter
   {
     private DockerClient client;
 
+    public string Host { get; }
+    public int Port { get; }
+
     public DockerInstance(string host, int port, string userName, string password)
     {
+      Host = host;
+      Port = port;
       var credentials = new BasicAuthCredentials(userName, password);
       this.client = new DockerClientConfiguration(new Uri($"http://{host}:{port}"), credentials).CreateClient();
     }

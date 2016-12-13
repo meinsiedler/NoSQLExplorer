@@ -25,17 +25,12 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Font.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ProgressBar.xaml" />
                 <ResourceDictionary>
                     <converter:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
                     <system:String x:Key="AppName">NoSQL Explorer</system:String>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-        
     </Window.Resources>
     <Grid>
         <m:DialogHost Identifier="RootDialog" SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
@@ -78,38 +73,66 @@
                     </m:ColorZone>
                     <Grid>
                         <Grid Margin="15">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
-                                <Button Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                                        Content="GET TWITTER PIN"
-                                        Width="200"
-                                        Command="{Binding GetPinCommand}" />
-
-                                <TextBox Width="120" Margin="10 0 10 0" m:HintAssist.Hint="PIN" FontSize="22"
-                                         Text="{Binding Pin, UpdateSourceTrigger=PropertyChanged}"/>
-
-                                <Button Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                                        Content="LOAD FEEDS"
-                                        Width="200"
-                                        Visibility="{Binding IsFeedReadingRunning, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=true}"
-                                        Command="{Binding StartFeedReadingCommand}">
-                                </Button>
-
-                                <Button Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                                        Content="STOP LOADING"
-                                        Width="200"
-                                        Visibility="{Binding IsFeedReadingRunning, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                        Command="{Binding StopFeedReadingCommand}" />
-
-                                <TextBlock Style="{StaticResource MaterialDesignDisplay1TextBlock}" Margin="10 0 0 0">
-                                    <TextBlock Text="{Binding FeedsCount}" />
-                                    <TextBlock Text="tweets loaded" />
-                                </TextBlock>
-                            </StackPanel>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <m:Card Grid.Column="0" Width="240" HorizontalAlignment="Left">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="200" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Image Height="200" Width="250" Source="../Images/twitter.jpg" Stretch="UniformToFill" />
+                                    <Button Grid.Row="0" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
+                                            HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                                            Margin="16 0 0 -20" ToolTip="Get PIN"
+                                            Command="{Binding GetPinCommand}">
+                                        <m:PackIcon Kind="Twitter" />
+                                    </Button>
+                                    <Button Grid.Row="0" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
+                                            HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                            Margin="0 0 16 -20"
+                                            ToolTip="Start loading"
+                                            Visibility="{Binding IsFeedReadingRunning, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=true}"
+                                            Command="{Binding StartFeedReadingCommand}">
+                                        <m:PackIcon Kind="Play" />
+                                    </Button>
+                                    <Button Grid.Row="0" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
+                                            HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                            Margin="0 0 16 -20"
+                                            ToolTip="Stop loading"
+                                            Visibility="{Binding IsFeedReadingRunning, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                            Command="{Binding StopFeedReadingCommand}">
+                                        <m:PackIcon Kind="Stop" />
+                                    </Button>
+                                    <StackPanel Grid.Row="1" Margin="8 24 8 0" >
+                                        <TextBlock FontWeight="Bold">Load Twitter Messages</TextBlock>
+                                        <TextBlock TextWrapping="Wrap" VerticalAlignment="Center">
+                                            Load Twitter messages into the database.
+                                            Twitter messages are used as testdata.
+                                            Click the Twitter icon above to receive a PIN-Code and enter it below.
+                                        </TextBlock>
+                                        <TextBox Text="{Binding Pin, UpdateSourceTrigger=PropertyChanged}" m:HintAssist.Hint="PIN" />
+                                    </StackPanel>
+                                    <StackPanel HorizontalAlignment="Right" Grid.Row="2" Orientation="Horizontal" Margin="8">
+                                        <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" Margin="10 0 0 0">
+                                            <TextBlock Text="{Binding FeedsCount}" />
+                                            <TextBlock Text="tweets loaded" />
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Grid>
+                            </m:Card>
+                            
+                            <ItemsControl Grid.Column="1" Margin="10 0 0 0"
+                                          ItemsSource="{Binding DockerInstanceViewModels}" HorizontalContentAlignment="Stretch">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
                         </Grid>
                         <m:Snackbar MessageQueue="{Binding MessageQueue}" x:Name="MainSnackbar" />
                     </Grid>
