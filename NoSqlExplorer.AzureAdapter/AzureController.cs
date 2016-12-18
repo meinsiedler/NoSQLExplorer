@@ -18,8 +18,15 @@ namespace NoSqlExplorer.AzureAdapter
       string subscriptionId,
       string base64EncodedCert)
     {
-      var credentials = GetCredentials(subscriptionId, base64EncodedCert);
-      _computeManagementClient = new ComputeManagementClient(credentials);
+      try
+      {
+        var credentials = GetCredentials(subscriptionId, base64EncodedCert);
+        _computeManagementClient = new ComputeManagementClient(credentials);
+      }
+      catch (Exception)
+      {
+        // should only occur when certificate is invalid base64 string. 
+      }
     }
 
     public async Task<AzureVirtualMachine> GetVirtualMachineByHostnameAsync(string resourceGroup, string hostName)
