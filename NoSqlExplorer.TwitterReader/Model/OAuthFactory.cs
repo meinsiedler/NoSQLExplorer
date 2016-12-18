@@ -9,9 +9,9 @@ namespace NoSqlExplorer.TwitterReader.Model
 {
   public static class OAuthFactory
   {
-    public static OAuth CreateOAuth(ITwitterConfigSettings configSettings)
+    public static OAuth CreateOAuth(string twitterConsumerKey, string twitterConsumerSecret)
     {
-      return new OAuth(configSettings.TwitterConsumerKey, configSettings.TwitterConsumerSecret);
+      return new OAuth(twitterConsumerKey, twitterConsumerSecret);
     }
   }
 }
