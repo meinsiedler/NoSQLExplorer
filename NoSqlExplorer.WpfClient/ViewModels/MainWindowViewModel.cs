@@ -38,14 +38,14 @@ namespace NoSqlExplorer.WpfClient.ViewModels
       LoadDockerInstances();
     }
 
-    private async void LoadDockerInstances()
+    private void LoadDockerInstances()
     {
       var dockerCfg = ConfigurationManager.GetSection(DockerConfigSection.SectionName) as DockerConfigSection;
       var azureCfg = ConfigurationManager.GetSection(AzureConfigSection.SectionName) as AzureConfigSection;
       var azureController = new AzureController(azureCfg.AzureSubscription.SubscriptionId, azureCfg.AzureSubscription.Base64encodedCertificate);
       var dockerInstanceViewModels = dockerCfg.DockerInstances.Select((i, idx) => new DockerInstanceViewModel(
         new DockerInstance(i.Host, i.Port, i.Username, i.Password), 
-        azureController.GetVirtualMachineByHostnameAsync("CLC-NoSql", i.Host),
+        azureController.GetVirtualMachineByHostnameAsync(azureCfg.AzureSubscription.ResourceGroup, i.Host),
         idx + 1));
       DockerInstanceViewModels = new ObservableCollection<DockerInstanceViewModel>(dockerInstanceViewModels);
     }

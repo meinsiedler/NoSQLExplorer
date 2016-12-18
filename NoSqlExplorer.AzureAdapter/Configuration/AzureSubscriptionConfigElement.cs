@@ -12,7 +12,10 @@ namespace NoSqlExplorer.AzureAdapter.Configuration
     [ConfigurationProperty("subscriptionId")]
     public string SubscriptionId => base["subscriptionId"] as string;
 
+    [ConfigurationProperty("resourceGroup")]
+    public string ResourceGroup => base["resourceGroup"] as string;
+
     [ConfigurationProperty("base64encodedCertificate")]
-    public string Base64encodedCertificate  => base["base64encodedCertificate"] as string;
+    public string Base64encodedCertificate => base["base64encodedCertificate"] as string;
   }
 }
