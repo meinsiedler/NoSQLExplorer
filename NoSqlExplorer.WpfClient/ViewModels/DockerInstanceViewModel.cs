@@ -30,8 +30,22 @@ namespace NoSqlExplorer.WpfClient.ViewModels
     private async void InitializeVmAsync(Task<AzureVirtualMachine> virtualMachine)
     {
       this.IsBusy = true;
-      _virtualMachine = await virtualMachine;
-      this.VmStatus = await _virtualMachine.GetStatusAsync();
+      try
+      {
+        _virtualMachine = await virtualMachine;
+        if (_virtualMachine == null)
+        {
+          this.Disable($"Machine with Hostname {_host} not found");
+        }
+        else
+        {
+          this.VmStatus = await _virtualMachine.GetStatusAsync();
+        }
+      }
+      catch (Exception ex)
+      {
+        this.Disable("Invalid Azure credentials. Please verify subscriptionId and base64encodedCertificate configuration values");
+      }
       this.IsBusy = false;
     }
 
@@ -70,6 +84,22 @@ namespace NoSqlExplorer.WpfClient.ViewModels
       set { Set(ref _vmStatus, value); }
     }
 
+    private bool isDisabled;
+
+    public bool IsDisabled
+    {
+      get { return this.isDisabled; }
+      set { this.Set(ref isDisabled, value); }
+    }
+
+    private string disabledReason;
+
+    public string DisabledReason
+    {
+      get { return this.disabledReason; }
+      set { this.Set(ref disabledReason, value); }
+    }
+
     public async Task UpdateStatusAsync()
     {
       this.VmStatus = await _virtualMachine.GetStatusAsync();
@@ -102,5 +132,10 @@ namespace NoSqlExplorer.WpfClient.ViewModels
       this.IsBusy = false;
     }
 
+    private void Disable(string reason)
+    {
+      this.IsDisabled = true;
+      this.DisabledReason = reason;
+    }
   }
 }

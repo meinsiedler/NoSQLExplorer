@@ -27,7 +27,15 @@
                                IsIndeterminate="True"
                                VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="12 12 12 12"/>   
             </Grid>
-          
+
+            <Grid Grid.RowSpan="4" x:Name="DisabledOverlay" Panel.ZIndex="1000" Visibility="{Binding Path=IsDisabled, Converter={StaticResource BooleanToVisibilityConverter}}">
+              <Grid.Background>
+                <SolidColorBrush Color="Red" Opacity=".8"/>
+              </Grid.Background>
+        <TextBlock Text="{Binding DisabledReason}" Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22" TextWrapping="Wrap" />
+      </Grid>
+
+
             <TextBlock Grid.Row="0" Margin="16 16 16 4" Style="{StaticResource MaterialDesignHeadlineTextBlock}">
                 <TextBlock>Docker Instance</TextBlock>
                 <TextBlock Text="{Binding Number}" />
