@@ -1,5 +1,8 @@
-
 # Created by https://www.gitignore.io/api/visualstudio
+
+### Secrets ###
+NoSqlExplorer.WpfClient/Azure.[Cc]onfig
+NoSqlExplorer.WpfClient/Docker.[Cc]onfig
 
 ### VisualStudio ###
 ## Ignore Visual Studio temporary files, build results, and
