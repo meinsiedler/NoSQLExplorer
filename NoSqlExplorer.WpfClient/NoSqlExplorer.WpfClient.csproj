@@ -112,6 +112,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="AsyncCommand.cs" />
     <Compile Include="Configuration\AppConfigSettings.cs" />
     <Compile Include="Converter\BooleanToVisibilityConverter.cs" />
     <Compile Include="Messages\IsLoadingMessage.cs" />
@@ -160,6 +161,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NoSqlExplorer.AzureAdapter\NoSqlExplorer.AzureAdapter.csproj">
+      <Project>{CC62B22C-BC23-4C1B-A2A6-EB6607F768E3}</Project>
+      <Name>NoSqlExplorer.AzureAdapter</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NoSqlExplorer.DockerAdapter\NoSqlExplorer.DockerAdapter.csproj">
       <Project>{C09ED21A-F3A2-4E52-9C0B-325815059DFD}</Project>
       <Name>NoSqlExplorer.DockerAdapter</Name>

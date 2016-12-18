@@ -17,6 +17,17 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
+          
+            <Grid Grid.RowSpan="4" x:Name="Overlay" Panel.ZIndex="1000" Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}">
+              <Grid.Background>
+                  <SolidColorBrush Color="Black" Opacity=".2"/>
+              </Grid.Background>
+                  <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"                     
+                               Value="0"
+                               IsIndeterminate="True"
+                               VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="12 12 12 12"/>   
+            </Grid>
+          
             <TextBlock Grid.Row="0" Margin="16 16 16 4" Style="{StaticResource MaterialDesignHeadlineTextBlock}">
                 <TextBlock>Docker Instance</TextBlock>
                 <TextBlock Text="{Binding Number}" />
@@ -29,13 +40,24 @@
             </TextBlock>
             <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="16 0 16 8" HorizontalAlignment="Right">
                 <Button HorizontalAlignment="Right" Style="{StaticResource MaterialDesignToolForegroundButton}" Width="30" Padding="2 0 2 0"
-                        materialDesign:RippleAssist.IsCentered="True" ToolTip="Start">
+                        materialDesign:RippleAssist.IsCentered="True" ToolTip="Start"
+                        Command="{Binding StartVmCommand}">
                     <materialDesign:PackIcon Kind="PlayCircleOutline" />
                 </Button>
-            </StackPanel>
+                <Button HorizontalAlignment="Right" Style="{StaticResource MaterialDesignToolForegroundButton}" Width="30" Padding="2 0 2 0"
+                        materialDesign:RippleAssist.IsCentered="True" ToolTip="Stop"
+                        Command="{Binding StopVmCommand}">
+                  <materialDesign:PackIcon Kind="StopCircleOutline" />
+                </Button>
+                <Button HorizontalAlignment="Right" Style="{StaticResource MaterialDesignToolForegroundButton}" Width="30" Padding="2 0 2 0"
+                        materialDesign:RippleAssist.IsCentered="True" ToolTip="Refresh"
+                        Command="{Binding RefreshVmStatusCommand}">
+                  <materialDesign:PackIcon Kind="Refresh" />
+                </Button>
+            </StackPanel> 
             <StackPanel Grid.Row="3" Margin="16 0 16 8">
                 <TextBlock FontWeight="Bold">Health</TextBlock>
-                <TextBlock TextWrapping="Wrap" VerticalAlignment="Center">Stopped</TextBlock>
+                <TextBlock TextWrapping="Wrap" VerticalAlignment="Center" Text="{Binding VmStatus}"/>
             </StackPanel>
         </Grid>
     </materialDesign:Card>

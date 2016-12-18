@@ -16,6 +16,7 @@ namespace NoSqlExplorer.AzureAdapter
     Starting = 4,
     Suspending = 5,
     Deploying = 6,
-    Deleting = 7
+    Deleting = 7,
+    Unknown = 8
   }
 }

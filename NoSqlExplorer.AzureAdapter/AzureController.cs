@@ -46,7 +46,12 @@ namespace NoSqlExplorer.AzureAdapter
 
     internal async Task<OperationStatusResponse> ShutdownAsync(string serviceName, string deploymentName, string vmName)
     {
-      return await _computeManagementClient.VirtualMachines.ShutdownAsync(serviceName, deploymentName, vmName, null);
+      var shutdownParams = new VirtualMachineShutdownParameters
+      {
+        PostShutdownAction = PostShutdownAction.StoppedDeallocated
+      };
+
+      return await _computeManagementClient.VirtualMachines.ShutdownAsync(serviceName, deploymentName, vmName, shutdownParams);
     }
 
     internal async Task<DeploymentStatus?> GetStatusAsync(string serviceName)

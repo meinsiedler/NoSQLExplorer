@@ -12,6 +12,8 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using MaterialDesignThemes.Wpf;
+using NoSqlExplorer.AzureAdapter;
+using NoSqlExplorer.AzureAdapter.Configuration;
 using NoSqlExplorer.DockerAdapter;
 using NoSqlExplorer.DockerAdapter.ConfigSection;
 using NoSqlExplorer.TwitterReader;
@@ -36,10 +38,15 @@ namespace NoSqlExplorer.WpfClient.ViewModels
       LoadDockerInstances();
     }
 
-    private void LoadDockerInstances()
+    private async void LoadDockerInstances()
     {
-      var cfg = ConfigurationManager.GetSection(DockerConfigSection.SectionName) as DockerConfigSection;
-      var dockerInstanceViewModels = cfg.DockerInstances.Select((i, idx) => new DockerInstanceViewModel(new DockerInstance(i.Host, i.Port, i.Username, i.Password), idx + 1));
+      var dockerCfg = ConfigurationManager.GetSection(DockerConfigSection.SectionName) as DockerConfigSection;
+      var azureCfg = ConfigurationManager.GetSection(AzureConfigSection.SectionName) as AzureConfigSection;
+      var azureController = new AzureController(azureCfg.AzureSubscription.SubscriptionId, azureCfg.AzureSubscription.Base64encodedCertificate);
+      var dockerInstanceViewModels = dockerCfg.DockerInstances.Select((i, idx) => new DockerInstanceViewModel(
+        new DockerInstance(i.Host, i.Port, i.Username, i.Password), 
+        azureController.GetVirtualMachineByHostnameAsync("CLC-NoSql", i.Host),
+        idx + 1));
       DockerInstanceViewModels = new ObservableCollection<DockerInstanceViewModel>(dockerInstanceViewModels);
     }
 
