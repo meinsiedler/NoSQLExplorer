@@ -14,13 +14,18 @@ namespace NoSqlExplorer.TwitterReader
 {
   public class TwitterReader : ITwitterReader
   {
+    private readonly string _twitterConsumerKey;
+    private readonly string _twitterConsumerSecret;
+    private readonly string _twitterFeedUrl;
     private readonly object _lock = new object();
-    private readonly ITwitterConfigSettings _configSettings;
+    
     private CancellationTokenSource _cancellationTokenSource;
 
-    public TwitterReader(ITwitterConfigSettings configSettings)
+    public TwitterReader(string twitterConsumerKey, string twitterConsumerSecret, string twitterFeedUrl)
     {
-      _configSettings = configSettings;
+      _twitterConsumerKey = twitterConsumerKey;
+      _twitterConsumerSecret = twitterConsumerSecret;
+      _twitterFeedUrl = twitterFeedUrl;
     }
 
     public async Task StartAsync(string accessToken, string accessTokenSecret)
@@ -29,13 +34,13 @@ namespace NoSqlExplorer.TwitterReader
       var token = _cancellationTokenSource.Token;
 
 
-      var oauth = new OAuth(_configSettings.TwitterConsumerKey, _configSettings.TwitterConsumerSecret);
+      var oauth = new OAuth(_twitterConsumerKey, _twitterConsumerSecret);
       var nonce = oauth.Nonce();
       var timestamp = oauth.TimeStamp();
-      var signature = oauth.Signature("GET", _configSettings.TwitterFeedUrl, nonce, timestamp, accessToken, accessTokenSecret, parameters: Enumerable.Empty<string[]>());
+      var signature = oauth.Signature("GET", _twitterFeedUrl, nonce, timestamp, accessToken, accessTokenSecret, parameters: Enumerable.Empty<string[]>());
       var authorizeHeader = oauth.AuthorizationHeader(nonce, timestamp, accessToken, signature);
 
-      var request = (HttpWebRequest)WebRequest.Create(_configSettings.TwitterFeedUrl);
+      var request = (HttpWebRequest)WebRequest.Create(_twitterFeedUrl);
       request.Headers.Add("Authorization", authorizeHeader);
       request.Method = "GET";
 
