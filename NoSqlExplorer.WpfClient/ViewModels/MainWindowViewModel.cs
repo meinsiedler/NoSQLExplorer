@@ -13,7 +13,7 @@ using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using MaterialDesignThemes.Wpf;
 using NoSqlExplorer.DockerAdapter;
-using NoSqlExplorer.DockerAdapter.ConfigSection;
+using NoSqlExplorer.DockerAdapter.Configuration;
 using NoSqlExplorer.TwitterReader;
 using NoSqlExplorer.TwitterReader.Configuration;
 using NoSqlExplorer.TwitterReader.Model;

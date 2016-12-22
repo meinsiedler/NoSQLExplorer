@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace NoSqlExplorer.DockerAdapter.ConfigSection
+namespace NoSqlExplorer.DockerAdapter.Configuration
 {
   [ConfigurationCollection(typeof(DockerInstanceConfigElement), AddItemName = "dockerInstance", CollectionType = ConfigurationElementCollectionType.BasicMap)]
   public class DockerInstanceConfigCollection : ConfigurationElementCollection, IEnumerable<DockerInstanceConfigElement>
