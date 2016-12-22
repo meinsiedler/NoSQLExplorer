@@ -13,12 +13,12 @@ namespace NoSqlExplorer.TwitterReader.Model
       return await request();
     }
 
-    public static async Task<OAuthTokens> GetRequestToken(ITwitterConfigSettings configSettings)
+    public static async Task<OAuthTokens> GetRequestToken(string twitterConsumerKey, string twitterConsumerSecret)
     {
       return await RequestHandler(async () =>
       {
         const string requestTokenUrl = "https://api.twitter.com/oauth/request_token";
-        var oauth = OAuthFactory.CreateOAuth(configSettings);
+        var oauth = OAuthFactory.CreateOAuth(twitterConsumerKey, twitterConsumerSecret);
         var nonce = oauth.Nonce();
         var timestamp = oauth.TimeStamp();
         var parameters = new[] { new[] { "oauth_callback", "oob" } };
@@ -48,12 +48,12 @@ namespace NoSqlExplorer.TwitterReader.Model
       return "https://api.twitter.com/oauth/authenticate?oauth_token=" + tokens.OAuthToken;
     }
 
-    public static async Task<OAuthTokens> GetAccessToken(ITwitterConfigSettings configSettings, string accessToken, string accessTokenSecret, string oauthVerifier)
+    public static async Task<OAuthTokens> GetAccessToken(string twitterConsumerKey, string twitterConsumerSecret, string accessToken, string accessTokenSecret, string oauthVerifier)
     {
       return await RequestHandler(async () =>
       {
         const string requestTokenUrl = "https://api.twitter.com/oauth/access_token";
-        var oauth = OAuthFactory.CreateOAuth(configSettings);
+        var oauth = OAuthFactory.CreateOAuth(twitterConsumerKey, twitterConsumerSecret);
         var nonce = oauth.Nonce();
         var timestamp = oauth.TimeStamp();
         var parameters = new[] { new[] { "oauth_verifier", oauthVerifier } };

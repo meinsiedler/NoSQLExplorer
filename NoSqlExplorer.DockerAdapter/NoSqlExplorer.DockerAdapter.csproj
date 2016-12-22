@@ -54,9 +54,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConfigSection\DockerConfigSection.cs" />
-    <Compile Include="ConfigSection\DockerInstanceConfigCollection.cs" />
-    <Compile Include="ConfigSection\DockerInstanceConfigElement.cs" />
+    <Compile Include="Configuration\DockerConfigSection.cs" />
+    <Compile Include="Configuration\DockerInstanceConfigCollection.cs" />
+    <Compile Include="Configuration\DockerInstanceConfigElement.cs" />
     <Compile Include="DockerContainer.cs" />
     <Compile Include="DockerContainerStatus.cs" />
     <Compile Include="DockerInstance.cs" />

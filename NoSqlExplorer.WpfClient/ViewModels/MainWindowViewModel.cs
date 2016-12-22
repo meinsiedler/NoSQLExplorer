@@ -15,24 +15,24 @@ using MaterialDesignThemes.Wpf;
 using NoSqlExplorer.AzureAdapter;
 using NoSqlExplorer.AzureAdapter.Configuration;
 using NoSqlExplorer.DockerAdapter;
-using NoSqlExplorer.DockerAdapter.ConfigSection;
+using NoSqlExplorer.DockerAdapter.Configuration;
 using NoSqlExplorer.TwitterReader;
 using NoSqlExplorer.TwitterReader.Configuration;
 using NoSqlExplorer.TwitterReader.Model;
-using NoSqlExplorer.WpfClient.Configuration;
 using NoSqlExplorer.WpfClient.Messages;
 
 namespace NoSqlExplorer.WpfClient.ViewModels
 {
   public class MainWindowViewModel : ViewModelBase
   {
-    private readonly ITwitterConfigSettings _twitterConfigSettings;
+    private TwitterSettingsConfigElement _twitterSettingsConfigElement;
     private readonly ITwitterReader _twitterReader;
 
     public MainWindowViewModel()
     {
-      _twitterConfigSettings = new AppConfigSettings();
-      _twitterReader = new TwitterReader.TwitterReader(_twitterConfigSettings);
+      var cfg = ConfigurationManager.GetSection(TwitterConfigSection.SectionName) as TwitterConfigSection;
+      _twitterSettingsConfigElement = cfg.TwitterSettings;
+      _twitterReader = new TwitterReader.TwitterReader(cfg.TwitterSettings.ConsumerKey, cfg.TwitterSettings.ConsumerSecret, cfg.TwitterSettings.FeedUrl);
       _twitterReader.OnNewTweet += tweet => Dispatcher.CurrentDispatcher.Invoke(() => FeedsCount++);
       RegisterMessages();
       LoadDockerInstances();
@@ -130,7 +130,7 @@ namespace NoSqlExplorer.WpfClient.ViewModels
     {
       try
       {
-        Tokens = await Twitter.GetRequestToken(_twitterConfigSettings);
+        Tokens = await Twitter.GetRequestToken(_twitterSettingsConfigElement.ConsumerKey, _twitterSettingsConfigElement.ConsumerSecret);
         Process.Start(new ProcessStartInfo(Twitter.GetRequestUrl(Tokens)));
       }
       catch (WebException ex) when (ex.Message.Contains("401"))
@@ -143,7 +143,7 @@ namespace NoSqlExplorer.WpfClient.ViewModels
     {
       try
       {
-        var tokens = await Twitter.GetAccessToken(_twitterConfigSettings, Tokens.OAuthToken, Tokens.OAuthSecret, Pin);
+        var tokens = await Twitter.GetAccessToken(_twitterSettingsConfigElement.ConsumerKey, _twitterSettingsConfigElement.ConsumerSecret , Tokens.OAuthToken, Tokens.OAuthSecret, Pin);
         Pin = string.Empty;
         if (tokens == null) return;
 
@@ -175,7 +175,8 @@ namespace NoSqlExplorer.WpfClient.ViewModels
       MessageQueue.Enqueue("Loading of Twitter messages stopped.");
     }
 
-    private ObservableCollection<DockerInstanceViewModel> _dockerInstanceViewModels; 
+    private ObservableCollection<DockerInstanceViewModel> _dockerInstanceViewModels;
+    
     public ObservableCollection<DockerInstanceViewModel> DockerInstanceViewModels
     {
       get { return _dockerInstanceViewModels; }
