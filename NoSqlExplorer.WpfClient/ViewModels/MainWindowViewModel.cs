@@ -36,6 +36,7 @@ namespace NoSqlExplorer.WpfClient.ViewModels
       _twitterReader.OnNewTweet += tweet => Dispatcher.CurrentDispatcher.Invoke(() => FeedsCount++);
       RegisterMessages();
       LoadDockerInstances();
+      DefineCommands();
     }
 
     private void LoadDockerInstances()
@@ -48,6 +49,26 @@ namespace NoSqlExplorer.WpfClient.ViewModels
         azureController.GetVirtualMachineByHostnameAsync(azureCfg.AzureSubscription.ResourceGroup, i.Host),
         idx + 1));
       DockerInstanceViewModels = new ObservableCollection<DockerInstanceViewModel>(dockerInstanceViewModels);
+    }
+
+    private void DefineCommands()
+    {
+       StartAllVmsCommand = new AsyncCommand(() =>
+       {
+         var startTasks = DockerInstanceViewModels.Where(i => !i.IsDisabled).Select(i => i.StartVmCommandHandler());
+         return Task.WhenAll(startTasks);
+       });
+      StopAllVmsCommand = new AsyncCommand(() =>
+      {
+        var stopTasks = DockerInstanceViewModels.Where(i => !i.IsDisabled).Select(i => i.StopVmCommandHandler());
+        return Task.WhenAll(stopTasks);
+      });
+      RefreshAllVmStatusCommand = new AsyncCommand(() =>
+      {
+        var refreshTasks = DockerInstanceViewModels.Select(i => i.RefreshVmStatusCommandHandler());
+        return Task.WhenAll(refreshTasks);
+      });
+
     }
 
     private void RegisterMessages()
@@ -181,6 +202,12 @@ namespace NoSqlExplorer.WpfClient.ViewModels
     {
       get { return _dockerInstanceViewModels; }
       set { Set(ref _dockerInstanceViewModels, value); }
-    } 
+    }
+
+    public AsyncCommand StartAllVmsCommand { get; private set; }
+
+    public AsyncCommand StopAllVmsCommand { get; private set; }
+
+    public AsyncCommand RefreshAllVmStatusCommand { get; private set; }
   }
 }
