@@ -8,14 +8,15 @@ We host your NoSQL databases on Azure using Docker container.
 
 ### Twitter
 
-For accessing Twitter feeds, you need to provide custom values for the Twitter *Consumer Key* and *Consumer Secret*. Therefore, change the keys in the `NoSqlExplorer.WpfClient` project in the file `Config\Secrets.config`:
+For accessing Twitter feeds, you need to provide custom values for the Twitter *Consumer Key* and *Consumer Secret*. Therefore, change the keys in the `NoSqlExplorer.WpfClient` project in the file `Config\Twitter.config`:
 
 ```xml
 <?xml version="1.0" encoding="utf-8" ?>
 <twitterConfig>
-  <twitterSettings feedUrl="https://stream.twitter.com/1.1/statuses/sample.json"
-                   consumerKey="YOUR-TWITTER-CONSUMER-KEY"
-                   consumerSecret="YOUR-TWITTER-CONSUMER-SECRET" />
+  <twitterSettings
+	feedUrl="https://stream.twitter.com/1.1/statuses/sample.json"
+    consumerKey="YOUR-TWITTER-CONSUMER-KEY"
+    consumerSecret="YOUR-TWITTER-CONSUMER-SECRET" />
 </twitterConfig>
 ```
 
