@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Docker.DotNet;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using NoSqlExplorer.AzureAdapter;
@@ -13,23 +15,34 @@ namespace NoSqlExplorer.WpfClient.ViewModels
   public class DockerInstanceViewModel : ViewModelBase
   {
     private readonly DockerInstance _dockerInstance;
+    private Task<AzureVirtualMachine> _virtualMachineTask;
     private AzureVirtualMachine _virtualMachine;
     private int _port;
 
     public DockerInstanceViewModel(DockerInstance dockerInstance, Task<AzureVirtualMachine> virtualMachine, int number)
     {
       _dockerInstance = dockerInstance;
+      _virtualMachineTask = virtualMachine;
       Host = _dockerInstance.Host;
       Port = _dockerInstance.Port;
       Number = number;
       this.StartVmCommand = new AsyncCommand(this.StartVmCommandHandler);
       this.StopVmCommand = new AsyncCommand(this.StopVmCommandHandler);
       this.RefreshVmStatusCommand = new AsyncCommand(this.RefreshVmStatusCommandHandler);
-      this.InitializeVmAsync(virtualMachine);
+      this.IsBusy = true;
+      
     }
-    private async void InitializeVmAsync(Task<AzureVirtualMachine> virtualMachine)
+
+    public async Task InitializeAsync()
     {
       this.IsBusy = true;
+      await this.InitializeVmAsync(_virtualMachineTask);
+      await this.InitializeContainersAsync();
+      this.IsBusy = false;
+    }
+
+    private async Task InitializeVmAsync(Task<AzureVirtualMachine> virtualMachine)
+    {
       try
       {
         _virtualMachine = await virtualMachine;
@@ -46,7 +59,26 @@ namespace NoSqlExplorer.WpfClient.ViewModels
       {
         this.Disable("Invalid Azure credentials. Please verify subscriptionId and base64encodedCertificate configuration values");
       }
-      this.IsBusy = false;
+    }
+
+    private async Task InitializeContainersAsync()
+    {
+      if (this.VmStatus == AzureVirtualMachineStatus.Running)
+      {
+        // TODO: var containers = await _dockerInstance.GetContainersAsync();
+        // DockerContainerViewModels = new ObservableCollection<DockerContainerViewModel>(containers.Select(c => new DockerContainerViewModel(c)));
+
+        DockerContainerViewModels = new ObservableCollection<DockerContainerViewModel>(new List<DockerContainerViewModel>
+        {
+          new DockerContainerViewModel("Create.io", DockerContainerState.Exited),
+          new DockerContainerViewModel("MongoDB", DockerContainerState.Exited),
+        });
+
+      }
+      else
+      {
+        DockerContainerViewModels.Clear();
+      }
     }
 
     private bool isBusy;
@@ -100,9 +132,18 @@ namespace NoSqlExplorer.WpfClient.ViewModels
       set { this.Set(ref disabledReason, value); }
     }
 
+    private ObservableCollection<DockerContainerViewModel> _dockerContainerViewModels = new ObservableCollection<DockerContainerViewModel>();
+
+    public ObservableCollection<DockerContainerViewModel> DockerContainerViewModels
+    {
+      get { return _dockerContainerViewModels; }
+      set { Set(ref _dockerContainerViewModels, value); }
+    }  
+
     public async Task UpdateStatusAsync()
     {
       this.VmStatus = await _virtualMachine.GetStatusAsync();
+      await this.InitializeContainersAsync();
     }
 
     public AsyncCommand StartVmCommand { get; private set; }

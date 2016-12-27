@@ -32,7 +32,9 @@ namespace NoSqlExplorer.DockerAdapter
 
     public async Task<bool> StopAsync()
     {
-      return await this.client.Containers.StopContainerAsync(this.Id, new ContainerStopParameters(), System.Threading.CancellationToken.None);
+      var stopped = await this.client.Containers.StopContainerAsync(this.Id, new ContainerStopParameters(), System.Threading.CancellationToken.None);
+      this.State = stopped ? DockerContainerState.Exited : DockerContainerState.Started;
+      return stopped;
     }
 
     public async Task<Stream> GetContainerLogsAsync(System.Threading.CancellationToken ct)

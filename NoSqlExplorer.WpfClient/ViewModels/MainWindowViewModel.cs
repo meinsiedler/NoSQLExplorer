@@ -39,7 +39,7 @@ namespace NoSqlExplorer.WpfClient.ViewModels
       DefineCommands();
     }
 
-    private void LoadDockerInstances()
+    private async void LoadDockerInstances()
     {
       var dockerCfg = ConfigurationManager.GetSection(DockerConfigSection.SectionName) as DockerConfigSection;
       var azureCfg = ConfigurationManager.GetSection(AzureConfigSection.SectionName) as AzureConfigSection;
@@ -49,6 +49,8 @@ namespace NoSqlExplorer.WpfClient.ViewModels
         azureController.GetVirtualMachineByHostnameAsync(azureCfg.AzureSubscription.ResourceGroup, i.Host),
         idx + 1));
       DockerInstanceViewModels = new ObservableCollection<DockerInstanceViewModel>(dockerInstanceViewModels);
+      var initializeTasks = DockerInstanceViewModels.Select(i => i.InitializeAsync());
+      await Task.WhenAll(initializeTasks);
     }
 
     private void DefineCommands()
