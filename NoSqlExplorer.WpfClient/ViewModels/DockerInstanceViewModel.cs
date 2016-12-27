@@ -105,11 +105,11 @@ namespace NoSqlExplorer.WpfClient.ViewModels
       this.VmStatus = await _virtualMachine.GetStatusAsync();
     }
 
-    public AsyncCommand StartVmCommand { get; set; }
-    public AsyncCommand StopVmCommand { get; set; }
-    public AsyncCommand RefreshVmStatusCommand { get; set; }
+    public AsyncCommand StartVmCommand { get; private set; }
+    public AsyncCommand StopVmCommand { get; private set; }
+    public AsyncCommand RefreshVmStatusCommand { get; private set; }
 
-    private async Task StartVmCommandHandler()
+    public async Task StartVmCommandHandler()
     {
       this.IsBusy = true;
       await _virtualMachine.StartAsync();
@@ -117,7 +117,7 @@ namespace NoSqlExplorer.WpfClient.ViewModels
       this.IsBusy = false;
     }
 
-    private async Task StopVmCommandHandler()
+    public async Task StopVmCommandHandler()
     {
       this.IsBusy = true;
       await _virtualMachine.ShutdownAsync();
@@ -125,7 +125,7 @@ namespace NoSqlExplorer.WpfClient.ViewModels
       this.IsBusy = false;
     }
 
-    private async Task RefreshVmStatusCommandHandler()
+    public async Task RefreshVmStatusCommandHandler()
     {
       this.IsBusy = true;
       await this.UpdateStatusAsync();

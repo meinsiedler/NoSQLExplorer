@@ -20,6 +20,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ProgressBar.xaml" />
 
                 <ResourceDictionary Source="Resources/DataTemplates.xaml" />
+                <ResourceDictionary Source="Resources/Converter.xaml" />
                 <ResourceDictionary>
                     <viewModels:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />
                 </ResourceDictionary>
