@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,14 +23,17 @@ namespace NoSqlExplorer.DockerAdapter
       Port = port;
       var credentials = new BasicAuthCredentials(userName, password);
       this.client = new DockerClientConfiguration(new Uri($"http://{host}:{port}"), credentials).CreateClient();
+      
     }
 
     public async Task<IEnumerable<DockerContainer>> GetContainersAsync()
     {
-      var containers = await client.Containers.ListContainersAsync(new ContainersListParameters
+      // The default timeout is 100 seconds for the HTTP request. The Docker client doesn't allow to configure another timeout.
+      // Therefore, we just try to get the containers a few times.
+      var containers = await TryAwait(() => client.Containers.ListContainersAsync(new ContainersListParameters
       {
         All = true
-      });
+      }));
 
       return containers.Select(c => new DockerContainer(this.client)
       {
@@ -38,6 +42,27 @@ namespace NoSqlExplorer.DockerAdapter
         State = c.State == "exited" ? DockerContainerState.Exited : DockerContainerState.Started,
         Status = c.Status
       });
+    }
+
+    private static async Task<T> TryAwait<T>(Func<Task<T>> taskFunc, int maxTries = 5)
+    {
+      var tries = 0;
+      var task = taskFunc();
+      for (;;)
+      {
+        try
+        {
+          return await task;
+        }
+        catch (Exception)
+        {
+          tries++;
+          if (tries >= maxTries)
+            throw;
+
+          task = taskFunc();
+        }
+      }
     }
   }
 }

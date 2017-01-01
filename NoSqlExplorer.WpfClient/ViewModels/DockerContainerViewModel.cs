@@ -22,28 +22,6 @@ namespace NoSqlExplorer.WpfClient.ViewModels
       StopAsyncCommand = new AsyncCommand(StopAsyncCommandHandler);
     }
 
-    // TODO: remove, just for testing
-    public DockerContainerViewModel(string containerName, DockerContainerState state)
-    {
-      _containerName = containerName;
-      _containerState = state;
-
-      StartAsyncCommand = new AsyncCommand(async () =>
-      {
-        IsBusy = true;
-        await Task.Delay(5000);
-        ContainerState = DockerContainerState.Started;
-        IsBusy = false;
-      });
-      StopAsyncCommand = new AsyncCommand(async () =>
-      {
-        IsBusy = true;
-        await Task.Delay(5000);
-        ContainerState = DockerContainerState.Exited;
-        IsBusy = false;
-      });
-    }
-
     private string _containerName;
     public string ContainerName
     {

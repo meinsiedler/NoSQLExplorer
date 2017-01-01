@@ -65,15 +65,8 @@ namespace NoSqlExplorer.WpfClient.ViewModels
     {
       if (this.VmStatus == AzureVirtualMachineStatus.Running)
       {
-        // TODO: var containers = await _dockerInstance.GetContainersAsync();
-        // DockerContainerViewModels = new ObservableCollection<DockerContainerViewModel>(containers.Select(c => new DockerContainerViewModel(c)));
-
-        DockerContainerViewModels = new ObservableCollection<DockerContainerViewModel>(new List<DockerContainerViewModel>
-        {
-          new DockerContainerViewModel("Create.io", DockerContainerState.Exited),
-          new DockerContainerViewModel("MongoDB", DockerContainerState.Exited),
-        });
-
+        var containers = await _dockerInstance.GetContainersAsync();
+        DockerContainerViewModels = new ObservableCollection<DockerContainerViewModel>(containers.Select(c => new DockerContainerViewModel(c)));
       }
       else
       {
