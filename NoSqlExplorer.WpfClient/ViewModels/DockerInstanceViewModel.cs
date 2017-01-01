@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Docker.DotNet;
 using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using NoSqlExplorer.AzureAdapter;
 using NoSqlExplorer.DockerAdapter;
@@ -31,6 +32,7 @@ namespace NoSqlExplorer.WpfClient.ViewModels
       this.StartVmCommand = new AsyncCommand(this.StartVmCommandHandler);
       this.StopVmCommand = new AsyncCommand(this.StopVmCommandHandler);
       this.RefreshVmStatusCommand = new AsyncCommand(this.RefreshVmStatusCommandHandler);
+      this.OpenVmInfoCommand = new RelayCommand(this.OpenVmInfoCommandHandler, () => VmStatus == AzureVirtualMachineStatus.Running);
       this.IsBusy = true;
       
     }
@@ -146,6 +148,7 @@ namespace NoSqlExplorer.WpfClient.ViewModels
     public AsyncCommand StartVmCommand { get; private set; }
     public AsyncCommand StopVmCommand { get; private set; }
     public AsyncCommand RefreshVmStatusCommand { get; private set; }
+    public RelayCommand OpenVmInfoCommand { get; private set; }
 
     public async Task StartVmCommandHandler()
     {
@@ -168,6 +171,11 @@ namespace NoSqlExplorer.WpfClient.ViewModels
       this.IsBusy = true;
       await this.UpdateStatusAsync();
       this.IsBusy = false;
+    }
+
+    public void OpenVmInfoCommandHandler()
+    {
+      Process.Start($"http://{Host}:{Port}/info");
     }
 
     private void Disable(string reason)

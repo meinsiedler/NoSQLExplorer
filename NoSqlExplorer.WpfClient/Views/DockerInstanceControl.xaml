@@ -63,6 +63,11 @@
                         Command="{Binding RefreshVmStatusCommand}">
           <materialDesign:PackIcon Kind="Refresh" />
         </Button>
+        <Button HorizontalAlignment="Right" Style="{StaticResource MaterialDesignToolForegroundButton}" Width="30" Padding="2 0 2 0"
+                        materialDesign:RippleAssist.IsCentered="True" ToolTip="Open Info in Browser"
+                        Command="{Binding OpenVmInfoCommand}">
+          <materialDesign:PackIcon Kind="InformationOutline" />
+        </Button>
       </StackPanel>
       <StackPanel Grid.Row="3" Margin="16 0 16 8">
         <TextBlock FontWeight="Bold">Health</TextBlock>
