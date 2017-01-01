@@ -104,6 +104,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\DockerContainerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\DockerInstanceControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -119,9 +123,14 @@
     <Compile Include="AsyncCommand.cs" />
     <Compile Include="Converter\BooleanToVisibilityConverter.cs" />
     <Compile Include="Messages\IsLoadingMessage.cs" />
+    <Compile Include="Messages\ReportContainersMessage.cs" />
+    <Compile Include="ViewModels\DockerContainerViewModel.cs" />
     <Compile Include="ViewModels\DockerInstanceViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
+    <Compile Include="Views\DockerContainerControl.xaml.cs">
+      <DependentUpon>DockerContainerControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\DockerInstanceControl.xaml.cs">
       <DependentUpon>DockerInstanceControl.xaml</DependentUpon>
     </Compile>

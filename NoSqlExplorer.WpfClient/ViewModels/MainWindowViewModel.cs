@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Diagnostics;
@@ -39,7 +40,7 @@ namespace NoSqlExplorer.WpfClient.ViewModels
       DefineCommands();
     }
 
-    private void LoadDockerInstances()
+    private async void LoadDockerInstances()
     {
       var dockerCfg = ConfigurationManager.GetSection(DockerConfigSection.SectionName) as DockerConfigSection;
       var azureCfg = ConfigurationManager.GetSection(AzureConfigSection.SectionName) as AzureConfigSection;
@@ -49,6 +50,8 @@ namespace NoSqlExplorer.WpfClient.ViewModels
         azureController.GetVirtualMachineByHostnameAsync(azureCfg.AzureSubscription.ResourceGroup, i.Host),
         idx + 1));
       DockerInstanceViewModels = new ObservableCollection<DockerInstanceViewModel>(dockerInstanceViewModels);
+      var initializeTasks = DockerInstanceViewModels.Select(i => i.InitializeAsync());
+      await Task.WhenAll(initializeTasks);
     }
 
     private void DefineCommands()
@@ -69,6 +72,27 @@ namespace NoSqlExplorer.WpfClient.ViewModels
         return Task.WhenAll(refreshTasks);
       });
 
+      StartAllContainersCommand = new AsyncCommand(() =>
+      {
+        var startTasks = DockerInstanceViewModels.Where(i => !i.IsDisabled)
+          .SelectMany(i => i.DockerContainerViewModels)
+          .Where(c => c.ContainerName == SelectedContainerName)
+          .Select(c => c.StartAsyncCommandHandler());
+
+        return Task.WhenAll(startTasks);
+      },
+      () => !string.IsNullOrEmpty(SelectedContainerName));
+
+      StopAllContainersCommand = new AsyncCommand(() =>
+      {
+        var stopTasks = DockerInstanceViewModels.Where(i => !i.IsDisabled)
+          .SelectMany(i => i.DockerContainerViewModels)
+          .Where(c => c.ContainerName == SelectedContainerName)
+          .Select(c => c.StopAsyncCommandHandler());
+
+        return Task.WhenAll(stopTasks);
+      },
+      () => !string.IsNullOrEmpty(SelectedContainerName));
     }
 
     private void RegisterMessages()
@@ -78,6 +102,8 @@ namespace NoSqlExplorer.WpfClient.ViewModels
         IsLoading = m.IsLoading;
         IsLoadingReason = m.Reason;
       });
+
+      Messenger.Default.Register<ReportContainersMessage>(this, ReportContainersMessageHandler);
     }
 
     private bool _isLoading;
@@ -205,9 +231,38 @@ namespace NoSqlExplorer.WpfClient.ViewModels
     }
 
     public AsyncCommand StartAllVmsCommand { get; private set; }
-
     public AsyncCommand StopAllVmsCommand { get; private set; }
-
     public AsyncCommand RefreshAllVmStatusCommand { get; private set; }
+
+    public AsyncCommand StartAllContainersCommand { get; private set; }
+    public AsyncCommand StopAllContainersCommand { get; private set; }
+
+    private readonly IDictionary<int, IList<string>> _containers = new Dictionary<int, IList<string>>();
+
+    private ObservableCollection<string> _containerNames = new ObservableCollection<string>();
+    public ObservableCollection<string> ContainerNames
+    {
+      get { return _containerNames; }
+      set { Set(ref _containerNames, value); }
+    }
+
+    private string _selectedContainerName;
+    public string SelectedContainerName
+    {
+      get { return _selectedContainerName; }
+      set { Set(ref _selectedContainerName, value); }
+    }
+
+    private void ReportContainersMessageHandler(ReportContainersMessage message)
+    {
+      _containers[message.DockerInstanceNumber] = message.ContainerNames.ToList();
+      UpdateContainerNames();
+    }
+
+    private void UpdateContainerNames()
+    {
+      var containerNames = _containers.SelectMany(c => c.Value).Distinct().OrderBy(n => n);
+      ContainerNames = new ObservableCollection<string>(containerNames);
+    }
   }
 }
