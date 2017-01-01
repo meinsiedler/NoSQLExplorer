@@ -46,8 +46,13 @@
                     <Button.CommandParameter>
                       <StackPanel Margin="16">
                         <TextBlock Style="{StaticResource MaterialDesignHeadlineTextBlock}" Margin="0 0 0 10" Text="{StaticResource AppName}" />
-                        <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}">A tool for testing NoSQL databases.</TextBlock>
-                        <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}">&#xA9; 2016</TextBlock>
+                        <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}">A tool for testing NoSQL databases in Docker containers hosted on Azure.</TextBlock>
+                        <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}">&#xA9; 2017</TextBlock>
+                        <TextBlock>
+                          <Hyperlink Command="{Binding OpenGitHubLinkCommand}">
+                            https://github.com/meinsiedler/NoSQLExplorer
+                          </Hyperlink>
+                        </TextBlock>
 
                         <Button Style="{StaticResource MaterialDesignFlatButton}"
                                                         IsCancel="True" 

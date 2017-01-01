@@ -56,11 +56,13 @@ namespace NoSqlExplorer.WpfClient.ViewModels
 
     private void DefineCommands()
     {
-       StartAllVmsCommand = new AsyncCommand(() =>
-       {
-         var startTasks = DockerInstanceViewModels.Where(i => !i.IsDisabled).Select(i => i.StartVmCommandHandler());
-         return Task.WhenAll(startTasks);
-       });
+      OpenGitHubLinkCommand = new RelayCommand(() => Process.Start("https://github.com/meinsiedler/NoSQLExplorer"));
+
+      StartAllVmsCommand = new AsyncCommand(() =>
+      {
+        var startTasks = DockerInstanceViewModels.Where(i => !i.IsDisabled).Select(i => i.StartVmCommandHandler());
+        return Task.WhenAll(startTasks);
+      });
       StopAllVmsCommand = new AsyncCommand(() =>
       {
         var stopTasks = DockerInstanceViewModels.Where(i => !i.IsDisabled).Select(i => i.StopVmCommandHandler());
@@ -121,6 +123,8 @@ namespace NoSqlExplorer.WpfClient.ViewModels
     }
 
     public SnackbarMessageQueue MessageQueue { get; } = new SnackbarMessageQueue();
+
+    public RelayCommand OpenGitHubLinkCommand { get; private set; }
 
     private string _pin;
     public string Pin
