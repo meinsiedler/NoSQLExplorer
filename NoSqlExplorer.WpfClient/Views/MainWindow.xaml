@@ -155,22 +155,17 @@
                     <StackPanel HorizontalAlignment="Right">
                       <TextBlock FontWeight="Bold">Docker Container Bulk Actions</TextBlock>
                       <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <ComboBox Width="100" Text="Select Container" Margin="0 0 10 0">
-                          <!-- TODO: currently dummy data, get all available containers and show them here -->
-                          <ComboBoxItem>Crate.io</ComboBoxItem>
-                          <ComboBoxItem>MongoDB</ComboBoxItem>
-                        </ComboBox>
+                        <ComboBox Width="100" Text="Select Container" Margin="0 0 10 0"
+                                  ItemsSource="{Binding ContainerNames}" SelectedItem="{Binding SelectedContainerName}" />
                         <Button HorizontalAlignment="Right" Style="{StaticResource MaterialDesignToolForegroundButton}" Width="30" Padding="2 0 2 0"
-                                                    m:RippleAssist.IsCentered="True" ToolTip="Start All Containers">
+                                Command="{Binding StartAllContainersCommand}"
+                                m:RippleAssist.IsCentered="True" ToolTip="Start All Containers">
                           <m:PackIcon Kind="PlayCircleOutline" />
                         </Button>
                         <Button HorizontalAlignment="Right" Style="{StaticResource MaterialDesignToolForegroundButton}" Width="30" Padding="2 0 2 0"
-                                                    m:RippleAssist.IsCentered="True" ToolTip="Stop All Containers">
+                                Command="{Binding StopAllContainersCommand}"
+                                m:RippleAssist.IsCentered="True" ToolTip="Stop All Containers">
                           <m:PackIcon Kind="StopCircleOutline" />
-                        </Button>
-                        <Button HorizontalAlignment="Right" Style="{StaticResource MaterialDesignToolForegroundButton}" Width="30" Padding="2 0 2 0"
-                                                    m:RippleAssist.IsCentered="True" ToolTip="Refresh All Containers">
-                          <m:PackIcon Kind="Refresh" />
                         </Button>
                       </StackPanel>
                     </StackPanel>

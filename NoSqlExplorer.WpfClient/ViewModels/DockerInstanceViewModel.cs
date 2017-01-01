@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 using Docker.DotNet;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using NoSqlExplorer.AzureAdapter;
 using NoSqlExplorer.DockerAdapter;
+using NoSqlExplorer.WpfClient.Messages;
 
 namespace NoSqlExplorer.WpfClient.ViewModels
 {
@@ -72,6 +74,8 @@ namespace NoSqlExplorer.WpfClient.ViewModels
       {
         DockerContainerViewModels.Clear();
       }
+
+      Messenger.Default.Send(new ReportContainersMessage(Number, DockerContainerViewModels.Select(c => c.ContainerName)));
     }
 
     private bool isBusy;

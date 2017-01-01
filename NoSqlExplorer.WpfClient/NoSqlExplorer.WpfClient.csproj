@@ -123,6 +123,7 @@
     <Compile Include="AsyncCommand.cs" />
     <Compile Include="Converter\BooleanToVisibilityConverter.cs" />
     <Compile Include="Messages\IsLoadingMessage.cs" />
+    <Compile Include="Messages\ReportContainersMessage.cs" />
     <Compile Include="ViewModels\DockerContainerViewModel.cs" />
     <Compile Include="ViewModels\DockerInstanceViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
