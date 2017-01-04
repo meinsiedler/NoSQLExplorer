@@ -50,6 +50,48 @@ namespace NoSqlExplorer.Crate.DAL.Util
       return statement.ToString();
     }
 
+    internal static string InsertStatement<T>(T entity) where T : class
+    {
+      var type = entity.GetType();
+      var properties = type.GetProperties();
+
+      var propertyNames = GetPropertyNames(type);
+      var statement = new StringBuilder($"insert into {GetTableName(type)} ({string.Join(",", propertyNames)}) values ");
+      statement.Append($"({string.Join(",", GetPropertyValues(propertyNames, entity))})");
+
+      return statement.ToString();
+    }
+
+    private static IEnumerable<string> GetPropertyValues<T>(IEnumerable<string> propertyNames, T entity) where T : class
+    {
+      foreach (var property in propertyNames)
+      {
+        var value = entity.GetType().GetProperty(property).GetValue(entity, null);
+        var valueType = value.GetType();
+        if (valueType == typeof(string))
+        {
+          yield return $"'{value.ToString()}'";
+        }
+        else if (valueType == typeof(DateTime))
+        {
+          // TODO - format to iso stuff.. 
+        }
+        else
+        {
+          yield return value.ToString().Replace(',','.');
+        }
+      }
+    }
+
+    private static IEnumerable<string> GetPropertyNames(Type type)
+    {
+      var props = type.GetProperties();
+      foreach (var prop in props)
+      {
+        yield return prop.Name;
+      }
+    }
+
     private static string GetTableName(Type type)
     {
       var tableNameAttr = type.GetCustomAttribute<TableNameAttribute>();
@@ -62,6 +104,7 @@ namespace NoSqlExplorer.Crate.DAL.Util
         return type.Name.ToLower();
       }
     }
+
 
     private static string GetCrateColumnType(Type propertyType)
     {

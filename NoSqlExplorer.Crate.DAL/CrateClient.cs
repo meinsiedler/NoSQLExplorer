@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -35,6 +36,12 @@ namespace NoSqlExplorer.Crate.DAL
     public async Task<ICrateResponse> CreateTable<T>(int? shards = null, int? replicas = null) where T : class
     {
       var statement = StatementHelper.CreateTableStatement(typeof(T), shards, replicas);
+      return await this.SubmitRequest(new CrateRequest(statement.ToString()));
+    }
+
+    public async Task<ICrateResponse> Insert<T>(T entity) where T : class
+    {
+      var statement = StatementHelper.InsertStatement(entity);
       return await this.SubmitRequest(new CrateRequest(statement.ToString()));
     }
 
