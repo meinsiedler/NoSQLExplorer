@@ -52,13 +52,30 @@ namespace NoSqlExplorer.Crate.DAL.Util
 
     internal static string InsertStatement<T>(T entity) where T : class
     {
-      var type = entity.GetType();
+      var type = typeof(T);
       var properties = type.GetProperties();
 
       var propertyNames = GetPropertyNames(type);
       var statement = new StringBuilder($"insert into {GetTableName(type)} ({string.Join(",", propertyNames)}) values ");
       statement.Append($"({string.Join(",", GetPropertyValues(propertyNames, entity))})");
 
+      return statement.ToString();
+    }
+
+    internal static string BulkInsertStatement<T>(IEnumerable<T> entities) where T : class
+    {
+      var type = typeof(T);
+      var properties = type.GetProperties();
+
+      var propertyNames = GetPropertyNames(type);
+      var statement = new StringBuilder($"insert into {GetTableName(type)} ({string.Join(",", propertyNames)}) values ");
+      foreach (var entity in entities)
+      {
+        statement.Append($"({string.Join(",", GetPropertyValues(propertyNames, entity))}),");
+      }
+
+      //remove last ,
+      statement.Remove(statement.Length - 1, 1);
       return statement.ToString();
     }
 
@@ -78,7 +95,7 @@ namespace NoSqlExplorer.Crate.DAL.Util
         }
         else
         {
-          yield return value.ToString().Replace(',','.');
+          yield return value.ToString().Replace(',', '.');
         }
       }
     }

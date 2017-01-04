@@ -36,13 +36,19 @@ namespace NoSqlExplorer.Crate.DAL
     public async Task<ICrateResponse> CreateTable<T>(int? shards = null, int? replicas = null) where T : class
     {
       var statement = StatementHelper.CreateTableStatement(typeof(T), shards, replicas);
-      return await this.SubmitRequest(new CrateRequest(statement.ToString()));
+      return await this.SubmitRequest(new CrateRequest(statement));
     }
 
     public async Task<ICrateResponse> Insert<T>(T entity) where T : class
     {
       var statement = StatementHelper.InsertStatement(entity);
-      return await this.SubmitRequest(new CrateRequest(statement.ToString()));
+      return await this.SubmitRequest(new CrateRequest(statement));
+    }
+
+    public async Task<ICrateResponse> BulkInsert<T>(IEnumerable<T> entities) where T : class
+    {
+      var statement = StatementHelper.BulkInsertStatement(entities);
+      return await this.SubmitRequest(new CrateRequest(statement));
     }
 
     private string GetRequestAddress()
