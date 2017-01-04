@@ -8,9 +8,9 @@ using NoSqlExplorer.DAL.Common;
 
 namespace NoSqlExplorer.Crate.DAL.Util
 {
-  public static class StatementHelper
+  internal static class StatementHelper
   {
-    public static string CreateTableStatement(Type type, int? shards = null, int? replicas = null)
+    internal static string CreateTableStatement(Type type, int? shards = null, int? replicas = null)
     {
       var props = type.GetProperties();
       if (props.Length == 0)
@@ -18,7 +18,7 @@ namespace NoSqlExplorer.Crate.DAL.Util
         throw new InvalidOperationException($"Class {type.Name} does not contain any valid properties");
       }
 
-      var statement = new StringBuilder($"create table {type.Name.ToLower()} (");
+      var statement = new StringBuilder($"create table {GetTableName(type)} (");
       foreach (var column in props)
       {
         var crateType = GetCrateColumnType(column.PropertyType);
@@ -48,6 +48,19 @@ namespace NoSqlExplorer.Crate.DAL.Util
       }
 
       return statement.ToString();
+    }
+
+    private static string GetTableName(Type type)
+    {
+      var tableNameAttr = type.GetCustomAttribute<TableNameAttribute>();
+      if (tableNameAttr != null)
+      {
+        return tableNameAttr.Name;
+      }
+      else
+      {
+        return type.Name.ToLower();
+      }
     }
 
     private static string GetCrateColumnType(Type propertyType)

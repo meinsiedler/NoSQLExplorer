@@ -7,6 +7,7 @@ using NoSqlExplorer.DAL.Common;
 
 namespace NoSqlExplorer.Crate.DAL.Playground
 {
+  [TableName("tweeeeets")]
   public class Tweet
   {
     [PrimaryKey]
