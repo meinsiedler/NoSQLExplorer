@@ -50,6 +50,7 @@
     <Compile Include="Response\Data\Error.cs" />
     <Compile Include="Response\ErrorResponse.cs" />
     <Compile Include="Response\ICrateResponse.cs" />
+    <Compile Include="Response\SuccessResponse.cs" />
     <Compile Include="Util\StatementHelper.cs" />
   </ItemGroup>
   <ItemGroup>

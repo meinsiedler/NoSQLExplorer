@@ -25,9 +25,7 @@ namespace NoSqlExplorer.Crate.DAL
       using (var client = new HttpClient())
       {
         var content = this.ObjectToHttpContent(request);
-        // TODO: Do timing here and add it to response
         var httpResponse = await client.PostAsync(this.GetRequestAddress(), content);
-        // end timing
         var response = await this.HttpResponseToResponse(httpResponse);
         return response;
       }
@@ -64,14 +62,16 @@ namespace NoSqlExplorer.Crate.DAL
 
     private async Task<ICrateResponse> HttpResponseToResponse(HttpResponseMessage response)
     {
+      var responseContent = await response.Content.ReadAsStringAsync();
+
       if (response.StatusCode != System.Net.HttpStatusCode.OK)
       {
-        var responseContent = await response.Content.ReadAsStringAsync();
         return JsonConvert.DeserializeObject<ErrorResponse>(responseContent);
       }
-
-      // TODO: success
-      return null;
+      else
+      {
+        return JsonConvert.DeserializeObject<SuccessResponse>(responseContent);
+      }
     }
   }
 }

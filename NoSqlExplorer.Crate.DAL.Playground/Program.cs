@@ -48,9 +48,9 @@ namespace NoSqlExplorer.Crate.DAL.Playground
       var client = new CrateClient("http://clccontainer1.cloudapp.net:4200");
       var tweets = new List<Tweet>()
       {
-        new Tweet { Content = "NoSqlExplorer rocks in bulks", DoubleProp = 13.37, FloatProp = 6.999999f, Id = 3, Retweeted = false },
-        new Tweet { Content = "NoSqlExplorer still rocks in bulks", DoubleProp = 13.37, FloatProp = 6.999999f, Id = 4, Retweeted = false },
-        new Tweet { Content = "NoSqlExplorer still rocks in bulks", DoubleProp = 13.37, FloatProp = 6.999999f, Id = 5, Retweeted = false },
+        new Tweet { Content = "NoSqlExplorer rocks in bulks", DoubleProp = 13.37, FloatProp = 6.999999f, Id = 13, Retweeted = false },
+        new Tweet { Content = "NoSqlExplorer still rocks in bulks", DoubleProp = 13.37, FloatProp = 6.999999f, Id = 14, Retweeted = false },
+        new Tweet { Content = "NoSqlExplorer still rocks in bulks", DoubleProp = 13.37, FloatProp = 6.999999f, Id = 15, Retweeted = false },
       };
       var response = await client.BulkInsert(tweets);
       Console.WriteLine(response);
