@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSqlExplorer.Crate.DAL", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSqlExplorer.Crate.DAL.Playground", "NoSqlExplorer.Crate.DAL.Playground\NoSqlExplorer.Crate.DAL.Playground.csproj", "{A76FF959-9DCA-44F8-9F8D-6FA52B021484}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSqlExplorer.DAL.Common", "NoSqlExplorer.DAL.Common\NoSqlExplorer.DAL.Common.csproj", "{3B97A4FB-1343-4CDE-A148-6536347480C7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{A76FF959-9DCA-44F8-9F8D-6FA52B021484}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A76FF959-9DCA-44F8-9F8D-6FA52B021484}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A76FF959-9DCA-44F8-9F8D-6FA52B021484}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B97A4FB-1343-4CDE-A148-6536347480C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B97A4FB-1343-4CDE-A148-6536347480C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B97A4FB-1343-4CDE-A148-6536347480C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B97A4FB-1343-4CDE-A148-6536347480C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,5 +60,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{BD995F98-09E3-4DF4-A977-327C9C3DCD02} = {B0A31943-A0A9-44BE-B6B0-617E6E0625D8}
 		{A76FF959-9DCA-44F8-9F8D-6FA52B021484} = {B0A31943-A0A9-44BE-B6B0-617E6E0625D8}
+		{3B97A4FB-1343-4CDE-A148-6536347480C7} = {B0A31943-A0A9-44BE-B6B0-617E6E0625D8}
 	EndGlobalSection
 EndGlobal
