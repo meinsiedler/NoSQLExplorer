@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace NoSqlExplorer.Crate.DAL
 {
@@ -14,7 +15,10 @@ namespace NoSqlExplorer.Crate.DAL
       this.Args = args;
     }
 
+    [JsonProperty("stmt")]
     public string Statement { get; private set; }
+
+    [JsonProperty("args")]
     public object[] Args { get; private set; }
   }
 }
