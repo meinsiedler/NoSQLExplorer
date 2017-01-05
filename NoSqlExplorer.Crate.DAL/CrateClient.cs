@@ -61,6 +61,12 @@ namespace NoSqlExplorer.Crate.DAL
       }
     }
 
+    public async Task<ICrateResponse> DropTable<T>() where T : class
+    {
+      var statement = $"drop table {StatementHelper.GetTableName(typeof(T))}";
+      return await this.SubmitRequest(new CrateRequest(statement));
+    }
+
     private string GetRequestAddress()
     {
       return $"{connectionString}/_sql?pretty";

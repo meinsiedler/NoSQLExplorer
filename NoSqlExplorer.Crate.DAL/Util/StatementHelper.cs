@@ -79,6 +79,19 @@ namespace NoSqlExplorer.Crate.DAL.Util
       return statement.ToString();
     }
 
+    internal static string GetTableName(Type type)
+    {
+      var tableNameAttr = type.GetCustomAttribute<TableNameAttribute>();
+      if (tableNameAttr != null)
+      {
+        return tableNameAttr.Name;
+      }
+      else
+      {
+        return type.Name.ToLower();
+      }
+    }
+
     private static IEnumerable<string> GetPropertyValues<T>(IEnumerable<string> propertyNames, T entity) where T : class
     {
       foreach (var property in propertyNames)
@@ -108,20 +121,7 @@ namespace NoSqlExplorer.Crate.DAL.Util
         yield return prop.Name;
       }
     }
-
-    private static string GetTableName(Type type)
-    {
-      var tableNameAttr = type.GetCustomAttribute<TableNameAttribute>();
-      if (tableNameAttr != null)
-      {
-        return tableNameAttr.Name;
-      }
-      else
-      {
-        return type.Name.ToLower();
-      }
-    }
-
+    
 
     private static string GetCrateColumnType(Type propertyType)
     {

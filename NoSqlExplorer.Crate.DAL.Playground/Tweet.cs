@@ -16,5 +16,10 @@ namespace NoSqlExplorer.Crate.DAL.Playground
     public bool Retweeted { get; set; }
     public float FloatProp { get; set; }
     public double DoubleProp { get; set; }
+
+    public override string ToString()
+    {
+      return $"{Id}: {Content}, retweeted: {Retweeted}";
+    }
   }
 }
