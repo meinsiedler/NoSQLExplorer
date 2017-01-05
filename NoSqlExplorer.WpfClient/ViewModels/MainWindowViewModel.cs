@@ -24,6 +24,7 @@ using NoSqlExplorer.TwitterReader;
 using NoSqlExplorer.TwitterReader.Configuration;
 using NoSqlExplorer.TwitterReader.Model;
 using NoSqlExplorer.WpfClient.Messages;
+using SnackbarMessage = NoSqlExplorer.WpfClient.Messages.SnackbarMessage;
 
 namespace NoSqlExplorer.WpfClient.ViewModels
 {
@@ -109,6 +110,18 @@ namespace NoSqlExplorer.WpfClient.ViewModels
       {
         IsLoading = m.IsLoading;
         IsLoadingReason = m.Reason;
+      });
+
+      Messenger.Default.Register<SnackbarMessage>(this, m =>
+      {
+        if (string.IsNullOrEmpty(m.Action))
+        {
+          MessageQueue.Enqueue(m.Text);
+        }
+        else
+        {
+          MessageQueue.Enqueue(m.Text, m.Action, () => { });
+        }
       });
 
       Messenger.Default.Register<ReportContainersMessage>(this, ReportContainersMessageHandler);
