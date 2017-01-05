@@ -50,7 +50,7 @@ namespace NoSqlExplorer.Crate.DAL.Util
       return statement.ToString();
     }
 
-    internal static string InsertStatement<T>(T entity) where T : class
+    internal static string InsertStatement<T>(T entity)
     {
       var type = typeof(T);
       var propertyNames = GetPropertyNames(type);
@@ -60,7 +60,7 @@ namespace NoSqlExplorer.Crate.DAL.Util
       return statement.ToString();
     }
 
-    internal static string BulkInsertStatement<T>(IEnumerable<T> entities) where T : class
+    internal static string BulkInsertStatement<T>(IEnumerable<T> entities)
     {
       var type = typeof(T);
       var propertyNames = GetPropertyNames(type);
@@ -88,7 +88,7 @@ namespace NoSqlExplorer.Crate.DAL.Util
       }
     }
 
-    private static IEnumerable<string> GetPropertyValues<T>(IEnumerable<string> propertyNames, T entity) where T : class
+    private static IEnumerable<string> GetPropertyValues<T>(IEnumerable<string> propertyNames, T entity)
     {
       foreach (var property in propertyNames)
       {

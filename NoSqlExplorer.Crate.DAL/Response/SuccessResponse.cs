@@ -20,7 +20,7 @@ namespace NoSqlExplorer.Crate.DAL.Response
     }
   }
 
-  public class SuccessResponse<T> : SuccessResponse, ICrateResponse<T> where T : class
+  public class SuccessResponse<T> : SuccessResponse, ICrateResponse<T>
   {
     [JsonProperty("cols")]
     internal string[] Cols { get; set; }

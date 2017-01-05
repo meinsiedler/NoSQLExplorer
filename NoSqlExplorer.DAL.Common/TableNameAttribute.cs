@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NoSqlExplorer.DAL.Common
 {
-  [AttributeUsage(AttributeTargets.Class, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, Inherited = true)]
   public class TableNameAttribute : Attribute
   {
     public TableNameAttribute(string name)

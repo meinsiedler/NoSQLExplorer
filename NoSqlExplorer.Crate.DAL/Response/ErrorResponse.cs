@@ -18,7 +18,7 @@ namespace NoSqlExplorer.Crate.DAL.Response
     }
   }
 
-  public class ErrorResponse<T> : ErrorResponse, ICrateResponse<T> where T : class
+  public class ErrorResponse<T> : ErrorResponse, ICrateResponse<T>
   {
   }
 }
