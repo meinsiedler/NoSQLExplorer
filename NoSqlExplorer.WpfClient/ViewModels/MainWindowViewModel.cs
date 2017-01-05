@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
@@ -17,6 +18,8 @@ using NoSqlExplorer.AzureAdapter;
 using NoSqlExplorer.AzureAdapter.Configuration;
 using NoSqlExplorer.DockerAdapter;
 using NoSqlExplorer.DockerAdapter.Configuration;
+using NoSqlExplorer.TweetImporter;
+using NoSqlExplorer.Twitter.Common;
 using NoSqlExplorer.TwitterReader;
 using NoSqlExplorer.TwitterReader.Configuration;
 using NoSqlExplorer.TwitterReader.Model;
@@ -27,14 +30,17 @@ namespace NoSqlExplorer.WpfClient.ViewModels
   public class MainWindowViewModel : ViewModelBase
   {
     private TwitterSettingsConfigElement _twitterSettingsConfigElement;
+    private DockerConfigSection _dockerConfigSection;
+
     private readonly ITwitterReader _twitterReader;
+    private readonly IList<ITweetImporter> _tweetImporters = new List<ITweetImporter>(); 
 
     public MainWindowViewModel()
     {
       var cfg = ConfigurationManager.GetSection(TwitterConfigSection.SectionName) as TwitterConfigSection;
       _twitterSettingsConfigElement = cfg.TwitterSettings;
       _twitterReader = new TwitterReader.TwitterReader(cfg.TwitterSettings.ConsumerKey, cfg.TwitterSettings.ConsumerSecret, cfg.TwitterSettings.FeedUrl);
-      _twitterReader.OnNewTweet += tweet => Dispatcher.CurrentDispatcher.Invoke(() => FeedsCount++);
+      _twitterReader.OnNewTweet += OnNewTweetHandler;
       RegisterMessages();
       LoadDockerInstances();
       DefineCommands();
@@ -42,10 +48,10 @@ namespace NoSqlExplorer.WpfClient.ViewModels
 
     private async void LoadDockerInstances()
     {
-      var dockerCfg = ConfigurationManager.GetSection(DockerConfigSection.SectionName) as DockerConfigSection;
+      _dockerConfigSection = ConfigurationManager.GetSection(DockerConfigSection.SectionName) as DockerConfigSection;
       var azureCfg = ConfigurationManager.GetSection(AzureConfigSection.SectionName) as AzureConfigSection;
       var azureController = new AzureController(azureCfg.AzureSubscription.SubscriptionId, azureCfg.AzureSubscription.Base64encodedCertificate);
-      var dockerInstanceViewModels = dockerCfg.DockerInstances.Select((i, idx) => new DockerInstanceViewModel(
+      var dockerInstanceViewModels = _dockerConfigSection.DockerInstances.Select((i, idx) => new DockerInstanceViewModel(
         new DockerInstance(i.Host, i.Port, i.Username, i.Password), 
         azureController.GetVirtualMachineByHostnameAsync(azureCfg.AzureSubscription.ResourceGroup, i.Host),
         idx + 1));
@@ -172,7 +178,7 @@ namespace NoSqlExplorer.WpfClient.ViewModels
     public ICommand GetPinCommand => _getPinCommand ?? (_getPinCommand = new RelayCommand(GetPin));
 
     private ICommand _startFeedReadingCommand;
-    public ICommand StartFeedReadingCommand => _startFeedReadingCommand ?? (_startFeedReadingCommand = new RelayCommand(async () => await StartReadingFeed(), () => !string.IsNullOrEmpty(Pin) && !IsFeedReadingRunning));
+    public ICommand StartFeedReadingCommand => _startFeedReadingCommand ?? (_startFeedReadingCommand = new RelayCommand(async () => await StartReadingFeedCommandHandler(), () => !string.IsNullOrEmpty(Pin) && !IsFeedReadingRunning));
 
     private ICommand _stopFeedReadingCommand;
     public ICommand StopFeedReadingCommand => _stopFeedReadingCommand ?? (_stopFeedReadingCommand = new RelayCommand(StopReadingFeed, () => IsFeedReadingRunning));
@@ -181,8 +187,8 @@ namespace NoSqlExplorer.WpfClient.ViewModels
     {
       try
       {
-        Tokens = await Twitter.GetRequestToken(_twitterSettingsConfigElement.ConsumerKey, _twitterSettingsConfigElement.ConsumerSecret);
-        Process.Start(new ProcessStartInfo(Twitter.GetRequestUrl(Tokens)));
+        Tokens = await TwitterRequest.GetRequestToken(_twitterSettingsConfigElement.ConsumerKey, _twitterSettingsConfigElement.ConsumerSecret);
+        Process.Start(new ProcessStartInfo(TwitterRequest.GetRequestUrl(Tokens)));
       }
       catch (WebException ex) when (ex.Message.Contains("401"))
       {
@@ -190,11 +196,55 @@ namespace NoSqlExplorer.WpfClient.ViewModels
       }
     }
 
+    private async Task StartReadingFeedCommandHandler()
+    {
+      var success = await CreateTweetImporters();
+      if (success)
+      {
+        await StartReadingFeed();
+      }
+    }
+
+    private async Task<bool> CreateTweetImporters()
+    {
+      _tweetImporters.Clear();
+
+      foreach (var containerConfig in _dockerConfigSection.DockerContainer)
+      {
+        var containerWithName = DockerInstanceViewModels
+          .SelectMany(i => i.DockerContainerViewModels)
+          .Where(c => c.ContainerName == containerConfig.Name)
+          .ToList();
+
+        if (containerWithName.All(c => c.ContainerState != DockerContainerState.Started))
+        {
+          MessageQueue.Enqueue($"Inserting cannot be started since no container with name '{containerConfig.Name}' is started.", "DISMISS", () => { });
+          return false;
+        }
+
+        ITweetImporter tweetImporter = TweetImporterFactory.CreateTweetImporter(
+          containerConfig.Name,
+          containerWithName.First(c => c.ContainerState == DockerContainerState.Started).Host,
+          _dockerConfigSection);
+
+        if (tweetImporter == null)
+        {
+          MessageQueue.Enqueue($"No Twitter loader available for container '{containerConfig.Name}'.", "DISMISS", () => { });
+          return false;
+        }
+
+        await tweetImporter.EnsureTableExistsAsync();
+        _tweetImporters.Add(tweetImporter);
+      }
+
+      return true;
+    }
+
     private async Task StartReadingFeed()
     {
       try
       {
-        var tokens = await Twitter.GetAccessToken(_twitterSettingsConfigElement.ConsumerKey, _twitterSettingsConfigElement.ConsumerSecret , Tokens.OAuthToken, Tokens.OAuthSecret, Pin);
+        var tokens = await TwitterRequest.GetAccessToken(_twitterSettingsConfigElement.ConsumerKey, _twitterSettingsConfigElement.ConsumerSecret , Tokens.OAuthToken, Tokens.OAuthSecret, Pin);
         Pin = string.Empty;
         if (tokens == null) return;
 
@@ -224,6 +274,15 @@ namespace NoSqlExplorer.WpfClient.ViewModels
       _twitterReader.Stop();
       IsFeedReadingRunning = false;
       MessageQueue.Enqueue("Loading of Twitter messages stopped.");
+    }
+    
+    private async void OnNewTweetHandler(Tweet tweet)
+    {
+      Dispatcher.CurrentDispatcher.Invoke(() => FeedsCount++);
+      foreach (var tweetImporter in _tweetImporters)
+      {
+        await tweetImporter.BulkInsertAsync(new[] {tweet});
+      }
     }
 
     private ObservableCollection<DockerInstanceViewModel> _dockerInstanceViewModels;
