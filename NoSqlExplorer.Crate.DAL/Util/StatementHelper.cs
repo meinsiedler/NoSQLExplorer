@@ -53,8 +53,6 @@ namespace NoSqlExplorer.Crate.DAL.Util
     internal static string InsertStatement<T>(T entity) where T : class
     {
       var type = typeof(T);
-      var properties = type.GetProperties();
-
       var propertyNames = GetPropertyNames(type);
       var statement = new StringBuilder($"insert into {GetTableName(type)} ({string.Join(",", propertyNames)}) values ");
       statement.Append($"({string.Join(",", GetPropertyValues(propertyNames, entity))})");
@@ -65,8 +63,6 @@ namespace NoSqlExplorer.Crate.DAL.Util
     internal static string BulkInsertStatement<T>(IEnumerable<T> entities) where T : class
     {
       var type = typeof(T);
-      var properties = type.GetProperties();
-
       var propertyNames = GetPropertyNames(type);
       var statement = new StringBuilder($"insert into {GetTableName(type)} ({string.Join(",", propertyNames)}) values ");
       foreach (var entity in entities)
@@ -100,7 +96,7 @@ namespace NoSqlExplorer.Crate.DAL.Util
         var valueType = value.GetType();
         if (valueType == typeof(string))
         {
-          yield return $"'{value.ToString()}'";
+          yield return $"'{value}'";
         }
         else if (valueType == typeof(DateTime))
         {
@@ -115,11 +111,7 @@ namespace NoSqlExplorer.Crate.DAL.Util
 
     private static IEnumerable<string> GetPropertyNames(Type type)
     {
-      var props = type.GetProperties();
-      foreach (var prop in props)
-      {
-        yield return prop.Name;
-      }
+      return type.GetProperties().Select(prop => prop.Name);
     }
 
 

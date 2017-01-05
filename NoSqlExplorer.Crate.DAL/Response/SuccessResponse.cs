@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -49,7 +50,7 @@ namespace NoSqlExplorer.Crate.DAL.Response
             }
             else
             {
-              propInfo.SetValue(instance, Convert.ChangeType(row[i], propInfo.PropertyType));
+              propInfo.SetValue(instance, Convert.ChangeType(row[i], propInfo.PropertyType, new CultureInfo("en-US")));
             }
           }
 

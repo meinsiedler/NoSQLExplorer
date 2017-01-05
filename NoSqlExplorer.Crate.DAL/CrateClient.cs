@@ -94,7 +94,6 @@ namespace NoSqlExplorer.Crate.DAL
 
     private async Task<ICrateResponse<T>> HttpResponseToResponse<T>(HttpResponseMessage response) where T : class
     {
-      var type = typeof(T);
       var responseContent = await response.Content.ReadAsStringAsync();
       if (response.StatusCode != System.Net.HttpStatusCode.OK)
       {
