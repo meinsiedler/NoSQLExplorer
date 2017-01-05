@@ -6,7 +6,7 @@ using NoSqlExplorer.TwitterReader.Configuration;
 
 namespace NoSqlExplorer.TwitterReader.Model
 {
-  public static class Twitter
+  public static class TwitterRequest
   {
     private static async Task<T> RequestHandler<T>(Func<Task<T>> request)
     {
