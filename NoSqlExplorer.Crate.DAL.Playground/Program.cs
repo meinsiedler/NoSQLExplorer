@@ -13,7 +13,8 @@ namespace NoSqlExplorer.Crate.DAL.Playground
       //Task.Factory.StartNew(() => CreateTableAsync());
       //Task.Factory.StartNew(() => CreateSchema());
       //Task.Factory.StartNew(() => Insert());
-      Task.Factory.StartNew(() => BulkInsert());
+      //Task.Factory.StartNew(() => BulkInsert());
+      Task.Factory.StartNew(() => Query());
       Console.ReadLine();
     }
 
@@ -53,6 +54,14 @@ namespace NoSqlExplorer.Crate.DAL.Playground
         new Tweet { Content = "NoSqlExplorer still rocks in bulks", DoubleProp = 13.37, FloatProp = 6.999999f, Id = 15, Retweeted = false },
       };
       var response = await client.BulkInsert(tweets);
+      Console.WriteLine(response);
+    }
+
+    private static async Task Query()
+    {
+      var client = new CrateClient("http://clccontainer1.cloudapp.net:4200");
+      var statement = "select * from tweeeeets where id <= 2";
+      var response = await client.SubmitQuery<Tweet>(statement);
       Console.WriteLine(response);
     }
   }

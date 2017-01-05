@@ -49,6 +49,18 @@ namespace NoSqlExplorer.Crate.DAL
       return await this.SubmitRequest(new CrateRequest(statement));
     }
 
+    public async Task<ICrateResponse<T>> SubmitQuery<T>(string query) where T : class
+    {
+      using (var client = new HttpClient())
+      {
+        var request = new CrateRequest(query);
+        var content = this.ObjectToHttpContent(request);
+        var httpResponse = await client.PostAsync(this.GetRequestAddress(), content);
+        var response = await this.HttpResponseToResponse<T>(httpResponse);
+        return response;
+      }
+    }
+
     private string GetRequestAddress()
     {
       return $"{connectionString}/_sql?pretty";
@@ -71,6 +83,21 @@ namespace NoSqlExplorer.Crate.DAL
       else
       {
         return JsonConvert.DeserializeObject<SuccessResponse>(responseContent);
+      }
+    }
+
+    private async Task<ICrateResponse<T>> HttpResponseToResponse<T>(HttpResponseMessage response) where T : class
+    {
+      var type = typeof(T);
+      var responseContent = await response.Content.ReadAsStringAsync();
+      if (response.StatusCode != System.Net.HttpStatusCode.OK)
+      {
+        return JsonConvert.DeserializeObject<ErrorResponse<T>>(responseContent);
+      }
+      else
+      {
+        var result = JsonConvert.DeserializeObject<SuccessResponse<T>>(responseContent);
+        return result.MapResult();
       }
     }
   }
