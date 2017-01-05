@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSqlExplorer.Crate.DAL.Pla
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSqlExplorer.DAL.Common", "NoSqlExplorer.DAL.Common\NoSqlExplorer.DAL.Common.csproj", "{3B97A4FB-1343-4CDE-A148-6536347480C7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSqlExplorer.Utils", "NoSqlExplorer.Utils\NoSqlExplorer.Utils.csproj", "{92BD2399-02CB-4CC3-9347-556BEBFD6852}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{3B97A4FB-1343-4CDE-A148-6536347480C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B97A4FB-1343-4CDE-A148-6536347480C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B97A4FB-1343-4CDE-A148-6536347480C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92BD2399-02CB-4CC3-9347-556BEBFD6852}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92BD2399-02CB-4CC3-9347-556BEBFD6852}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92BD2399-02CB-4CC3-9347-556BEBFD6852}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92BD2399-02CB-4CC3-9347-556BEBFD6852}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

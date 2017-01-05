@@ -4,13 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BD995F98-09E3-4DF4-A977-327C9C3DCD02}</ProjectGuid>
+    <ProjectGuid>{92BD2399-02CB-4CC3-9347-556BEBFD6852}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NoSqlExplorer.Crate.DAL</RootNamespace>
-    <AssemblyName>NoSqlExplorer.Crate.DAL</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <RootNamespace>NoSqlExplorer.Utils</RootNamespace>
+    <AssemblyName>NoSqlExplorer.Utils</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,10 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -44,27 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CrateClient.cs" />
-    <Compile Include="CrateRequest.cs" />
+    <Compile Include="TimestampConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Response\Data\Error.cs" />
-    <Compile Include="Response\ErrorResponse.cs" />
-    <Compile Include="Response\ICrateResponse.cs" />
-    <Compile Include="Response\SuccessResponse.cs" />
-    <Compile Include="Util\StatementHelper.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\NoSqlExplorer.DAL.Common\NoSqlExplorer.DAL.Common.csproj">
-      <Project>{3B97A4FB-1343-4CDE-A148-6536347480C7}</Project>
-      <Name>NoSqlExplorer.DAL.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NoSqlExplorer.Utils\NoSqlExplorer.Utils.csproj">
-      <Project>{92BD2399-02CB-4CC3-9347-556BEBFD6852}</Project>
-      <Name>NoSqlExplorer.Utils</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

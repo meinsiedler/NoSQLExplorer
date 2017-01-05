@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using NoSqlExplorer.Utils;
 
 namespace NoSqlExplorer.Crate.DAL.Response
 {
@@ -45,7 +46,7 @@ namespace NoSqlExplorer.Crate.DAL.Response
             var propInfo = properties[this.Cols[i].ToLower()];
             if (propInfo.PropertyType == typeof(DateTime))
             {
-              var value = TimestampToDateTime(long.Parse(row[i]));
+              var value = TimestampConverter.TimestampToDateTime(long.Parse(row[i]));
               propInfo.SetValue(instance, value);
             }
             else
@@ -60,10 +61,6 @@ namespace NoSqlExplorer.Crate.DAL.Response
 
       return this;
     }
-    private static DateTime TimestampToDateTime(long unixTime)
-    {
-      var unixStart = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-      return unixStart.AddMilliseconds(unixTime);
-    }
+    
   }
 }
