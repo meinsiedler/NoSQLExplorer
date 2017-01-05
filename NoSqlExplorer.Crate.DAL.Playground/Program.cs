@@ -48,8 +48,8 @@ namespace NoSqlExplorer.Crate.DAL.Playground
     private static async Task Insert()
     {
       var client = new CrateClient("http://clccontainer1.cloudapp.net:4200");
-      var tweet1 = new Tweet { Content = "NoSqlExplorer rocks", DoubleProp = 13.37, FloatProp = 6.999999f, Id = 1, Retweeted = false };
-      var tweet2 = new Tweet { Content = "NoSqlExplorer still rocks", DoubleProp = 13.37, FloatProp = 6.999999f, Id = 2, Retweeted = false };
+      var tweet1 = new Tweet { Content = "NoSqlExplorer rocks", DoubleProp = 13.37, FloatProp = 6.999999f, Id = 1, Retweeted = false, Created = DateTime.UtcNow };
+      var tweet2 = new Tweet { Content = "NoSqlExplorer still rocks", DoubleProp = 13.37, FloatProp = 6.999999f, Id = 2, Retweeted = false, Created = DateTime.UtcNow };
       var response = await client.Insert(tweet1);
       var response2 = await client.Insert(tweet2);
       Console.WriteLine("Insert(1)");
@@ -63,9 +63,9 @@ namespace NoSqlExplorer.Crate.DAL.Playground
       var client = new CrateClient("http://clccontainer1.cloudapp.net:4200");
       var tweets = new List<Tweet>()
       {
-        new Tweet { Content = "NoSqlExplorer rocks in bulks", DoubleProp = 13.37, FloatProp = 6.999999f, Id = 13, Retweeted = false },
-        new Tweet { Content = "NoSqlExplorer still rocks in bulks", DoubleProp = 13.37, FloatProp = 6.999999f, Id = 14, Retweeted = false },
-        new Tweet { Content = "NoSqlExplorer still rocks in bulks", DoubleProp = 13.37, FloatProp = 6.999999f, Id = 15, Retweeted = false },
+        new Tweet { Content = "NoSqlExplorer rocks in bulks", DoubleProp = 13.37, FloatProp = 6.999999f, Id = 13, Retweeted = false, Created = DateTime.UtcNow },
+        new Tweet { Content = "NoSqlExplorer still rocks in bulks", DoubleProp = 13.37, FloatProp = 6.999999f, Id = 14, Retweeted = false, Created = DateTime.UtcNow },
+        new Tweet { Content = "NoSqlExplorer still rocks in bulks", DoubleProp = 13.37, FloatProp = 6.999999f, Id = 15, Retweeted = false, Created = DateTime.UtcNow },
       };
       var response = await client.BulkInsert(tweets);
       Console.WriteLine("BulkInsert");
@@ -79,6 +79,11 @@ namespace NoSqlExplorer.Crate.DAL.Playground
       var response = await client.SubmitQuery<Tweet>(statement) as SuccessResponse<Tweet>;
       Console.WriteLine("Query");
       Console.WriteLine(response);
+      if (response.Result == null)
+      {
+        return;
+      }
+
       foreach (var entry in response.Result)
       {
         Console.WriteLine(entry);

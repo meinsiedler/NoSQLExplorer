@@ -104,7 +104,7 @@ namespace NoSqlExplorer.Crate.DAL.Util
         }
         else if (valueType == typeof(DateTime))
         {
-          // TODO - format to iso stuff.. 
+          yield return $"'{((DateTime)value).ToString("o")}'";
         }
         else
         {
@@ -121,7 +121,7 @@ namespace NoSqlExplorer.Crate.DAL.Util
         yield return prop.Name;
       }
     }
-    
+
 
     private static string GetCrateColumnType(Type propertyType)
     {
@@ -139,6 +139,9 @@ namespace NoSqlExplorer.Crate.DAL.Util
           break;
         case nameof(Single):
           type = "float";
+          break;
+        case nameof(DateTime):
+          type = "timestamp";
           break;
         default:
           break;

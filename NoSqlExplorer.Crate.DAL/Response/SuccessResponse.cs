@@ -42,7 +42,15 @@ namespace NoSqlExplorer.Crate.DAL.Response
           for (int i = 0; i < this.Cols.Length; i++)
           {
             var propInfo = properties[this.Cols[i].ToLower()];
-            propInfo.SetValue(instance, Convert.ChangeType(row[i], propInfo.PropertyType));
+            if (propInfo.PropertyType == typeof(DateTime))
+            {
+              var value = TimestampToDateTime(long.Parse(row[i]));
+              propInfo.SetValue(instance, value);
+            }
+            else
+            {
+              propInfo.SetValue(instance, Convert.ChangeType(row[i], propInfo.PropertyType));
+            }
           }
 
           this.Result.Add(instance);
@@ -50,6 +58,11 @@ namespace NoSqlExplorer.Crate.DAL.Response
       }
 
       return this;
+    }
+    private static DateTime TimestampToDateTime(long unixTime)
+    {
+      var unixStart = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+      return unixStart.AddMilliseconds(unixTime);
     }
   }
 }
