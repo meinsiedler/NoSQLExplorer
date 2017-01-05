@@ -11,6 +11,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSqlExplorer.TwitterReader
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSqlExplorer.AzureAdapter", "NoSqlExplorer.AzureAdapter\NoSqlExplorer.AzureAdapter.csproj", "{CC62B22C-BC23-4C1B-A2A6-EB6607F768E3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAccess", "DataAccess", "{B0A31943-A0A9-44BE-B6B0-617E6E0625D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSqlExplorer.Crate.DAL", "NoSqlExplorer.Crate.DAL\NoSqlExplorer.Crate.DAL.csproj", "{BD995F98-09E3-4DF4-A977-327C9C3DCD02}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSqlExplorer.Crate.DAL.Playground", "NoSqlExplorer.Crate.DAL.Playground\NoSqlExplorer.Crate.DAL.Playground.csproj", "{A76FF959-9DCA-44F8-9F8D-6FA52B021484}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSqlExplorer.DAL.Common", "NoSqlExplorer.DAL.Common\NoSqlExplorer.DAL.Common.csproj", "{3B97A4FB-1343-4CDE-A148-6536347480C7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,8 +41,25 @@ Global
 		{CC62B22C-BC23-4C1B-A2A6-EB6607F768E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC62B22C-BC23-4C1B-A2A6-EB6607F768E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC62B22C-BC23-4C1B-A2A6-EB6607F768E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD995F98-09E3-4DF4-A977-327C9C3DCD02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD995F98-09E3-4DF4-A977-327C9C3DCD02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD995F98-09E3-4DF4-A977-327C9C3DCD02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD995F98-09E3-4DF4-A977-327C9C3DCD02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A76FF959-9DCA-44F8-9F8D-6FA52B021484}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A76FF959-9DCA-44F8-9F8D-6FA52B021484}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A76FF959-9DCA-44F8-9F8D-6FA52B021484}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A76FF959-9DCA-44F8-9F8D-6FA52B021484}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B97A4FB-1343-4CDE-A148-6536347480C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B97A4FB-1343-4CDE-A148-6536347480C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B97A4FB-1343-4CDE-A148-6536347480C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B97A4FB-1343-4CDE-A148-6536347480C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BD995F98-09E3-4DF4-A977-327C9C3DCD02} = {B0A31943-A0A9-44BE-B6B0-617E6E0625D8}
+		{A76FF959-9DCA-44F8-9F8D-6FA52B021484} = {B0A31943-A0A9-44BE-B6B0-617E6E0625D8}
+		{3B97A4FB-1343-4CDE-A148-6536347480C7} = {B0A31943-A0A9-44BE-B6B0-617E6E0625D8}
 	EndGlobalSection
 EndGlobal
