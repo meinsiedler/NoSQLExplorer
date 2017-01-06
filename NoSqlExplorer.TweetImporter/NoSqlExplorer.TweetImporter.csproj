@@ -65,6 +65,10 @@
       <Project>{0AEDC367-9D17-4E69-BC57-177D0E153A48}</Project>
       <Name>NoSqlExplorer.Twitter.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NoSqlExplorer.Utils\NoSqlExplorer.Utils.csproj">
+      <Project>{92BD2399-02CB-4CC3-9347-556BEBFD6852}</Project>
+      <Name>NoSqlExplorer.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

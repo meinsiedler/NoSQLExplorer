@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -235,9 +236,10 @@ namespace NoSqlExplorer.WpfClient.ViewModels
           return false;
         }
 
+        var host = containerWithName.First(c => c.ContainerState == DockerContainerState.Started).Host;
         ITweetImporter tweetImporter = TweetImporterFactory.CreateTweetImporter(
           containerConfig.Name,
-          containerWithName.First(c => c.ContainerState == DockerContainerState.Started).Host,
+          host,
           _dockerConfigSection);
 
         if (tweetImporter == null)
@@ -294,7 +296,20 @@ namespace NoSqlExplorer.WpfClient.ViewModels
       Dispatcher.CurrentDispatcher.Invoke(() => FeedsCount++);
       foreach (var tweetImporter in _tweetImporters)
       {
-        await tweetImporter.BulkInsertAsync(new[] {tweet});
+        try
+        {
+          await tweetImporter.BulkInsertAsync(new[] {tweet});
+        }
+        catch (HttpRequestException)
+        {
+          if (IsFeedReadingRunning)
+          {
+            StopReadingFeed();
+            MessageQueue.Enqueue(
+              $"Inserting stopped, because container '{tweetImporter.ContainerName}' on host {tweetImporter.Host} is not reachable.",
+              "DISMISS", () => { });
+          }
+        }
       }
     }
 

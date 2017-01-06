@@ -9,6 +9,9 @@ namespace NoSqlExplorer.TweetImporter
 {
   public interface ITweetImporter
   {
+    string ContainerName { get; }
+    string Host { get; }
+
     Task EnsureTableExistsAsync();
     Task BulkInsertAsync(IList<Tweet> tweets);
   }

@@ -15,12 +15,16 @@ namespace NoSqlExplorer.TweetImporter
       if (name == "/crate")
       {
         return new CrateTweetImporter(
+          containerName: name,
+          host: host,
           crateUrl: $"http://{host}:{containerConfigElement.Port}",
           shards: dockerConfigSection.DockerInstances.Count);
       }
       if (name == "/mongo")
       {
-        return new MongoTweetImporter();
+        return new MongoTweetImporter(
+          containerName: name,
+          host: host);
       }
 
       return null;

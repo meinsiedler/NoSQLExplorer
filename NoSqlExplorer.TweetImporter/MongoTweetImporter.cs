@@ -9,6 +9,15 @@ namespace NoSqlExplorer.TweetImporter
 {
   internal class MongoTweetImporter : ITweetImporter
   {
+    public MongoTweetImporter(string containerName, string host)
+    {
+      ContainerName = containerName;
+      Host = host;
+    }
+
+    public string ContainerName { get; }
+    public string Host { get; }
+
     public Task EnsureTableExistsAsync()
     {
       return Task.FromResult(true);

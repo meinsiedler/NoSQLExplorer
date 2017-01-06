@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using NoSqlExplorer.Crate.DAL;
+using NoSqlExplorer.Crate.DAL.Response;
 using NoSqlExplorer.DAL.Common;
 using NoSqlExplorer.Twitter.Common;
+using NoSqlExplorer.Utils;
 
 namespace NoSqlExplorer.TweetImporter
 {
@@ -34,11 +38,16 @@ namespace NoSqlExplorer.TweetImporter
     private readonly string _crateUrl;
     private readonly int? _shards;
 
-    public CrateTweetImporter(string crateUrl, int? shards)
+    public CrateTweetImporter(string containerName, string host, string crateUrl, int? shards)
     {
+      ContainerName = containerName;
+      Host = host;
       _crateUrl = crateUrl;
       _shards = shards;
     }
+
+    public string ContainerName { get; }
+    public string Host { get; }
 
     public async Task EnsureTableExistsAsync()
     {
@@ -49,7 +58,7 @@ namespace NoSqlExplorer.TweetImporter
     public async Task BulkInsertAsync(IList<Tweet> tweets)
     {
       var crateClient = new CrateClient(_crateUrl);
-      await crateClient.BulkInsert(tweets.Select(t => new CrateTweet(t)));
+      await Retry.TryAwait<ICrateResponse, HttpRequestException>(() => crateClient.BulkInsert(tweets.Select(t => new CrateTweet(t))));
     }
   }
 }
