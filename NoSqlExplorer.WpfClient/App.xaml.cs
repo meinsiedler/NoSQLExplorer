@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -32,6 +33,16 @@ namespace NoSqlExplorer.WpfClient
         Messenger.Default.Send(new SnackbarMessage(text, "DISMISS"));
 
         args.Handled = true;
+      };
+
+      AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+      {
+        var exception = args.ExceptionObject as Exception;
+        if (exception != null)
+        {
+          File.AppendAllText("exception.log",
+            $"{DateTime.Now}: {exception.Message}{Environment.NewLine}{exception.StackTrace}{Environment.NewLine}{Environment.NewLine}");
+        }
       };
     }
   }
