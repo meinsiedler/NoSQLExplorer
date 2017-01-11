@@ -18,7 +18,7 @@ namespace NoSqlExplorer.Crate.DAL.Util
         throw new InvalidOperationException($"Class {type.Name} does not contain any valid properties");
       }
 
-      var statement = new StringBuilder($"create table {GetTableName(type)} (");
+      var statement = new StringBuilder($"create table {Helper.GetTableName(type)} (");
       foreach (var column in props)
       {
         var crateType = GetCrateColumnType(column.PropertyType);
@@ -54,7 +54,7 @@ namespace NoSqlExplorer.Crate.DAL.Util
     {
       var type = typeof(T);
       var propertyNames = GetPropertyNames(type);
-      var statement = new StringBuilder($"insert into {GetTableName(type)} ({string.Join(",", propertyNames)}) values ");
+      var statement = new StringBuilder($"insert into {Helper.GetTableName(type)} ({string.Join(",", propertyNames)}) values ");
       statement.Append($"({string.Join(",", GetPropertyValues(propertyNames, entity))})");
 
       return statement.ToString();
@@ -64,7 +64,7 @@ namespace NoSqlExplorer.Crate.DAL.Util
     {
       var type = typeof(T);
       var propertyNames = GetPropertyNames(type);
-      var statement = new StringBuilder($"insert into {GetTableName(type)} ({string.Join(",", propertyNames)}) values ");
+      var statement = new StringBuilder($"insert into {Helper.GetTableName(type)} ({string.Join(",", propertyNames)}) values ");
       foreach (var entity in entities)
       {
         statement.Append($"({string.Join(",", GetPropertyValues(propertyNames, entity))}),");
@@ -73,19 +73,6 @@ namespace NoSqlExplorer.Crate.DAL.Util
       //remove last ,
       statement.Remove(statement.Length - 1, 1);
       return statement.ToString();
-    }
-
-    internal static string GetTableName(Type type)
-    {
-      var tableNameAttr = type.GetCustomAttribute<TableNameAttribute>();
-      if (tableNameAttr != null)
-      {
-        return tableNameAttr.Name;
-      }
-      else
-      {
-        return type.Name.ToLower();
-      }
     }
 
     private static IEnumerable<string> GetPropertyValues<T>(IEnumerable<string> propertyNames, T entity)
