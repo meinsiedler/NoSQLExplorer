@@ -11,13 +11,15 @@ namespace NoSqlExplorer.WpfClient.ViewModels
 {
   public class DockerContainerViewModel : ViewModelBase
   {
+    public string Host { get; }
     private readonly DockerContainer _container;
 
-    public DockerContainerViewModel(DockerContainer container)
+    public DockerContainerViewModel(DockerContainer container, DockerInstance instance)
     {
       _container = container;
       _containerName = container.Name;
       _containerState = container.State;
+      Host = instance.Host;
       StartAsyncCommand = new AsyncCommand(StartAsyncCommandHandler);
       StopAsyncCommand = new AsyncCommand(StopAsyncCommandHandler);
     }

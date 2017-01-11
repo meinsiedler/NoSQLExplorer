@@ -163,6 +163,7 @@
     </None>
     <None Include="Config\Docker.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="Config\Twitter.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -188,6 +189,14 @@
     <ProjectReference Include="..\NoSqlExplorer.DockerAdapter\NoSqlExplorer.DockerAdapter.csproj">
       <Project>{C09ED21A-F3A2-4E52-9C0B-325815059DFD}</Project>
       <Name>NoSqlExplorer.DockerAdapter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NoSqlExplorer.TweetImporter\NoSqlExplorer.TweetImporter.csproj">
+      <Project>{5B9B996A-B032-4753-9A63-6E2E5EBE2E0C}</Project>
+      <Name>NoSqlExplorer.TweetImporter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NoSqlExplorer.Twitter.Common\NoSqlExplorer.Twitter.Common.csproj">
+      <Project>{0AEDC367-9D17-4E69-BC57-177D0E153A48}</Project>
+      <Name>NoSqlExplorer.Twitter.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\NoSqlExplorer.TwitterReader\NoSqlExplorer.TwitterReader.csproj">
       <Project>{EF8AEBBD-FB6E-4E62-B10D-BDFD17E38C39}</Project>

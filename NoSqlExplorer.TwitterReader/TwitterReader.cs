@@ -7,8 +7,12 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using NoSqlExplorer.Twitter.Common;
 using NoSqlExplorer.TwitterReader.Configuration;
 using NoSqlExplorer.TwitterReader.Model;
+using NoSqlExplorer.Utils;
 
 namespace NoSqlExplorer.TwitterReader
 {
@@ -58,8 +62,11 @@ namespace NoSqlExplorer.TwitterReader
             string line;
             while (!token.IsCancellationRequested && (line = streamReader.ReadLine()) != null)
             {
-              var closureLine = line;
-              Task.Run(() => OnNewTweet(closureLine)); // call event on different thread so that event subscribers do not block the reading of subsequent lines
+              if (line.StartsWith("{\"created_at\""))
+              {
+                var closureLine = line;
+                Task.Run(async () => OnNewTweet(await ParseTweetAsync(closureLine))); // call event on different thread so that event subscribers do not block the reading of subsequent lines
+              }
             }
           }
 
@@ -71,12 +78,24 @@ namespace NoSqlExplorer.TwitterReader
       }
     }
 
+    private async Task<Tweet> ParseTweetAsync(string line)
+    {
+      var json = await Task.Run(() => (JObject)JsonConvert.DeserializeObject(line));
+      var id = long.Parse(json["id"].ToString());
+      var text = json["text"].ToString();
+      var source = json["source"].ToString();
+      var userId = long.Parse(json["user"].SelectToken("id").ToString());
+      var timestamp = TimestampConverter.TimestampToDateTime(long.Parse(json["timestamp_ms"].ToString()));
+      var tweet = new Tweet(id, text, source, userId, timestamp);
+      return tweet;
+    }
+
     public void Stop()
     {
       _cancellationTokenSource.Cancel();
     }
 
-    public event Action<string> OnNewTweet = delegate { };
+    public event Action<Tweet> OnNewTweet = delegate { };
     public bool IsRunning { get; private set; }
   }
 }

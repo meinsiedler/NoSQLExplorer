@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NoSqlExplorer.Crate.DAL</RootNamespace>
     <AssemblyName>NoSqlExplorer.Crate.DAL</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -60,6 +61,10 @@
     <ProjectReference Include="..\NoSqlExplorer.DAL.Common\NoSqlExplorer.DAL.Common.csproj">
       <Project>{3B97A4FB-1343-4CDE-A148-6536347480C7}</Project>
       <Name>NoSqlExplorer.DAL.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NoSqlExplorer.Utils\NoSqlExplorer.Utils.csproj">
+      <Project>{92BD2399-02CB-4CC3-9347-556BEBFD6852}</Project>
+      <Name>NoSqlExplorer.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

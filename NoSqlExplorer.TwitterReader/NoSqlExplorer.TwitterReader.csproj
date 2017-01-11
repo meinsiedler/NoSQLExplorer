@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -46,10 +50,20 @@
     <Compile Include="Model\OAuth.cs" />
     <Compile Include="Model\OAuthFactory.cs" />
     <Compile Include="Model\OAuthTokens.cs" />
-    <Compile Include="Model\Twitter.cs" />
+    <Compile Include="Model\TwitterRequest.cs" />
     <Compile Include="TwitterReader.cs" />
     <Compile Include="ITwitterReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NoSqlExplorer.Twitter.Common\NoSqlExplorer.Twitter.Common.csproj">
+      <Project>{0AEDC367-9D17-4E69-BC57-177D0E153A48}</Project>
+      <Name>NoSqlExplorer.Twitter.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NoSqlExplorer.Utils\NoSqlExplorer.Utils.csproj">
+      <Project>{92BD2399-02CB-4CC3-9347-556BEBFD6852}</Project>
+      <Name>NoSqlExplorer.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

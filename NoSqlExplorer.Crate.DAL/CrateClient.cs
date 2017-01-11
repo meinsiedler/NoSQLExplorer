@@ -31,25 +31,25 @@ namespace NoSqlExplorer.Crate.DAL
       }
     }
 
-    public async Task<ICrateResponse> CreateTable<T>(int? shards = null, int? replicas = null) where T : class
+    public async Task<ICrateResponse> CreateTable<T>(int? shards = null, int? replicas = null)
     {
       var statement = StatementHelper.CreateTableStatement(typeof(T), shards, replicas);
       return await this.SubmitRequest(new CrateRequest(statement));
     }
 
-    public async Task<ICrateResponse> Insert<T>(T entity) where T : class
+    public async Task<ICrateResponse> Insert<T>(T entity)
     {
       var statement = StatementHelper.InsertStatement(entity);
       return await this.SubmitRequest(new CrateRequest(statement));
     }
 
-    public async Task<ICrateResponse> BulkInsert<T>(IEnumerable<T> entities) where T : class
+    public async Task<ICrateResponse> BulkInsert<T>(IEnumerable<T> entities)
     {
       var statement = StatementHelper.BulkInsertStatement(entities);
       return await this.SubmitRequest(new CrateRequest(statement));
     }
 
-    public async Task<ICrateResponse<T>> SubmitQuery<T>(string query) where T : class
+    public async Task<ICrateResponse<T>> SubmitQuery<T>(string query)
     {
       using (var client = new HttpClient())
       {
@@ -61,7 +61,7 @@ namespace NoSqlExplorer.Crate.DAL
       }
     }
 
-    public async Task<ICrateResponse> DropTable<T>() where T : class
+    public async Task<ICrateResponse> DropTable<T>()
     {
       var statement = $"drop table {StatementHelper.GetTableName(typeof(T))}";
       return await this.SubmitRequest(new CrateRequest(statement));
@@ -92,7 +92,7 @@ namespace NoSqlExplorer.Crate.DAL
       }
     }
 
-    private async Task<ICrateResponse<T>> HttpResponseToResponse<T>(HttpResponseMessage response) where T : class
+    private async Task<ICrateResponse<T>> HttpResponseToResponse<T>(HttpResponseMessage response)
     {
       var responseContent = await response.Content.ReadAsStringAsync();
       if (response.StatusCode != System.Net.HttpStatusCode.OK)

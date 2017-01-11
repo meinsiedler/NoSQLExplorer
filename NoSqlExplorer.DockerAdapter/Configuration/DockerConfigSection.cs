@@ -8,5 +8,8 @@ namespace NoSqlExplorer.DockerAdapter.Configuration
 
     [ConfigurationProperty("dockerInstances")]
     public DockerInstanceConfigCollection DockerInstances => base["dockerInstances"] as DockerInstanceConfigCollection;
+
+    [ConfigurationProperty("dockerContainer")]
+    public DockerContainerConfigCollection DockerContainer => base["dockerContainer"] as DockerContainerConfigCollection;
   }
 }

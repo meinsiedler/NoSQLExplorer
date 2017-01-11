@@ -24,7 +24,10 @@ To get your *Consumer Key* and *Consumer secret*, you need to create a new Twitt
 
 ### Docker Instances
 
-You need to configure the *host* and *port* as well as *username* and *password* for your Docker instances. This configuration can be found in the `Config\Docker.config` file:
+You need to configure the *host* and *port* as well as *username* and *password* for your Docker instances.
+Furthermore, you need to configure the *name* and the *port* of your containers.
+Note that containers of the same type should have the same name on all docker instances.
+The configuration can be found in the `Config\Docker.config` file:
 
 ```xml
 <?xml version="1.0" encoding="utf-8" ?>
@@ -35,6 +38,10 @@ You need to configure the *host* and *port* as well as *username* and *password*
     <dockerInstance host="YOUR-HOST-3" port="3333" username="YOUR-USERNAME" password="YOUR-PASSWORD" />
     <dockerInstance host="YOUR-HOST-4" port="4444" username="YOUR-USERNAME" password="YOUR-PASSWORD" />
   </dockerInstances>
+  <dockerContainer>
+    <dockerContainer name="/crate" port="4200" />
+	<dockerContainer name="/mongo" port="27017" />
+  </dockerContainer>
 </dockerConfig>
 ```
 

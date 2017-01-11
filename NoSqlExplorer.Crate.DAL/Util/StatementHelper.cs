@@ -50,7 +50,7 @@ namespace NoSqlExplorer.Crate.DAL.Util
       return statement.ToString();
     }
 
-    internal static string InsertStatement<T>(T entity) where T : class
+    internal static string InsertStatement<T>(T entity)
     {
       var type = typeof(T);
       var propertyNames = GetPropertyNames(type);
@@ -60,7 +60,7 @@ namespace NoSqlExplorer.Crate.DAL.Util
       return statement.ToString();
     }
 
-    internal static string BulkInsertStatement<T>(IEnumerable<T> entities) where T : class
+    internal static string BulkInsertStatement<T>(IEnumerable<T> entities)
     {
       var type = typeof(T);
       var propertyNames = GetPropertyNames(type);
@@ -88,7 +88,7 @@ namespace NoSqlExplorer.Crate.DAL.Util
       }
     }
 
-    private static IEnumerable<string> GetPropertyValues<T>(IEnumerable<string> propertyNames, T entity) where T : class
+    private static IEnumerable<string> GetPropertyValues<T>(IEnumerable<string> propertyNames, T entity)
     {
       foreach (var property in propertyNames)
       {
@@ -96,15 +96,15 @@ namespace NoSqlExplorer.Crate.DAL.Util
         var valueType = value.GetType();
         if (valueType == typeof(string))
         {
-          yield return $"'{value}'";
+          yield return $"'{JavaScriptStringEncode(value.ToString(), false)}'";
         }
         else if (valueType == typeof(DateTime))
         {
-          yield return $"'{((DateTime)value).ToString("o")}'";
+          yield return $"'{JavaScriptStringEncode(((DateTime)value).ToString("o"), false)}'";
         }
         else
         {
-          yield return value.ToString().Replace(',', '.');
+          yield return JavaScriptStringEncode(value.ToString().Replace(',', '.'), false);
         }
       }
     }
@@ -140,6 +140,79 @@ namespace NoSqlExplorer.Crate.DAL.Util
       }
 
       return type;
+    }
+
+    private static string JavaScriptStringEncode(string value, bool addDoubleQuotes)
+    {
+      if (string.IsNullOrEmpty(value))
+        return addDoubleQuotes ? "\"\"" : string.Empty;
+
+      int len = value.Length;
+      bool needEncode = false;
+      char c;
+      for (int i = 0; i < len; i++)
+      {
+        c = value[i];
+
+        if (c >= 0 && c <= 31 || c == 34 || c == 39 || c == 60 || c == 62 || c == 92)
+        {
+          needEncode = true;
+          break;
+        }
+      }
+
+      if (!needEncode)
+        return addDoubleQuotes ? "\"" + value + "\"" : value;
+
+      var sb = new System.Text.StringBuilder();
+      if (addDoubleQuotes)
+        sb.Append('"');
+
+      for (int i = 0; i < len; i++)
+      {
+        c = value[i];
+        if (c >= 0 && c <= 7 || c == 11 || c >= 14 && c <= 31 || c == 39 || c == 60 || c == 62)
+          sb.AppendFormat("\\u{0:x4}", (int)c);
+        else switch ((int)c)
+          {
+            case 8:
+              sb.Append("\\b");
+              break;
+
+            case 9:
+              sb.Append("\\t");
+              break;
+
+            case 10:
+              sb.Append("\\n");
+              break;
+
+            case 12:
+              sb.Append("\\f");
+              break;
+
+            case 13:
+              sb.Append("\\r");
+              break;
+
+            case 34:
+              sb.Append("\\\"");
+              break;
+
+            case 92:
+              sb.Append("\\\\");
+              break;
+
+            default:
+              sb.Append(c);
+              break;
+          }
+      }
+
+      if (addDoubleQuotes)
+        sb.Append('"');
+
+      return sb.ToString();
     }
   }
 }

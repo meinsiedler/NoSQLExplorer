@@ -10,7 +10,7 @@ namespace NoSqlExplorer.Crate.DAL.Response
   {
   }
 
-  public interface ICrateResponse<T> : ICrateResponse where T : class
+  public interface ICrateResponse<T> : ICrateResponse
   {
   }
 }

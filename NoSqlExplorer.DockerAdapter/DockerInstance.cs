@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Docker.DotNet;
 using Docker.DotNet.BasicAuth;
 using Docker.DotNet.Models;
+using NoSqlExplorer.Utils;
 
 namespace NoSqlExplorer.DockerAdapter
 {
@@ -30,7 +31,7 @@ namespace NoSqlExplorer.DockerAdapter
     {
       // The default timeout is 100 seconds for the HTTP request. The Docker client doesn't allow to configure another timeout.
       // Therefore, we just try to get the containers a few times.
-      var containers = await TryAwait(() => client.Containers.ListContainersAsync(new ContainersListParameters
+      var containers = await Retry.TryAwait<IList<ContainerListResponse>, Exception>(() => client.Containers.ListContainersAsync(new ContainersListParameters
       {
         All = true
       }));
@@ -44,25 +45,6 @@ namespace NoSqlExplorer.DockerAdapter
       });
     }
 
-    private static async Task<T> TryAwait<T>(Func<Task<T>> taskFunc, int maxTries = 5)
-    {
-      var tries = 0;
-      var task = taskFunc();
-      for (;;)
-      {
-        try
-        {
-          return await task;
-        }
-        catch (Exception)
-        {
-          tries++;
-          if (tries >= maxTries)
-            throw;
-
-          task = taskFunc();
-        }
-      }
-    }
+    
   }
 }
