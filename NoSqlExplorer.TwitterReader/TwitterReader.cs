@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using NoSqlExplorer.Twitter.Common;
+using NoSqlExplorer.TwitterReader.Model;
+using NoSqlExplorer.Utils;
+using System;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using NoSqlExplorer.Twitter.Common;
-using NoSqlExplorer.TwitterReader.Configuration;
-using NoSqlExplorer.TwitterReader.Model;
-using NoSqlExplorer.Utils;
 
 namespace NoSqlExplorer.TwitterReader
 {
@@ -37,15 +33,8 @@ namespace NoSqlExplorer.TwitterReader
       _cancellationTokenSource = new CancellationTokenSource();
       var token = _cancellationTokenSource.Token;
 
-
-      var oauth = new OAuth(_twitterConsumerKey, _twitterConsumerSecret);
-      var nonce = oauth.Nonce();
-      var timestamp = oauth.TimeStamp();
-      var signature = oauth.Signature("GET", _twitterFeedUrl, nonce, timestamp, accessToken, accessTokenSecret, parameters: Enumerable.Empty<string[]>());
-      var authorizeHeader = oauth.AuthorizationHeader(nonce, timestamp, accessToken, signature);
-
       var request = (HttpWebRequest)WebRequest.Create(_twitterFeedUrl);
-      request.Headers.Add("Authorization", authorizeHeader);
+      request.Headers.Add("Authorization", CreateAuthorizationHeader(accessToken, accessTokenSecret));
       request.Method = "GET";
 
       using (var response = await request.GetResponseAsync())
@@ -89,6 +78,17 @@ namespace NoSqlExplorer.TwitterReader
       var tweet = new Tweet(id, text, source, userId, timestamp);
       return tweet;
     }
+    private string CreateAuthorizationHeader(string accessToken, string accessTokenSecret)
+    {
+      var oauth = new OAuth(_twitterConsumerKey, _twitterConsumerSecret);
+      var nonce = oauth.Nonce();
+      var timestamp = oauth.TimeStamp();
+      var signature = oauth.Signature("GET", _twitterFeedUrl, nonce, timestamp, accessToken, accessTokenSecret,
+        parameters: Enumerable.Empty<string[]>());
+      var authorizeHeader = oauth.AuthorizationHeader(nonce, timestamp, accessToken, signature);
+      return authorizeHeader;
+    }
+
 
     public void Stop()
     {
