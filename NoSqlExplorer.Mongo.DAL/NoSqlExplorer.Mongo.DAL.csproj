@@ -58,9 +58,17 @@
   <ItemGroup>
     <Compile Include="MongoDbClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Response\IMongoResponse.cs" />
+    <Compile Include="Response\MongoResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NoSqlExplorer.DAL.Common\NoSqlExplorer.DAL.Common.csproj">
+      <Project>{3B97A4FB-1343-4CDE-A148-6536347480C7}</Project>
+      <Name>NoSqlExplorer.DAL.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
