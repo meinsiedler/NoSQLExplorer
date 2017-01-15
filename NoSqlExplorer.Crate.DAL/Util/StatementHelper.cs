@@ -1,10 +1,9 @@
-﻿using System;
+﻿using NoSqlExplorer.DAL.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
-using NoSqlExplorer.DAL.Common;
 
 namespace NoSqlExplorer.Crate.DAL.Util
 {
