@@ -15,5 +15,7 @@ namespace NoSqlExplorer.Mongo.DAL.Response
   public interface IMongoResponse<out T> : IMongoResponse
   {
     T Data { get; }
+    double? ExecutionTime { get; }
+
   }
 }

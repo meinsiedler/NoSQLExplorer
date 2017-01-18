@@ -79,6 +79,8 @@ namespace NoSqlExplorer.Mongo.DAL.Response
       }
     }
 
+    public double? ExecutionTime { get; set; }
+
     public MongoResponse(Exception ex)
     {
       this.Success = false;
