@@ -29,7 +29,7 @@ namespace NoSqlExplorer.TweetImporter
 
     public async Task BulkInsertAsync(IList<Tweet> tweets)
     {
-      await this.client.AddAsync(tweets.FirstOrDefault());
+      await this.client.AddAsync(tweets.AsEnumerable());
     }
   }
 }
