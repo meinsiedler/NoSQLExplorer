@@ -19,17 +19,26 @@ namespace NoSqlExplorer.DatabaseInteraction
 
     public Task EnsureTableExistsAsync()
     {
+      // TODO
       return Task.FromResult(true);
     }
 
     public Task BulkInsertAsync(IList<Tweet> tweets)
     {
+      // TODO
       return Task.FromResult(true);
     }
 
     public Task<IList<Tweet>> GetQueryResultAsync(GetTweetsWithHashtagQuery query)
     {
+      // TODO
       return Task.FromResult((IList<Tweet>)new List<Tweet>());
+    }
+
+    public Task<double> GetQueryResultAsync(GetAverageFollowersQuery query)
+    {
+      // TODO
+      return Task.FromResult(0d);
     }
   }
 }

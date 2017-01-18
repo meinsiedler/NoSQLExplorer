@@ -13,25 +13,30 @@ namespace NoSqlExplorer.DatabaseInteraction.QueryHandlers.Crate
 {
   internal class GetAverageFollowersQueryHandler : CrateQueryHandler<GetAverageFollowersQuery, double>
   {
+    internal class ResultWrapper
+    {
+      public double Followers { get; set; }
+    }
+
     public GetAverageFollowersQueryHandler(CrateClient crateClient) : base(crateClient)
     {
     }
 
     private string BuildQuery()
     {
-      return "SELECT AVG(Followers) FROM Tweets";
+      return "SELECT AVG(Followers) AS Followers FROM Tweets";
     }
 
     public override async Task<double> HandleAsync(GetAverageFollowersQuery query)
     {
-      var response = await Retry.TryAwait<ICrateResponse<double>, HttpRequestException>(() => CrateClient.SubmitQuery<double>(BuildQuery()));
+      var response = await Retry.TryAwait<ICrateResponse<ResultWrapper>, HttpRequestException>(() => CrateClient.SubmitQuery<ResultWrapper>(BuildQuery()));
       var result = GetResultOrThrow(response);
 
       if (result.Count != 1)
       {
         throw new DatabaseException($"Invalid result for {nameof(GetAverageFollowersQuery)}");
       }
-      return result[0];
+      return result[0].Followers;
     }
   }
 }

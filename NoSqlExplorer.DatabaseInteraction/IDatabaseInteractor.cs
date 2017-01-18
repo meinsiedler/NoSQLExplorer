@@ -14,5 +14,6 @@ namespace NoSqlExplorer.DatabaseInteraction
     Task BulkInsertAsync(IList<Tweet> tweets);
 
     Task<IList<Tweet>> GetQueryResultAsync(GetTweetsWithHashtagQuery query);
+    Task<double> GetQueryResultAsync(GetAverageFollowersQuery query);
   }
 }

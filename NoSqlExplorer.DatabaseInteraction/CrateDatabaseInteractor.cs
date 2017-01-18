@@ -68,5 +68,11 @@ namespace NoSqlExplorer.DatabaseInteraction
       var handler = new GetTweetsWithHashtagQueryHandler(new CrateClient(_crateUrl));
       return await handler.HandleAsync(query);
     }
+
+    public async Task<double> GetQueryResultAsync(GetAverageFollowersQuery query)
+    {
+      var handler = new GetAverageFollowersQueryHandler(new CrateClient(_crateUrl));
+      return await handler.HandleAsync(query);
+    }
   }
 }
