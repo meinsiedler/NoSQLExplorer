@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Threading.Tasks;
 using NoSqlExplorer.DatabaseInteraction.Queries;
+using NoSqlExplorer.DatabaseInteraction.QueryHandlers.Mongo;
 using NoSqlExplorer.Mongo.DAL;
 using NoSqlExplorer.Twitter.Common;
 
@@ -31,16 +33,16 @@ namespace NoSqlExplorer.DatabaseInteraction
       await this.client.AddAsync(tweets.AsEnumerable());
     }
 
-    public Task<IList<Tweet>> GetQueryResultAsync(GetTweetsWithHashtagQuery query)
+    public async Task<IList<Tweet>> GetQueryResultAsync(GetTweetsWithHashtagQuery query)
     {
-      // TODO
-      return Task.FromResult((IList<Tweet>)new List<Tweet>());
+      var handler = new GetTweetsWithHashtagQueryHandler(this.client);
+      return await handler.HandleAsync(query);
     }
 
-    public Task<double> GetQueryResultAsync(GetAverageFollowersQuery query)
+    public async Task<double> GetQueryResultAsync(GetAverageFollowersQuery query)
     {
-      // TODO
-      return Task.FromResult(0d);
+      var handler = new GetAverageFollowersQueryHandler(this.client);
+      return await handler.HandleAsync(query);
     }
   }
 }

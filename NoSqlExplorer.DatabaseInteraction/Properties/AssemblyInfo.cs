@@ -36,3 +36,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
 [assembly: InternalsVisibleTo("NoSqlExplorer.Crate.DAL.Playground")]
+[assembly: InternalsVisibleTo("NoSqlExplorer.Mongo.DAL.Playground")]

@@ -55,6 +55,9 @@
     <Compile Include="QueryHandlers\IQueryHandler.cs" />
     <Compile Include="Queries\GetTweetsWithHashtagQuery.cs" />
     <Compile Include="Queries\IQuery.cs" />
+    <Compile Include="QueryHandlers\Mongo\GetAverageFollowersQueryHandler.cs" />
+    <Compile Include="QueryHandlers\Mongo\GetTweetsWithHashtagQueryHandler.cs" />
+    <Compile Include="QueryHandlers\Mongo\MongoQueryHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NoSqlExplorer.Crate.DAL\NoSqlExplorer.Crate.DAL.csproj">
@@ -82,9 +85,7 @@
       <Name>NoSqlExplorer.Utils</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="QueryHandlers\Mongo\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

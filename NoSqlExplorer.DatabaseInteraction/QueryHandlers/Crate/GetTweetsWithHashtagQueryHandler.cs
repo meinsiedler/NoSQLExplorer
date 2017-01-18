@@ -20,7 +20,7 @@ namespace NoSqlExplorer.DatabaseInteraction.QueryHandlers.Crate
     private string BuildQuery(GetTweetsWithHashtagQuery query)
     {
       // TODO: inject Tweets table name from outside?
-      // TODO: Not that LIKE can be pretty slow -> consider fulltext index, see https://crate.io/docs/reference/sql/queries.html#like
+      // TODO: Note that LIKE can be pretty slow -> consider fulltext index, see https://crate.io/docs/reference/sql/queries.html#like
       // TODO: escape hashtag string?
       return $"SELECT * FROM Tweets where Text LIKE '%{query.Hashtag}%'";
     }
