@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -54,6 +55,23 @@ namespace NoSqlExplorer.Mongo.DAL
       catch (Exception ex)
       {
         return new MongoResponse<T>(ex);
+      }
+    }
+
+    public async Task<IMongoResponse<IEnumerable<T>>> FindAsync<T>(Expression<Func<T, bool>> expression = null)
+    {
+      try
+      {
+        var execTime = this.GetExecutionTime(expression);
+
+        var result = await this.database
+          .GetCollection<T>(Helper.GetTableName(typeof(T)))
+          .FindAsync(expression);
+        return new MongoResponse<IEnumerable<T>>(result.ToList()) { ExecutionTime = execTime };
+      }
+      catch (Exception ex)
+      {
+        return new MongoResponse<IEnumerable<T>>(ex);
       }
     }
 
