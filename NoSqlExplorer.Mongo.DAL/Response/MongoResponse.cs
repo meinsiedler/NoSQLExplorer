@@ -65,6 +65,11 @@ namespace NoSqlExplorer.Mongo.DAL.Response
 
   public class MongoResponse<T> : IMongoResponse<T>
   {
+    public MongoResponse(bool success)
+    {
+      this.Success = success;
+    }
+
     public MongoResponse(T result)
     {
       if (result != null)
@@ -79,14 +84,13 @@ namespace NoSqlExplorer.Mongo.DAL.Response
       }
     }
 
-    public double? ExecutionTime { get; set; }
-
     public MongoResponse(Exception ex)
     {
       this.Success = false;
       this.Errors = new List<string>() { ex.Message };
     }
 
+    public double? ExecutionTime { get; set; }
     public T Data { get; private set; }
     public bool Success { get; }
     public IEnumerable<string> Errors { get; }

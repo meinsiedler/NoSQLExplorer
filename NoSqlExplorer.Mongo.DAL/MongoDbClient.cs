@@ -38,6 +38,20 @@ namespace NoSqlExplorer.Mongo.DAL
       return new MongoResponse<T>(item);
     }
 
+    public virtual async Task<IMongoResponse<T>> AddAsync<T>(IEnumerable<T> items)
+    {
+      try
+      {
+        await this.database.GetCollection<T>(Helper.GetTableName(typeof(T))).InsertManyAsync(items);
+      }
+      catch (Exception ex)
+      {
+        return new MongoResponse<T>(ex);
+      }
+
+      return new MongoResponse<T>(items);
+    }
+
     public virtual async Task<IMongoResponse<T>> Single<T>(Expression<Func<T, bool>> expression)
     {
       try
