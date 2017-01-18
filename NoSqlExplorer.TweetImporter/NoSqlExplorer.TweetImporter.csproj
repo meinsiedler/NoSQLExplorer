@@ -61,6 +61,10 @@
       <Project>{C09ED21A-F3A2-4E52-9C0B-325815059DFD}</Project>
       <Name>NoSqlExplorer.DockerAdapter</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NoSqlExplorer.Mongo.DAL\NoSqlExplorer.Mongo.DAL.csproj">
+      <Project>{8745a793-0313-46d9-ad76-3855df399841}</Project>
+      <Name>NoSqlExplorer.Mongo.DAL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NoSqlExplorer.Twitter.Common\NoSqlExplorer.Twitter.Common.csproj">
       <Project>{0AEDC367-9D17-4E69-BC57-177D0E153A48}</Project>
       <Name>NoSqlExplorer.Twitter.Common</Name>

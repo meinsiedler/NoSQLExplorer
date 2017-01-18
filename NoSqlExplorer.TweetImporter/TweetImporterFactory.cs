@@ -24,7 +24,10 @@ namespace NoSqlExplorer.TweetImporter
       {
         return new MongoTweetImporter(
           containerName: name,
-          host: host);
+          host: host,
+          port: containerConfigElement.Port,
+          username: containerConfigElement.Username,
+          password: containerConfigElement.Password);
       }
 
       return null;

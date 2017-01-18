@@ -28,7 +28,7 @@ namespace NoSqlExplorer.Mongo.DAL
     {
       try
       {
-        await this.database.GetCollection<T>(Helper.GetTableName(typeof(T))).InsertOneAsync(item, new InsertOneOptions { BypassDocumentValidation = true });
+        await this.database.GetCollection<T>(Helper.GetTableName(typeof(T))).InsertOneAsync(item);
       }
       catch (Exception ex)
       {
