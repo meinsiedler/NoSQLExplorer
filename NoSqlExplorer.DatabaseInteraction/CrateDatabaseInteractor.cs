@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using NoSqlExplorer.Crate.DAL;
 using NoSqlExplorer.Crate.DAL.Response;
@@ -11,9 +9,9 @@ using NoSqlExplorer.DAL.Common;
 using NoSqlExplorer.Twitter.Common;
 using NoSqlExplorer.Utils;
 
-namespace NoSqlExplorer.TweetImporter
+namespace NoSqlExplorer.DatabaseInteraction
 {
-  internal class CrateTweetImporter : ITweetImporter
+  internal class CrateDatabaseInteractor : IDatabaseInteractor
   {
     [TableName("tweets")]
     internal struct CrateTweet
@@ -38,7 +36,7 @@ namespace NoSqlExplorer.TweetImporter
     private readonly string _crateUrl;
     private readonly int? _shards;
 
-    public CrateTweetImporter(string containerName, string host, string crateUrl, int? shards)
+    public CrateDatabaseInteractor(string containerName, string host, string crateUrl, int? shards)
     {
       ContainerName = containerName;
       Host = host;

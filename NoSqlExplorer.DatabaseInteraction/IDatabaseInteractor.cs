@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using NoSqlExplorer.Twitter.Common;
 
-namespace NoSqlExplorer.TweetImporter
+namespace NoSqlExplorer.DatabaseInteraction
 {
-  public interface ITweetImporter
+  public interface IDatabaseInteractor
   {
     string ContainerName { get; }
     string Host { get; }

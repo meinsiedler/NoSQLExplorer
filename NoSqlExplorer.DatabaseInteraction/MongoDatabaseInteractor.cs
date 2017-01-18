@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using NoSqlExplorer.Twitter.Common;
 
-namespace NoSqlExplorer.TweetImporter
+namespace NoSqlExplorer.DatabaseInteraction
 {
-  internal class MongoTweetImporter : ITweetImporter
+  internal class MongoDatabaseInteractor : IDatabaseInteractor
   {
-    public MongoTweetImporter(string containerName, string host)
+    public MongoDatabaseInteractor(string containerName, string host)
     {
       ContainerName = containerName;
       Host = host;

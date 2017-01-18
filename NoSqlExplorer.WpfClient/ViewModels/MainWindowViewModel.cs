@@ -17,9 +17,9 @@ using GalaSoft.MvvmLight.Messaging;
 using MaterialDesignThemes.Wpf;
 using NoSqlExplorer.AzureAdapter;
 using NoSqlExplorer.AzureAdapter.Configuration;
+using NoSqlExplorer.DatabaseInteraction;
 using NoSqlExplorer.DockerAdapter;
 using NoSqlExplorer.DockerAdapter.Configuration;
-using NoSqlExplorer.TweetImporter;
 using NoSqlExplorer.Twitter.Common;
 using NoSqlExplorer.TwitterReader;
 using NoSqlExplorer.TwitterReader.Configuration;
@@ -35,7 +35,7 @@ namespace NoSqlExplorer.WpfClient.ViewModels
     private DockerConfigSection _dockerConfigSection;
 
     private readonly ITwitterReader _twitterReader;
-    private readonly IList<ITweetImporter> _tweetImporters = new List<ITweetImporter>(); 
+    private readonly IList<IDatabaseInteractor> _databaseInteractors = new List<IDatabaseInteractor>(); 
 
     public MainWindowViewModel()
     {
@@ -212,16 +212,16 @@ namespace NoSqlExplorer.WpfClient.ViewModels
 
     private async Task StartReadingFeedCommandHandler()
     {
-      var success = await CreateTweetImporters();
+      var success = await CreateDatabaseInteractors();
       if (success)
       {
         await StartReadingFeed();
       }
     }
 
-    private async Task<bool> CreateTweetImporters()
+    private async Task<bool> CreateDatabaseInteractors()
     {
-      _tweetImporters.Clear();
+      _databaseInteractors.Clear();
 
       foreach (var containerConfig in _dockerConfigSection.DockerContainer)
       {
@@ -237,19 +237,19 @@ namespace NoSqlExplorer.WpfClient.ViewModels
         }
 
         var host = containerWithName.First(c => c.ContainerState == DockerContainerState.Started).Host;
-        ITweetImporter tweetImporter = TweetImporterFactory.CreateTweetImporter(
+        IDatabaseInteractor databaseInteractor = DatabaseInteractorFactory.CreateDatabaseInteractor(
           containerConfig.Name,
           host,
           _dockerConfigSection);
 
-        if (tweetImporter == null)
+        if (databaseInteractor == null)
         {
           MessageQueue.Enqueue($"No Twitter loader available for container '{containerConfig.Name}'.", "DISMISS", () => { });
           return false;
         }
 
-        await tweetImporter.EnsureTableExistsAsync();
-        _tweetImporters.Add(tweetImporter);
+        await databaseInteractor.EnsureTableExistsAsync();
+        _databaseInteractors.Add(databaseInteractor);
       }
 
       return true;
@@ -294,11 +294,11 @@ namespace NoSqlExplorer.WpfClient.ViewModels
     private async void OnNewTweetHandler(Tweet tweet)
     {
       Dispatcher.CurrentDispatcher.Invoke(() => FeedsCount++);
-      foreach (var tweetImporter in _tweetImporters)
+      foreach (var databaseInteractor in _databaseInteractors)
       {
         try
         {
-          await tweetImporter.BulkInsertAsync(new[] {tweet});
+          await databaseInteractor.BulkInsertAsync(new[] {tweet});
         }
         catch (HttpRequestException)
         {
@@ -306,7 +306,7 @@ namespace NoSqlExplorer.WpfClient.ViewModels
           {
             StopReadingFeed();
             MessageQueue.Enqueue(
-              $"Inserting stopped, because container '{tweetImporter.ContainerName}' on host {tweetImporter.Host} is not reachable.",
+              $"Inserting stopped, because container '{databaseInteractor.ContainerName}' on host {databaseInteractor.Host} is not reachable.",
               "DISMISS", () => { });
           }
         }

@@ -7,8 +7,8 @@
     <ProjectGuid>{5B9B996A-B032-4753-9A63-6E2E5EBE2E0C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NoSqlExplorer.TweetImporter</RootNamespace>
-    <AssemblyName>NoSqlExplorer.TweetImporter</AssemblyName>
+    <RootNamespace>NoSqlExplorer.DatabaseInteraction</RootNamespace>
+    <AssemblyName>NoSqlExplorer.DatabaseInteraction</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -42,11 +42,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CrateTweetImporter.cs" />
-    <Compile Include="ITweetImporter.cs" />
-    <Compile Include="MongoTweetImporter.cs" />
+    <Compile Include="CrateDatabaseInteractor.cs" />
+    <Compile Include="IDatabaseInteractor.cs" />
+    <Compile Include="MongoDatabaseInteractor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TweetImporterFactory.cs" />
+    <Compile Include="DatabaseInteractorFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NoSqlExplorer.Crate.DAL\NoSqlExplorer.Crate.DAL.csproj">

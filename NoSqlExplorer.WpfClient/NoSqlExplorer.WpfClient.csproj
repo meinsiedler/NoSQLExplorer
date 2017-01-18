@@ -190,9 +190,9 @@
       <Project>{C09ED21A-F3A2-4E52-9C0B-325815059DFD}</Project>
       <Name>NoSqlExplorer.DockerAdapter</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NoSqlExplorer.TweetImporter\NoSqlExplorer.TweetImporter.csproj">
+    <ProjectReference Include="..\NoSqlExplorer.DatabaseInteraction\NoSqlExplorer.DatabaseInteraction.csproj">
       <Project>{5B9B996A-B032-4753-9A63-6E2E5EBE2E0C}</Project>
-      <Name>NoSqlExplorer.TweetImporter</Name>
+      <Name>NoSqlExplorer.DatabaseInteraction</Name>
     </ProjectReference>
     <ProjectReference Include="..\NoSqlExplorer.Twitter.Common\NoSqlExplorer.Twitter.Common.csproj">
       <Project>{0AEDC367-9D17-4E69-BC57-177D0E153A48}</Project>
