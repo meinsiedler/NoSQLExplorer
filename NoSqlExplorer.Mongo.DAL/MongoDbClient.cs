@@ -108,7 +108,7 @@ namespace NoSqlExplorer.Mongo.DAL
         return explainResult["executionStats"]["executionTimeMillis"].ToDouble();
       }
 
-      return -1.0;
+      return null;
     }
   }
 }
