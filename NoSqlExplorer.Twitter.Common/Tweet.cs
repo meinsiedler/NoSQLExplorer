@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NoSqlExplorer.Twitter.Common
 {
-  public struct Tweet
+  public class Tweet
   {
     public Tweet(long id, string text, string source, long userId, DateTime timestamp)
     {
