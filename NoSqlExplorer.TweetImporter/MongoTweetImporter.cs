@@ -3,16 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NoSqlExplorer.Mongo.DAL;
 using NoSqlExplorer.Twitter.Common;
 
 namespace NoSqlExplorer.TweetImporter
 {
   internal class MongoTweetImporter : ITweetImporter
   {
-    public MongoTweetImporter(string containerName, string host)
+    private MongoDbClient client;
+
+    public MongoTweetImporter(string containerName, string host, int port, string username, string password)
     {
       ContainerName = containerName;
       Host = host;
+      this.client = new MongoDbClient(host, port, username, password, "TweetCollection");
     }
 
     public string ContainerName { get; }
@@ -23,9 +27,9 @@ namespace NoSqlExplorer.TweetImporter
       return Task.FromResult(true);
     }
 
-    public Task BulkInsertAsync(IList<Tweet> tweets)
+    public async Task BulkInsertAsync(IList<Tweet> tweets)
     {
-      return Task.FromResult(true);
+      await this.client.AddAsync(tweets.AsEnumerable());
     }
   }
 }

@@ -4,16 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5B9B996A-B032-4753-9A63-6E2E5EBE2E0C}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{8FE62CED-A0FB-4791-9C0C-5F357C7D1412}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NoSqlExplorer.TweetImporter</RootNamespace>
-    <AssemblyName>NoSqlExplorer.TweetImporter</AssemblyName>
+    <RootNamespace>NoSqlExplorer.Mongo.DAL.Playground</RootNamespace>
+    <AssemblyName>NoSqlExplorer.Mongo.DAL.Playground</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -31,8 +33,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MongoDB.Bson, Version=2.4.1.18, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Bson.2.4.1\lib\net45\MongoDB.Bson.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -42,36 +47,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CrateTweetImporter.cs" />
-    <Compile Include="ITweetImporter.cs" />
-    <Compile Include="MongoTweetImporter.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TweetImporterFactory.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NoSqlExplorer.Crate.DAL\NoSqlExplorer.Crate.DAL.csproj">
-      <Project>{BD995F98-09E3-4DF4-A977-327C9C3DCD02}</Project>
-      <Name>NoSqlExplorer.Crate.DAL</Name>
-    </ProjectReference>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\NoSqlExplorer.DAL.Common\NoSqlExplorer.DAL.Common.csproj">
-      <Project>{3B97A4FB-1343-4CDE-A148-6536347480C7}</Project>
+      <Project>{3b97a4fb-1343-4cde-a148-6536347480c7}</Project>
       <Name>NoSqlExplorer.DAL.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NoSqlExplorer.DockerAdapter\NoSqlExplorer.DockerAdapter.csproj">
-      <Project>{C09ED21A-F3A2-4E52-9C0B-325815059DFD}</Project>
-      <Name>NoSqlExplorer.DockerAdapter</Name>
     </ProjectReference>
     <ProjectReference Include="..\NoSqlExplorer.Mongo.DAL\NoSqlExplorer.Mongo.DAL.csproj">
       <Project>{8745a793-0313-46d9-ad76-3855df399841}</Project>
       <Name>NoSqlExplorer.Mongo.DAL</Name>
     </ProjectReference>
     <ProjectReference Include="..\NoSqlExplorer.Twitter.Common\NoSqlExplorer.Twitter.Common.csproj">
-      <Project>{0AEDC367-9D17-4E69-BC57-177D0E153A48}</Project>
+      <Project>{0aedc367-9d17-4e69-bc57-177d0e153a48}</Project>
       <Name>NoSqlExplorer.Twitter.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NoSqlExplorer.Utils\NoSqlExplorer.Utils.csproj">
-      <Project>{92BD2399-02CB-4CC3-9347-556BEBFD6852}</Project>
-      <Name>NoSqlExplorer.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
