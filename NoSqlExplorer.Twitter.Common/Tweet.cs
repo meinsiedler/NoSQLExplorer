@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace NoSqlExplorer.Twitter.Common
 {
-  public struct Tweet
+  public class Tweet
   {
+    public Tweet() { }
+
     public Tweet(long id, string text, string source, long userId, DateTime timestamp)
     {
       Id = id;
@@ -17,10 +19,15 @@ namespace NoSqlExplorer.Twitter.Common
       Timestamp = timestamp;
     }
 
-    public long Id { get; }
-    public string Text { get; }
-    public string Source { get; }
-    public long UserId { get; }
-    public DateTime Timestamp { get; }
+    public long Id { get; set; }
+    public string Text { get; set; }
+    public string Source { get; set; }
+    public long UserId { get; set; }
+    public DateTime Timestamp { get; set; }
+
+    public override string ToString()
+    {
+      return $"Id: {Id}, Text: {Text?.Substring(0, 20) ?? "-"}, Timestamp: {Timestamp}";
+    }
   }
 }

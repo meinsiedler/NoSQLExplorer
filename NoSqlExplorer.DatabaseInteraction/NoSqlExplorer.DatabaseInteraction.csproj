@@ -43,10 +43,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CrateDatabaseInteractor.cs" />
+    <Compile Include="DatabaseException.cs" />
     <Compile Include="IDatabaseInteractor.cs" />
     <Compile Include="MongoDatabaseInteractor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DatabaseInteractorFactory.cs" />
+    <Compile Include="QueryHandlers\Crate\CrateQueryHandler.cs" />
+    <Compile Include="QueryHandlers\Crate\GetTweetsWithHashtagQueryHandler.cs" />
+    <Compile Include="QueryHandlers\IQueryHandler.cs" />
+    <Compile Include="Queries\GetTweetsWithHashtagQuery.cs" />
+    <Compile Include="Queries\IQuery.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NoSqlExplorer.Crate.DAL\NoSqlExplorer.Crate.DAL.csproj">
@@ -69,6 +75,9 @@
       <Project>{92BD2399-02CB-4CC3-9347-556BEBFD6852}</Project>
       <Name>NoSqlExplorer.Utils</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="QueryHandlers\Mongo\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

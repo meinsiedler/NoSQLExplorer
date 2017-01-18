@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NoSqlExplorer.Crate.DAL.Response;
+using NoSqlExplorer.DatabaseInteraction;
+using NoSqlExplorer.DatabaseInteraction.Queries;
 
 namespace NoSqlExplorer.Crate.DAL.Playground
 {
@@ -16,7 +18,10 @@ namespace NoSqlExplorer.Crate.DAL.Playground
       //Task.Factory.StartNew(() => Insert());
       //Task.Factory.StartNew(() => BulkInsert());
       //Task.Factory.StartNew(() => Query());
-      Task.Factory.StartNew(() => RunAll());
+      //Task.Factory.StartNew(() => RunAll());
+
+      Task.Factory.StartNew(() => RunQuery());
+
       Console.ReadLine();
     }
 
@@ -87,6 +92,25 @@ namespace NoSqlExplorer.Crate.DAL.Playground
       foreach (var entry in response.Result)
       {
         Console.WriteLine(entry);
+      }
+    }
+
+    private static async Task RunQuery()
+    {
+      IDatabaseInteractor dbInteractor = new CrateDatabaseInteractor("/crate", "clccontainer1.cloudapp.net", "http://clccontainer1.cloudapp.net:4200", 4);
+
+      try
+      {
+        var tweets = await dbInteractor.GetQueryResultAsync(new GetTweetsWithHashtagQuery("#tweet"));
+        tweets.Take(10).ToList().ForEach(t => Console.WriteLine(t));
+      }
+      catch (DatabaseException ex)
+      {
+        Console.WriteLine($"Database Exception : {ex.Message}.");
+      }
+      catch (Exception ex)
+      {
+        Console.WriteLine($"General Exception : {ex.Message}.");
       }
     }
   }

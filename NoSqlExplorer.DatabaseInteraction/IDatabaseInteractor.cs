@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using NoSqlExplorer.DatabaseInteraction.Queries;
 using NoSqlExplorer.Twitter.Common;
 
 namespace NoSqlExplorer.DatabaseInteraction
@@ -11,5 +12,7 @@ namespace NoSqlExplorer.DatabaseInteraction
 
     Task EnsureTableExistsAsync();
     Task BulkInsertAsync(IList<Tweet> tweets);
+
+    Task<IList<Tweet>> GetQueryResultAsync(GetTweetsWithHashtagQuery query);
   }
 }

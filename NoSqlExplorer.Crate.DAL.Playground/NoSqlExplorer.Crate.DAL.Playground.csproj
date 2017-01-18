@@ -60,6 +60,14 @@
       <Project>{3B97A4FB-1343-4CDE-A148-6536347480C7}</Project>
       <Name>NoSqlExplorer.DAL.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NoSqlExplorer.DatabaseInteraction\NoSqlExplorer.DatabaseInteraction.csproj">
+      <Project>{5B9B996A-B032-4753-9A63-6E2E5EBE2E0C}</Project>
+      <Name>NoSqlExplorer.DatabaseInteraction</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NoSqlExplorer.Twitter.Common\NoSqlExplorer.Twitter.Common.csproj">
+      <Project>{0aedc367-9d17-4e69-bc57-177d0e153a48}</Project>
+      <Name>NoSqlExplorer.Twitter.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -5,6 +5,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using NoSqlExplorer.Crate.DAL;
 using NoSqlExplorer.Crate.DAL.Response;
+using NoSqlExplorer.DatabaseInteraction.Queries;
+using NoSqlExplorer.DatabaseInteraction.QueryHandlers.Crate;
 using NoSqlExplorer.DAL.Common;
 using NoSqlExplorer.Twitter.Common;
 using NoSqlExplorer.Utils;
@@ -57,6 +59,12 @@ namespace NoSqlExplorer.DatabaseInteraction
     {
       var crateClient = new CrateClient(_crateUrl);
       await Retry.TryAwait<ICrateResponse, HttpRequestException>(() => crateClient.BulkInsert(tweets.Select(t => new CrateTweet(t))));
+    }
+
+    public async Task<IList<Tweet>> GetQueryResultAsync(GetTweetsWithHashtagQuery query)
+    {
+      var handler = new GetTweetsWithHashtagQueryHandler(new CrateClient(_crateUrl));
+      return await handler.HandleAsync(query);
     }
   }
 }
