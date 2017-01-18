@@ -48,7 +48,9 @@
     <Compile Include="MongoDatabaseInteractor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DatabaseInteractorFactory.cs" />
+    <Compile Include="Queries\GetAverageFollowersQuery.cs" />
     <Compile Include="QueryHandlers\Crate\CrateQueryHandler.cs" />
+    <Compile Include="QueryHandlers\Crate\GetAverageFollowersQueryHandler.cs" />
     <Compile Include="QueryHandlers\Crate\GetTweetsWithHashtagQueryHandler.cs" />
     <Compile Include="QueryHandlers\IQueryHandler.cs" />
     <Compile Include="Queries\GetTweetsWithHashtagQuery.cs" />

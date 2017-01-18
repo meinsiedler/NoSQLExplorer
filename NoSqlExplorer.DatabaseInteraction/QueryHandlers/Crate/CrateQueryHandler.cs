@@ -1,6 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
 using NoSqlExplorer.Crate.DAL;
+using NoSqlExplorer.Crate.DAL.Response;
 using NoSqlExplorer.DatabaseInteraction.Queries;
+using NoSqlExplorer.Utils;
 
 namespace NoSqlExplorer.DatabaseInteraction.QueryHandlers.Crate
 {
@@ -15,5 +20,27 @@ namespace NoSqlExplorer.DatabaseInteraction.QueryHandlers.Crate
     }
 
     public abstract Task<TResult> HandleAsync(TQuery query);
+
+    protected async Task<ICrateResponse<T>> GetResponse<T>(string query)
+    {
+      return await Retry.TryAwait<ICrateResponse<T>, HttpRequestException>(() => CrateClient.SubmitQuery<T>(query));
+    }
+
+    protected List<T> GetResultOrThrow<T>(ICrateResponse<T> response)
+    {
+      var errorResponse = response as ErrorResponse<T>;
+      if (errorResponse != null)
+      {
+        throw new DatabaseException(errorResponse.Error.Message);
+      }
+
+      var successResponse = response as SuccessResponse<T>;
+      if (successResponse != null)
+      {
+        return successResponse.Result;
+      }
+
+      throw new InvalidOperationException("Response is neither ErrorResponse nor SuccessResponse");
+    }
   }
 }
