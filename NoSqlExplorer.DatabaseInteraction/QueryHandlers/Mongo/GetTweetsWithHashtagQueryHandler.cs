@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using NoSqlExplorer.DatabaseInteraction.Queries;
 using NoSqlExplorer.Mongo.DAL;
@@ -15,9 +12,10 @@ namespace NoSqlExplorer.DatabaseInteraction.QueryHandlers.Mongo
     {
     }
 
-    public override Task<IList<Tweet>> HandleAsync(GetTweetsWithHashtagQuery query)
+    public override async Task<IList<Tweet>> HandleAsync(GetTweetsWithHashtagQuery query)
     {
-      throw new NotImplementedException();
+      var response = await GetResponse<Tweet>(t => t.Text.Contains(query.Hashtag));
+      return GetResultOrThrow(response);
     }
   }
 }

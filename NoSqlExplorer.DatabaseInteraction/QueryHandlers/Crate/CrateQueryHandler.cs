@@ -21,9 +21,9 @@ namespace NoSqlExplorer.DatabaseInteraction.QueryHandlers.Crate
 
     public abstract Task<TResult> HandleAsync(TQuery query);
 
-    protected async Task<ICrateResponse<T>> GetResponse<T>(string query)
+    protected Task<ICrateResponse<T>> GetResponse<T>(string query)
     {
-      return await Retry.TryAwait<ICrateResponse<T>, HttpRequestException>(() => CrateClient.SubmitQuery<T>(query));
+      return Retry.TryAwait<ICrateResponse<T>, HttpRequestException>(() => CrateClient.SubmitQuery<T>(query));
     }
 
     protected List<T> GetResultOrThrow<T>(ICrateResponse<T> response)
