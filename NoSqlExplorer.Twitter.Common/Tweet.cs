@@ -10,12 +10,13 @@ namespace NoSqlExplorer.Twitter.Common
   {
     public Tweet() { }
 
-    public Tweet(long id, string text, string source, long userId, DateTime timestamp)
+    public Tweet(long id, string text, string source, long userId, int followers, DateTime timestamp)
     {
       Id = id;
       Text = text;
       Source = source;
       UserId = userId;
+      Followers = followers;
       Timestamp = timestamp;
     }
 
@@ -23,6 +24,7 @@ namespace NoSqlExplorer.Twitter.Common
     public string Text { get; set; }
     public string Source { get; set; }
     public long UserId { get; set; }
+    public int Followers { get; set; }
     public DateTime Timestamp { get; set; }
 
     public override string ToString()

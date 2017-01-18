@@ -24,6 +24,7 @@ namespace NoSqlExplorer.DatabaseInteraction
         Text = tweet.Text;
         Source = tweet.Source;
         UserId = tweet.UserId;
+        Followers = tweet.Followers;
         Timestamp = tweet.Timestamp;
       }
 
@@ -32,6 +33,7 @@ namespace NoSqlExplorer.DatabaseInteraction
       public string Text { get; }
       public string Source { get; }
       public long UserId { get; }
+      public int Followers { get; }
       public DateTime Timestamp { get; }
     }
 
