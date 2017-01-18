@@ -49,7 +49,7 @@ namespace NoSqlExplorer.Mongo.DAL
         return new MongoResponse<T>(ex);
       }
 
-      return new MongoResponse<T>(items);
+      return new MongoResponse<T>(true);
     }
 
     public virtual async Task<IMongoResponse<T>> Single<T>(Expression<Func<T, bool>> expression)
