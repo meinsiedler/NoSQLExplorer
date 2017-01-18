@@ -2,16 +2,20 @@
 using System.Linq;
 using System.Threading.Tasks;
 using NoSqlExplorer.DatabaseInteraction.Queries;
+using NoSqlExplorer.Mongo.DAL;
 using NoSqlExplorer.Twitter.Common;
 
 namespace NoSqlExplorer.DatabaseInteraction
 {
   internal class MongoDatabaseInteractor : IDatabaseInteractor
   {
-    public MongoDatabaseInteractor(string containerName, string host)
+    private MongoDbClient client;
+
+    public MongoDatabaseInteractor(string containerName, string host, int port, string username, string password)
     {
       ContainerName = containerName;
       Host = host;
+      this.client = new MongoDbClient(host, port, username, password, "TweetCollection");
     }
 
     public string ContainerName { get; }
@@ -19,14 +23,12 @@ namespace NoSqlExplorer.DatabaseInteraction
 
     public Task EnsureTableExistsAsync()
     {
-      // TODO
       return Task.FromResult(true);
     }
 
-    public Task BulkInsertAsync(IList<Tweet> tweets)
+    public async Task BulkInsertAsync(IList<Tweet> tweets)
     {
-      // TODO
-      return Task.FromResult(true);
+      await this.client.AddAsync(tweets.AsEnumerable());
     }
 
     public Task<IList<Tweet>> GetQueryResultAsync(GetTweetsWithHashtagQuery query)

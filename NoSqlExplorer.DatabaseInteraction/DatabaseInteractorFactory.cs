@@ -20,7 +20,10 @@ namespace NoSqlExplorer.DatabaseInteraction
       {
         return new MongoDatabaseInteractor(
           containerName: name,
-          host: host);
+          host: host,
+          port: containerConfigElement.Port,
+          username: containerConfigElement.Username,
+          password: containerConfigElement.Password);
       }
 
       return null;

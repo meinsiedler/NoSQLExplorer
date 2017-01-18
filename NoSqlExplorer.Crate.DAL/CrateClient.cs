@@ -1,13 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using NoSqlExplorer.Crate.DAL.Response;
+using NoSqlExplorer.Crate.DAL.Util;
+using NoSqlExplorer.DAL.Common;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using NoSqlExplorer.Crate.DAL.Response;
-using NoSqlExplorer.Crate.DAL.Util;
 
 namespace NoSqlExplorer.Crate.DAL
 {
@@ -63,7 +61,7 @@ namespace NoSqlExplorer.Crate.DAL
 
     public async Task<ICrateResponse> DropTable<T>()
     {
-      var statement = $"drop table {StatementHelper.GetTableName(typeof(T))}";
+      var statement = $"drop table {Helper.GetTableName(typeof(T))}";
       return await this.SubmitRequest(new CrateRequest(statement));
     }
 
