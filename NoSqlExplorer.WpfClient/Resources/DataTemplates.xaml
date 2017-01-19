@@ -1,7 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:viewModels="clr-namespace:NoSqlExplorer.WpfClient.ViewModels"
-                    xmlns:views="clr-namespace:NoSqlExplorer.WpfClient.Views">
+                    xmlns:views="clr-namespace:NoSqlExplorer.WpfClient.Views"
+                    xmlns:queryVms="clr-namespace:NoSqlExplorer.WpfClient.ViewModels.Queries"
+                    xmlns:queryViews="clr-namespace:NoSqlExplorer.WpfClient.Views.Queries">
   <DataTemplate DataType="{x:Type viewModels:DockerInstanceViewModel}">
     <views:DockerInstanceControl />
   </DataTemplate>
@@ -10,4 +12,8 @@
     <views:DockerContainerControl />
   </DataTemplate>
 
+  <DataTemplate DataType="{x:Type queryVms:GetTweetsWithHashtagQueryViewModel}">
+    <queryViews:GetTweetsWithHashtagQueryControl />
+  </DataTemplate>
+  
 </ResourceDictionary>

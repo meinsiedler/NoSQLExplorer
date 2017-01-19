@@ -65,7 +65,11 @@ namespace NoSqlExplorer.WpfClient.ViewModels
         idx + 1));
       DockerInstanceViewModels = new ObservableCollection<DockerInstanceViewModel>(dockerInstanceViewModels);
       var initializeTasks = DockerInstanceViewModels.Select(i => i.InitializeAsync());
+
       await Task.WhenAll(initializeTasks);
+
+      await CreateDatabaseInteractors();
+      Messenger.Default.Send(new DatabaseInteractorsMessage(_databaseInteractors));
     }
 
     private void DefineCommands()
@@ -171,6 +175,7 @@ namespace NoSqlExplorer.WpfClient.ViewModels
     private async Task StartReadingFeedCommandHandler()
     {
       var success = await CreateDatabaseInteractors();
+      Messenger.Default.Send(new DatabaseInteractorsMessage(_databaseInteractors));
       if (success)
       {
         await StartReadingFeed();

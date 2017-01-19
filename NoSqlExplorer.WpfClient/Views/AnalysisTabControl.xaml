@@ -4,9 +4,40 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:NoSqlExplorer.WpfClient.Views"
+             xmlns:viewModels="clr-namespace:NoSqlExplorer.WpfClient.ViewModels"
+             xmlns:m="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="700" d:DesignWidth="1200"
+             d:DataContext="{d:DesignInstance viewModels:AnalysisTabViewModel}">
   <Grid Margin="15">
-    <TextBlock Text="Hello World" HorizontalAlignment="Center" />
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+    <m:Card Grid.Column="0" Margin="4" Padding="0">
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="Queries" Margin="16 16 16 4" Style="{StaticResource MaterialDesignHeadlineTextBlock}" />
+        <Separator Grid.Row="1" Style="{StaticResource MaterialDesignDarkSeparator}"/>
+        <ComboBox Grid.Row="2" Margin="16 4 16 4" Width="150" HorizontalAlignment="Left"
+                  ItemsSource="{Binding DatabaseInteractors}" DisplayMemberPath="ContainerName"
+                  SelectedItem="{Binding SelecteDatabaseInteractor}"/>
+        <Button Grid.Row="2" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignToolForegroundButton}" Width="30" Padding="2 0 2 0"
+                m:RippleAssist.IsCentered="True" ToolTip="Start" Command="{Binding StartQueryCommand}">
+          <m:PackIcon Kind="PlayCircleOutline" />
+        </Button>
+        <Separator Grid.Row="3" Style="{StaticResource MaterialDesignDarkSeparator}"/>
+        <ListBox Grid.Row="4" HorizontalContentAlignment="Stretch"
+                 ItemsSource="{Binding QueryViewModels}" SelectedItem="{Binding SelectedQueryViewModel}" />
+      </Grid>
+    </m:Card>
+
   </Grid>
 </UserControl>

@@ -100,10 +100,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Messages\DatabaseInteractorsMessage.cs" />
     <Compile Include="ViewModels\AnalysisTabViewModel.cs" />
+    <Compile Include="ViewModels\Queries\GetTweetsWithHashtagQueryViewModel.cs" />
+    <Compile Include="ViewModels\Queries\IQueryViewModel.cs" />
     <Compile Include="ViewModels\StartTabViewModel.cs" />
     <Compile Include="Views\AnalysisTabControl.xaml.cs">
       <DependentUpon>AnalysisTabControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Queries\GetTweetsWithHashtagQueryControl.xaml.cs">
+      <DependentUpon>GetTweetsWithHashtagQueryControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\StartTabControl.xaml.cs">
       <DependentUpon>StartTabControl.xaml</DependentUpon>
@@ -154,6 +160,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\Queries\GetTweetsWithHashtagQueryControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\StartTabControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
