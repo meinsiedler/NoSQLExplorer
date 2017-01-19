@@ -91,7 +91,8 @@ namespace NoSqlExplorer.Mongo.DAL
 
     private string BuildConnectionString(string host, int port, string user, string password)
     {
-      return $"mongodb://{user}:{password}@{host}:{port}";
+      return (user == string.Empty) ? $"mongodb://{host}:{port}"
+                                    : $"mongodb://{user}:{password}@{host}:{port}";
     }
 
     private double? GetExecutionTime<T>(Expression<Func<T, bool>> expression)
