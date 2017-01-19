@@ -107,12 +107,6 @@ namespace NoSqlExplorer.WpfClient.ViewModels
 
     private void RegisterMessages()
     {
-      Messenger.Default.Register<IsLoadingMessage>(this, m =>
-      {
-        IsLoading = m.IsLoading;
-        IsLoadingReason = m.Reason;
-      });
-
       Messenger.Default.Register<SnackbarMessage>(this, m =>
       {
         if (string.IsNullOrEmpty(m.Action))

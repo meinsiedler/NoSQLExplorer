@@ -76,14 +76,12 @@
             </DockPanel>
           </m:ColorZone>
 
-          <dragablz:TabablzControl Grid.Row="1" Style="{StaticResource MaterialDesignTabItemStyle}">
-            <dragablz:TabablzControl.InterTabController>
-              <dragablz:InterTabController />
-            </dragablz:TabablzControl.InterTabController>
-            <TabItem Header="START">
-
-              <DockPanel>
-                <Grid>
+          <Grid Grid.Row="1">
+            <dragablz:TabablzControl Style="{StaticResource MaterialDesignTabItemStyle}">
+              <dragablz:TabablzControl.InterTabController>
+                <dragablz:InterTabController />
+              </dragablz:TabablzControl.InterTabController>
+              <TabItem Header="START">
                   <Grid Margin="15">
                     <Grid.ColumnDefinitions>
                       <ColumnDefinition Width="Auto" />
@@ -195,30 +193,15 @@
                       </ScrollViewer>
                     </Grid>
                   </Grid>
-                  <m:Snackbar MessageQueue="{Binding MessageQueue}" x:Name="MainSnackbar" />
-                </Grid>
-              </DockPanel>
-            </TabItem>
-            <TabItem Header="ANALYSIS">
-              <TextBlock HorizontalAlignment="Center">Hello World</TextBlock>
-            </TabItem>
-          </dragablz:TabablzControl>
+              </TabItem>
+              <TabItem Header="ANALYSIS">
+                <TextBlock HorizontalAlignment="Center">Hello World</TextBlock>
+              </TabItem>
+            </dragablz:TabablzControl>
+            <m:Snackbar MessageQueue="{Binding MessageQueue}" x:Name="MainSnackbar" />
+          </Grid>
         </Grid>
       </m:DrawerHost>
     </m:DialogHost>
-
-    <Grid x:Name="Overlay" Panel.ZIndex="1000" Visibility="{Binding Path=IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
-      <Grid.Background>
-        <SolidColorBrush Color="Black" Opacity=".2"/>
-      </Grid.Background>
-
-      <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 200 0 0">
-        <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"                     
-                             Value="0"
-                             IsIndeterminate="True"
-                             VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="12 12 12 12"/>
-        <TextBlock Text="{Binding IsLoadingReason}" Style="{StaticResource MaterialDesignBody2TextBlock}" />
-      </StackPanel>
-    </Grid>
   </Grid>
 </Window>
