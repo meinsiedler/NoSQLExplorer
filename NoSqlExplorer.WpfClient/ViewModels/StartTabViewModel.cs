@@ -44,6 +44,7 @@ namespace NoSqlExplorer.WpfClient.ViewModels
     private void RegisterMessages()
     {
       Messenger.Default.Register<ReportContainersMessage>(this, ReportContainersMessageHandler);
+      Messenger.Default.Register<ReevaluateDatabaseInteractorsMessage>(this, async m => await ReevaluateDatabaseInteractors());
     }
 
     private void InitializeTwitterReader()
@@ -67,9 +68,14 @@ namespace NoSqlExplorer.WpfClient.ViewModels
       var initializeTasks = DockerInstanceViewModels.Select(i => i.InitializeAsync());
 
       await Task.WhenAll(initializeTasks);
+      await ReevaluateDatabaseInteractors();
+    }
 
-      await CreateDatabaseInteractors();
+    private async Task<bool> ReevaluateDatabaseInteractors()
+    {
+      var sucess = await CreateDatabaseInteractors();
       Messenger.Default.Send(new DatabaseInteractorsMessage(_databaseInteractors));
+      return sucess;
     }
 
     private void DefineCommands()
@@ -84,10 +90,11 @@ namespace NoSqlExplorer.WpfClient.ViewModels
         var stopTasks = DockerInstanceViewModels.Where(i => !i.IsDisabled).Select(i => i.StopVmCommandHandler());
         return Task.WhenAll(stopTasks);
       });
-      RefreshAllVmStatusCommand = new AsyncCommand(() =>
+      RefreshAllVmStatusCommand = new AsyncCommand(async () =>
       {
         var refreshTasks = DockerInstanceViewModels.Select(i => i.RefreshVmStatusCommandHandler());
-        return Task.WhenAll(refreshTasks);
+        await Task.WhenAll(refreshTasks);
+        await ReevaluateDatabaseInteractors();
       });
 
       StartAllContainersCommand = new AsyncCommand(() =>
@@ -174,8 +181,7 @@ namespace NoSqlExplorer.WpfClient.ViewModels
 
     private async Task StartReadingFeedCommandHandler()
     {
-      var success = await CreateDatabaseInteractors();
-      Messenger.Default.Send(new DatabaseInteractorsMessage(_databaseInteractors));
+      var success = await ReevaluateDatabaseInteractors();
       if (success)
       {
         await StartReadingFeed();

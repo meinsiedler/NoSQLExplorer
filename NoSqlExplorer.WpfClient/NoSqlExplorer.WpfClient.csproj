@@ -101,6 +101,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Messages\DatabaseInteractorsMessage.cs" />
+    <Compile Include="Messages\ReevaluateDatabaseInteractorsMessage.cs" />
     <Compile Include="ViewModels\AnalysisTabViewModel.cs" />
     <Compile Include="ViewModels\Queries\GetTweetsWithHashtagQueryViewModel.cs" />
     <Compile Include="ViewModels\Queries\IQueryViewModel.cs" />
