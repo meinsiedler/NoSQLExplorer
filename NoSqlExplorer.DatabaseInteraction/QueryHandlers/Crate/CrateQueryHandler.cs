@@ -19,14 +19,14 @@ namespace NoSqlExplorer.DatabaseInteraction.QueryHandlers.Crate
       CrateClient = crateClient;
     }
 
-    public abstract Task<TResult> HandleAsync(TQuery query);
+    public abstract Task<QueryResult<TResult>> HandleAsync(TQuery query);
 
     protected Task<ICrateResponse<T>> GetResponse<T>(string query)
     {
       return Retry.TryAwait<ICrateResponse<T>, HttpRequestException>(() => CrateClient.SubmitQuery<T>(query));
     }
 
-    protected List<T> GetResultOrThrow<T>(ICrateResponse<T> response)
+    protected QueryResult<IList<T>> GetResultOrThrow<T>(ICrateResponse<T> response)
     {
       var errorResponse = response as ErrorResponse<T>;
       if (errorResponse != null)
@@ -37,7 +37,7 @@ namespace NoSqlExplorer.DatabaseInteraction.QueryHandlers.Crate
       var successResponse = response as SuccessResponse<T>;
       if (successResponse != null)
       {
-        return successResponse.Result;
+        return new QueryResult<IList<T>>(successResponse.Result, successResponse.Duration);
       }
 
       throw new InvalidOperationException("Response is neither ErrorResponse nor SuccessResponse");

@@ -54,7 +54,7 @@ namespace NoSqlExplorer.Mongo.DAL.Playground
         IDatabaseInteractor dbInteractor = new MongoDatabaseInteractor("/mongo", "clccontainer1.cloudapp.net", 27017, "<username>", "<password>");
 
         var tweets = await dbInteractor.GetQueryResultAsync(new GetTweetsWithHashtagQuery("#tag1"));
-        tweets?.Take(10).ToList().ForEach(Console.WriteLine);
+        tweets.Result?.Take(10).ToList().ForEach(Console.WriteLine);
 
         var avgFollowers = dbInteractor.GetQueryResultAsync(new GetAverageFollowersQuery());
 

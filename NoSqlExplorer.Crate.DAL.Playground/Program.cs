@@ -101,11 +101,13 @@ namespace NoSqlExplorer.Crate.DAL.Playground
 
       try
       {
-        var tweets = await dbInteractor.GetQueryResultAsync(new GetTweetsWithHashtagQuery("#tweet"));
-        tweets?.Take(10).ToList().ForEach(Console.WriteLine);
+        var tweetsResult = await dbInteractor.GetQueryResultAsync(new GetTweetsWithHashtagQuery("#tweet"));
+        tweetsResult.Result?.Take(10).ToList().ForEach(Console.WriteLine);
+        Console.WriteLine($"Duration: {tweetsResult.DurationMillis} ms");
 
-        var avgFollowers = await dbInteractor.GetQueryResultAsync(new GetAverageFollowersQuery());
-        Console.WriteLine($"AVG Followers: {avgFollowers}");
+        var avgFollowersResult = await dbInteractor.GetQueryResultAsync(new GetAverageFollowersQuery());
+        Console.WriteLine($"AVG Followers: {avgFollowersResult}");
+        Console.WriteLine($"Duration: {avgFollowersResult.DurationMillis} ms");
       }
       catch (DatabaseException ex)
       {

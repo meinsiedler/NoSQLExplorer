@@ -22,20 +22,20 @@ namespace NoSqlExplorer.DatabaseInteraction.QueryHandlers.Mongo
       MongoDbClient = mongoDbClient;
     }
 
-    public abstract Task<TResult> HandleAsync(TQuery query);
+    public abstract Task<QueryResult<TResult>> HandleAsync(TQuery query);
 
     protected Task<IMongoResponse<IEnumerable<T>>> GetResponse<T>(Expression<Func<T, bool>> expression)
     {
       return Retry.TryAwait<IMongoResponse<IEnumerable<T>>, HttpRequestException>(() => MongoDbClient.FindAsync(expression));
     }
 
-    protected IList<T> GetResultOrThrow<T>(IMongoResponse<IEnumerable<T>> response)
+    protected QueryResult<IList<T>> GetResultOrThrow<T>(IMongoResponse<IEnumerable<T>> response)
     {
       if (!response.Success)
       {
         throw new DatabaseException(string.Join(Environment.NewLine, response.Errors));
       }
-      return response.Data.ToList();
+      return new QueryResult<IList<T>>(response.Data.ToList(), response.ExecutionTime.GetValueOrDefault());
     }  
   }
 }

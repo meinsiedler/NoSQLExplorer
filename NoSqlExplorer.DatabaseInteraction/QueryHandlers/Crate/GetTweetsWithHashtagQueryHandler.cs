@@ -25,7 +25,7 @@ namespace NoSqlExplorer.DatabaseInteraction.QueryHandlers.Crate
       return $"SELECT * FROM Tweets where Text LIKE '%{query.Hashtag}%'";
     }
 
-    public override async Task<IList<Tweet>> HandleAsync(GetTweetsWithHashtagQuery query)
+    public override async Task<QueryResult<IList<Tweet>>> HandleAsync(GetTweetsWithHashtagQuery query)
     {
       var response = await GetResponse<Tweet>(BuildQuery(query));
       return GetResultOrThrow(response);

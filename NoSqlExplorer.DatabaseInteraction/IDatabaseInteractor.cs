@@ -13,7 +13,7 @@ namespace NoSqlExplorer.DatabaseInteraction
     Task EnsureTableExistsAsync();
     Task BulkInsertAsync(IList<Tweet> tweets);
 
-    Task<IList<Tweet>> GetQueryResultAsync(GetTweetsWithHashtagQuery query);
-    Task<double> GetQueryResultAsync(GetAverageFollowersQuery query);
+    Task<QueryResult<IList<Tweet>>> GetQueryResultAsync(GetTweetsWithHashtagQuery query);
+    Task<QueryResult<double>> GetQueryResultAsync(GetAverageFollowersQuery query);
   }
 }

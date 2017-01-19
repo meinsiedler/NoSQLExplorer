@@ -33,13 +33,13 @@ namespace NoSqlExplorer.DatabaseInteraction
       await this.client.AddAsync(tweets.AsEnumerable());
     }
 
-    public async Task<IList<Tweet>> GetQueryResultAsync(GetTweetsWithHashtagQuery query)
+    public async Task<QueryResult<IList<Tweet>>> GetQueryResultAsync(GetTweetsWithHashtagQuery query)
     {
       var handler = new GetTweetsWithHashtagQueryHandler(this.client);
       return await handler.HandleAsync(query);
     }
 
-    public async Task<double> GetQueryResultAsync(GetAverageFollowersQuery query)
+    public async Task<QueryResult<double>> GetQueryResultAsync(GetAverageFollowersQuery query)
     {
       var handler = new GetAverageFollowersQueryHandler(this.client);
       return await handler.HandleAsync(query);

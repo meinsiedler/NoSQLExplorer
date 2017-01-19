@@ -5,6 +5,6 @@ namespace NoSqlExplorer.DatabaseInteraction.QueryHandlers
 {
   internal interface IQueryHandler<in TQuery, TResult> where TQuery : IQuery<TResult>
   {
-    Task<TResult> HandleAsync(TQuery query);
+    Task<QueryResult<TResult>> HandleAsync(TQuery query);
   }
 }

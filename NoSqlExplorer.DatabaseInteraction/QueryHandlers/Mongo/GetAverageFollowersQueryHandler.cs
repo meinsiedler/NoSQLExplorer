@@ -14,7 +14,7 @@ namespace NoSqlExplorer.DatabaseInteraction.QueryHandlers.Mongo
     {
     }
 
-    public override Task<double> HandleAsync(GetAverageFollowersQuery query)
+    public override Task<QueryResult<double>> HandleAsync(GetAverageFollowersQuery query)
     {
       throw new NotImplementedException();
     }

@@ -27,16 +27,16 @@ namespace NoSqlExplorer.DatabaseInteraction.QueryHandlers.Crate
       return "SELECT AVG(Followers) AS Followers FROM Tweets";
     }
 
-    public override async Task<double> HandleAsync(GetAverageFollowersQuery query)
+    public override async Task<QueryResult<double>> HandleAsync(GetAverageFollowersQuery query)
     {
-      var response = await Retry.TryAwait<ICrateResponse<ResultWrapper>, HttpRequestException>(() => CrateClient.SubmitQuery<ResultWrapper>(BuildQuery()));
+      var response = await GetResponse<ResultWrapper>(BuildQuery());
       var result = GetResultOrThrow(response);
 
-      if (result.Count != 1)
+      if (result.Result.Count != 1)
       {
         throw new DatabaseException($"Invalid result for {nameof(GetAverageFollowersQuery)}");
       }
-      return result[0].Followers;
+      return new QueryResult<double>(result.Result[0].Followers, result.DurationMillis);
     }
   }
 }

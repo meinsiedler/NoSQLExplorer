@@ -12,7 +12,7 @@ namespace NoSqlExplorer.DatabaseInteraction.QueryHandlers.Mongo
     {
     }
 
-    public override async Task<IList<Tweet>> HandleAsync(GetTweetsWithHashtagQuery query)
+    public override async Task<QueryResult<IList<Tweet>>> HandleAsync(GetTweetsWithHashtagQuery query)
     {
       var response = await GetResponse<Tweet>(t => t.Text.Contains(query.Hashtag));
       return GetResultOrThrow(response);

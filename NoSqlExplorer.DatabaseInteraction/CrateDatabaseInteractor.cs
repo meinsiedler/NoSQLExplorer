@@ -63,13 +63,13 @@ namespace NoSqlExplorer.DatabaseInteraction
       await Retry.TryAwait<ICrateResponse, HttpRequestException>(() => crateClient.BulkInsert(tweets.Select(t => new CrateTweet(t))));
     }
 
-    public async Task<IList<Tweet>> GetQueryResultAsync(GetTweetsWithHashtagQuery query)
+    public async Task<QueryResult<IList<Tweet>>> GetQueryResultAsync(GetTweetsWithHashtagQuery query)
     {
       var handler = new GetTweetsWithHashtagQueryHandler(new CrateClient(_crateUrl));
       return await handler.HandleAsync(query);
     }
 
-    public async Task<double> GetQueryResultAsync(GetAverageFollowersQuery query)
+    public async Task<QueryResult<double>> GetQueryResultAsync(GetAverageFollowersQuery query)
     {
       var handler = new GetAverageFollowersQueryHandler(new CrateClient(_crateUrl));
       return await handler.HandleAsync(query);
