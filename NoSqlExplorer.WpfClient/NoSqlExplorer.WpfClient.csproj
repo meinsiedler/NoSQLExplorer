@@ -100,11 +100,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModels\AnalysisTabViewModel.cs" />
+    <Compile Include="ViewModels\StartTabViewModel.cs" />
+    <Compile Include="Views\AnalysisTabControl.xaml.cs">
+      <DependentUpon>AnalysisTabControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StartTabControl.xaml.cs">
+      <DependentUpon>StartTabControl.xaml</DependentUpon>
+    </Compile>
     <Page Include="Resources\Converter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\DataTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AnalysisTabControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -142,6 +154,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\StartTabControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
