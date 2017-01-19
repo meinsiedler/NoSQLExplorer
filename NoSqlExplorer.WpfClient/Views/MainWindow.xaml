@@ -8,6 +8,7 @@
         xmlns:vm="clr-namespace:NoSqlExplorer.WpfClient.ViewModels"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:converter="clr-namespace:NoSqlExplorer.WpfClient.Converter"
+        xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
         mc:Ignorable="d"
         d:DesignWidth="1200" d:DesignHeight="700"
         Title="NoSQL Explorer"
@@ -36,9 +37,12 @@
   <Grid>
     <m:DialogHost Identifier="RootDialog" SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
       <m:DrawerHost>
-        <DockPanel>
-          <m:ColorZone Padding="16" m:ShadowAssist.ShadowDepth="Depth2"
-                                            Mode="PrimaryMid" DockPanel.Dock="Top">
+        <Grid>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+          </Grid.RowDefinitions>
+          <m:ColorZone Grid.Row="0" Padding="16 16 16 0" m:ShadowAssist.ShadowDepth="Depth2" Mode="PrimaryMid" DockPanel.Dock="Top">
             <DockPanel>
               <m:PopupBox DockPanel.Dock="Right" PlacementMode="BottomAndAlignRightEdges" StaysOpen="False">
                 <StackPanel>
@@ -54,17 +58,13 @@
                           </Hyperlink>
                         </TextBlock>
 
-                        <Button Style="{StaticResource MaterialDesignFlatButton}"
-                                                        IsCancel="True" 
-                                                        Margin="0 10 0 0"
-                                                        Command="{x:Static m:DialogHost.CloseDialogCommand}"
-                                                        HorizontalAlignment="Center">CLOSE</Button>
+                        <Button Style="{StaticResource MaterialDesignFlatButton}" IsCancel="True" Margin="0 10 0 0"
+                                Command="{x:Static m:DialogHost.CloseDialogCommand}" HorizontalAlignment="Center">CLOSE</Button>
                       </StackPanel>
                     </Button.CommandParameter>
                   </Button>
                 </StackPanel>
               </m:PopupBox>
-
               <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition Width="Auto" />
@@ -73,126 +73,137 @@
                 <m:PackIcon Grid.Column="0" Kind="CloudSync" Height="32" Width="32" Margin="0 0 10 0" />
                 <TextBlock Grid.Column="1" FontSize="22" VerticalAlignment="Center" Text="{StaticResource AppName}" />
               </Grid>
-
-
             </DockPanel>
           </m:ColorZone>
-          <Grid>
-            <Grid Margin="15">
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-              </Grid.ColumnDefinitions>
-              <m:Card Grid.Column="0" Width="240" HorizontalAlignment="Left">
+
+          <dragablz:TabablzControl Grid.Row="1" Style="{StaticResource MaterialDesignTabItemStyle}">
+            <dragablz:TabablzControl.InterTabController>
+              <dragablz:InterTabController />
+            </dragablz:TabablzControl.InterTabController>
+            <TabItem Header="START">
+
+              <DockPanel>
                 <Grid>
-                  <Grid.RowDefinitions>
-                    <RowDefinition Height="200" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                  </Grid.RowDefinitions>
-                  <Image Height="200" Width="250" Source="../Images/twitter.jpg" Stretch="UniformToFill" />
-                  <Button Grid.Row="0" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
+                  <Grid Margin="15">
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto" />
+                      <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <m:Card Grid.Column="0" Width="240" HorizontalAlignment="Left">
+                      <Grid>
+                        <Grid.RowDefinitions>
+                          <RowDefinition Height="200" />
+                          <RowDefinition Height="*" />
+                          <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Image Height="200" Width="250" Source="../Images/twitter.jpg" Stretch="UniformToFill" />
+                        <Button Grid.Row="0" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
                                             HorizontalAlignment="Left" VerticalAlignment="Bottom"
                                             Margin="16 0 0 -20" ToolTip="Get PIN"
                                             Command="{Binding GetPinCommand}">
-                    <m:PackIcon Kind="Twitter" />
-                  </Button>
-                  <Button Grid.Row="0" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
+                          <m:PackIcon Kind="Twitter" />
+                        </Button>
+                        <Button Grid.Row="0" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
                                             HorizontalAlignment="Right" VerticalAlignment="Bottom"
                                             Margin="0 0 16 -20"
                                             ToolTip="Start loading"
                                             Visibility="{Binding IsFeedReadingRunning, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=true}"
                                             Command="{Binding StartFeedReadingCommand}">
-                    <m:PackIcon Kind="Play" />
-                  </Button>
-                  <Button Grid.Row="0" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
+                          <m:PackIcon Kind="Play" />
+                        </Button>
+                        <Button Grid.Row="0" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
                                             HorizontalAlignment="Right" VerticalAlignment="Bottom"
                                             Margin="0 0 16 -20"
                                             ToolTip="Stop loading"
                                             Visibility="{Binding IsFeedReadingRunning, Converter={StaticResource BooleanToVisibilityConverter}}"
                                             Command="{Binding StopFeedReadingCommand}">
-                    <m:PackIcon Kind="Stop" />
-                  </Button>
-                  <StackPanel Grid.Row="1" Margin="8 24 8 0" >
-                    <TextBlock FontWeight="Bold">Load Twitter Messages</TextBlock>
-                    <TextBlock TextWrapping="Wrap" VerticalAlignment="Center">
+                          <m:PackIcon Kind="Stop" />
+                        </Button>
+                        <StackPanel Grid.Row="1" Margin="8 24 8 0" >
+                          <TextBlock FontWeight="Bold">Load Twitter Messages</TextBlock>
+                          <TextBlock TextWrapping="Wrap" VerticalAlignment="Center">
                                             Load Twitter messages into the database.
                                             Twitter messages are used as testdata.
                                             Click the Twitter icon above to receive a PIN-Code and enter it below.
-                    </TextBlock>
-                    <TextBox Text="{Binding Pin, UpdateSourceTrigger=PropertyChanged}" m:HintAssist.Hint="PIN" />
-                  </StackPanel>
-                  <StackPanel HorizontalAlignment="Right" Grid.Row="2" Orientation="Horizontal" Margin="8">
-                    <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" Margin="10 0 0 0">
+                          </TextBlock>
+                          <TextBox Text="{Binding Pin, UpdateSourceTrigger=PropertyChanged}" m:HintAssist.Hint="PIN" />
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Right" Grid.Row="2" Orientation="Horizontal" Margin="8">
+                          <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" Margin="10 0 0 0">
                                             <TextBlock Text="{Binding FeedsCount}" />
                                             <TextBlock Text="tweets loaded" />
                                         </TextBlock>
-                  </StackPanel>
-                </Grid>
-              </m:Card>
-              <Grid Grid.Column="1" Margin="10 0 0 0">
-                <Grid.RowDefinitions>
-                  <RowDefinition Height="Auto" />
-                  <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <m:ColorZone Grid.Row="0" Mode="PrimaryLight" Padding="16" CornerRadius="3" m:ShadowAssist.ShadowDepth="Depth3" Margin="2" MinWidth="410" >
-                  <Grid>
-                    <StackPanel>
-                      <TextBlock FontWeight="Bold">Docker Instance Bulk Actions</TextBlock>
-                      <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                        <Button HorizontalAlignment="Right" Style="{StaticResource MaterialDesignToolForegroundButton}" Width="30" Padding="2 0 2 0"
+                        </StackPanel>
+                      </Grid>
+                    </m:Card>
+                    <Grid Grid.Column="1" Margin="10 0 0 0">
+                      <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                      </Grid.RowDefinitions>
+                      <m:ColorZone Grid.Row="0" Mode="PrimaryLight" Padding="16" CornerRadius="3" m:ShadowAssist.ShadowDepth="Depth3" Margin="2" MinWidth="410" >
+                        <Grid>
+                          <StackPanel>
+                            <TextBlock FontWeight="Bold">Docker Instance Bulk Actions</TextBlock>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                              <Button HorizontalAlignment="Right" Style="{StaticResource MaterialDesignToolForegroundButton}" Width="30" Padding="2 0 2 0"
                                                             m:RippleAssist.IsCentered="True" ToolTip="Start All Instances"
                                                             Command="{Binding StartAllVmsCommand}">
-                          <m:PackIcon Kind="PlayCircleOutline" />
-                        </Button>
-                        <Button HorizontalAlignment="Right" Style="{StaticResource MaterialDesignToolForegroundButton}" Width="30" Padding="2 0 2 0"
+                                <m:PackIcon Kind="PlayCircleOutline" />
+                              </Button>
+                              <Button HorizontalAlignment="Right" Style="{StaticResource MaterialDesignToolForegroundButton}" Width="30" Padding="2 0 2 0"
                                                             m:RippleAssist.IsCentered="True" ToolTip="Stop All Instances"
                                                             Command="{Binding StopAllVmsCommand}">
-                          <m:PackIcon Kind="StopCircleOutline" />
-                        </Button>
-                        <Button HorizontalAlignment="Right" Style="{StaticResource MaterialDesignToolForegroundButton}" Width="30" Padding="2 0 2 0"
+                                <m:PackIcon Kind="StopCircleOutline" />
+                              </Button>
+                              <Button HorizontalAlignment="Right" Style="{StaticResource MaterialDesignToolForegroundButton}" Width="30" Padding="2 0 2 0"
                                                             m:RippleAssist.IsCentered="True" ToolTip="Refresh All Instances"
                                                             Command="{Binding RefreshAllVmStatusCommand}">
-                          <m:PackIcon Kind="Refresh" />
-                        </Button>
-                      </StackPanel>
-                    </StackPanel>
-                    <StackPanel HorizontalAlignment="Right">
-                      <TextBlock FontWeight="Bold">Docker Container Bulk Actions</TextBlock>
-                      <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <ComboBox Width="100" Text="Select Container" Margin="0 0 10 0"
+                                <m:PackIcon Kind="Refresh" />
+                              </Button>
+                            </StackPanel>
+                          </StackPanel>
+                          <StackPanel HorizontalAlignment="Right">
+                            <TextBlock FontWeight="Bold">Docker Container Bulk Actions</TextBlock>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                              <ComboBox Width="100" Text="Select Container" Margin="0 0 10 0"
                                   ItemsSource="{Binding ContainerNames}" SelectedItem="{Binding SelectedContainerName}" />
-                        <Button HorizontalAlignment="Right" Style="{StaticResource MaterialDesignToolForegroundButton}" Width="30" Padding="2 0 2 0"
+                              <Button HorizontalAlignment="Right" Style="{StaticResource MaterialDesignToolForegroundButton}" Width="30" Padding="2 0 2 0"
                                 Command="{Binding StartAllContainersCommand}"
                                 m:RippleAssist.IsCentered="True" ToolTip="Start All Containers">
-                          <m:PackIcon Kind="PlayCircleOutline" />
-                        </Button>
-                        <Button HorizontalAlignment="Right" Style="{StaticResource MaterialDesignToolForegroundButton}" Width="30" Padding="2 0 2 0"
+                                <m:PackIcon Kind="PlayCircleOutline" />
+                              </Button>
+                              <Button HorizontalAlignment="Right" Style="{StaticResource MaterialDesignToolForegroundButton}" Width="30" Padding="2 0 2 0"
                                 Command="{Binding StopAllContainersCommand}"
                                 m:RippleAssist.IsCentered="True" ToolTip="Stop All Containers">
-                          <m:PackIcon Kind="StopCircleOutline" />
-                        </Button>
-                      </StackPanel>
-                    </StackPanel>
-                  </Grid>
-                </m:ColorZone>
-                <ScrollViewer Grid.Row="1" Margin="0 10 0 0"
+                                <m:PackIcon Kind="StopCircleOutline" />
+                              </Button>
+                            </StackPanel>
+                          </StackPanel>
+                        </Grid>
+                      </m:ColorZone>
+                      <ScrollViewer Grid.Row="1" Margin="0 10 0 0"
                               HorizontalScrollBarVisibility="Disabled"
                               VerticalScrollBarVisibility="Auto">
-                  <ItemsControl ItemsSource="{Binding DockerInstanceViewModels}" HorizontalContentAlignment="Stretch">
-                    <ItemsControl.ItemsPanel>
-                      <ItemsPanelTemplate>
-                        <WrapPanel />
-                      </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                  </ItemsControl>
-                </ScrollViewer>
-              </Grid>
-            </Grid>
-            <m:Snackbar MessageQueue="{Binding MessageQueue}" x:Name="MainSnackbar" />
-          </Grid>
-        </DockPanel>
-
+                        <ItemsControl ItemsSource="{Binding DockerInstanceViewModels}" HorizontalContentAlignment="Stretch">
+                          <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                              <WrapPanel />
+                            </ItemsPanelTemplate>
+                          </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                      </ScrollViewer>
+                    </Grid>
+                  </Grid>
+                  <m:Snackbar MessageQueue="{Binding MessageQueue}" x:Name="MainSnackbar" />
+                </Grid>
+              </DockPanel>
+            </TabItem>
+            <TabItem Header="ANALYSIS">
+              <TextBlock HorizontalAlignment="Center">Hello World</TextBlock>
+            </TabItem>
+          </dragablz:TabablzControl>
+        </Grid>
       </m:DrawerHost>
     </m:DialogHost>
 
@@ -208,10 +219,6 @@
                              VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="12 12 12 12"/>
         <TextBlock Text="{Binding IsLoadingReason}" Style="{StaticResource MaterialDesignBody2TextBlock}" />
       </StackPanel>
-
     </Grid>
   </Grid>
 </Window>
-
-
-
