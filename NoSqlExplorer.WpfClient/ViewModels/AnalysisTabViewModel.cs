@@ -39,7 +39,8 @@ namespace NoSqlExplorer.WpfClient.ViewModels
     {
       QueryViewModels = new ObservableCollection<IQueryViewModel>
       {
-        new GetTweetsWithHashtagQueryViewModel()
+        new GetTweetsWithHashtagQueryViewModel(),
+        new GetAverageFollowersQueryViewModel()
       };
     }
 
@@ -85,6 +86,13 @@ namespace NoSqlExplorer.WpfClient.ViewModels
       {
         var result = await SelecteDatabaseInteractor.GetQueryResultAsync(getTweetsWithHashtagQueryViewModel.Query);
         MessageBox.Show($"got result!{Environment.NewLine}{string.Join(Environment.NewLine, result.Result.Take(3))}{Environment.NewLine}Duration: {result.DurationMillis}");
+      }
+
+      var getAverageFollowersViewModel = SelectedQueryViewModel as GetAverageFollowersQueryViewModel;
+      if (getAverageFollowersViewModel != null)
+      {
+        var result = await SelecteDatabaseInteractor.GetQueryResultAsync(getAverageFollowersViewModel.Query);
+        MessageBox.Show($"got result!{Environment.NewLine}{result.Result}{Environment.NewLine}Duration: {result.DurationMillis}");
       }
     }
   }

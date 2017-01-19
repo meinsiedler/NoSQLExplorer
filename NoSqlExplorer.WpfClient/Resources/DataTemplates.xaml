@@ -15,5 +15,9 @@
   <DataTemplate DataType="{x:Type queryVms:GetTweetsWithHashtagQueryViewModel}">
     <queryViews:GetTweetsWithHashtagQueryControl />
   </DataTemplate>
-  
+
+  <DataTemplate DataType="{x:Type queryVms:GetAverageFollowersQueryViewModel}">
+    <queryViews:GetAverageFollowersQueryControl />
+  </DataTemplate>
+
 </ResourceDictionary>

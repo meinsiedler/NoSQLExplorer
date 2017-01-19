@@ -103,11 +103,15 @@
     <Compile Include="Messages\DatabaseInteractorsMessage.cs" />
     <Compile Include="Messages\ReevaluateDatabaseInteractorsMessage.cs" />
     <Compile Include="ViewModels\AnalysisTabViewModel.cs" />
+    <Compile Include="ViewModels\Queries\GetAverageFollowersQueryViewModel.cs" />
     <Compile Include="ViewModels\Queries\GetTweetsWithHashtagQueryViewModel.cs" />
     <Compile Include="ViewModels\Queries\IQueryViewModel.cs" />
     <Compile Include="ViewModels\StartTabViewModel.cs" />
     <Compile Include="Views\AnalysisTabControl.xaml.cs">
       <DependentUpon>AnalysisTabControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Queries\GetAverageFollowersQueryControl.xaml.cs">
+      <DependentUpon>GetAverageFollowersQueryControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Queries\GetTweetsWithHashtagQueryControl.xaml.cs">
       <DependentUpon>GetTweetsWithHashtagQueryControl.xaml</DependentUpon>
@@ -161,6 +165,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\Queries\GetAverageFollowersQueryControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Queries\GetTweetsWithHashtagQueryControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -26,13 +26,22 @@
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Text="Queries" Margin="16 16 16 4" Style="{StaticResource MaterialDesignHeadlineTextBlock}" />
         <Separator Grid.Row="1" Style="{StaticResource MaterialDesignDarkSeparator}"/>
-        <ComboBox Grid.Row="2" Margin="16 4 16 4" Width="150" HorizontalAlignment="Left"
-                  ItemsSource="{Binding DatabaseInteractors}" DisplayMemberPath="ContainerName"
-                  SelectedItem="{Binding SelecteDatabaseInteractor}"/>
-        <Button Grid.Row="2" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignToolForegroundButton}" Width="30" Padding="2 0 2 0"
-                m:RippleAssist.IsCentered="True" ToolTip="Start" Command="{Binding StartQueryCommand}">
-          <m:PackIcon Kind="PlayCircleOutline" />
-        </Button>
+        <Grid Grid.Row="2">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+          <TextBlock Grid.Column="0" Text="Select Database: " Margin="16 4 0 4" VerticalAlignment="Center" />
+          <ComboBox Grid.Column="1" Margin="16 4 16 4" Width="150" HorizontalAlignment="Left"
+                    ItemsSource="{Binding DatabaseInteractors}" DisplayMemberPath="ContainerName"
+                    SelectedItem="{Binding SelecteDatabaseInteractor}"/>
+          <Button Grid.Column="2" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignToolForegroundButton}" Width="30" Padding="2 0 2 0"
+                m:RippleAssist.IsCentered="True" ToolTip="Submit Query" Command="{Binding StartQueryCommand}">
+            <m:PackIcon Kind="PlayCircleOutline" />
+          </Button>
+        </Grid>
+        
         <Separator Grid.Row="3" Style="{StaticResource MaterialDesignDarkSeparator}"/>
         <ListBox Grid.Row="4" HorizontalContentAlignment="Stretch"
                  ItemsSource="{Binding QueryViewModels}" SelectedItem="{Binding SelectedQueryViewModel}" />

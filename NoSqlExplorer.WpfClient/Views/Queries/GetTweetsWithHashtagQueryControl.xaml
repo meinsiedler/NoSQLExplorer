@@ -9,7 +9,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="60" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance queries:GetTweetsWithHashtagQueryViewModel}">
-  <Grid>
+  <Grid Margin="0 4 0 4">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
       <RowDefinition Height="Auto" />
@@ -21,7 +21,8 @@
         <ColumnDefinition Width="*" />
       </Grid.ColumnDefinitions>
       <TextBlock Grid.Column="0" Text="#" Style="{StaticResource MaterialDesignSubheadingTextBlock}" Margin="5 0 5 0" VerticalAlignment="Center" />
-      <TextBox Grid.Column="1" m:HintAssist.Hint="Hashtag" Text="{Binding Hashtag}"/>
+      <TextBox Grid.Column="1" m:HintAssist.Hint="Hashtag" Width="150" HorizontalAlignment="Left"
+               Text="{Binding Hashtag, UpdateSourceTrigger=PropertyChanged}"/>
     </Grid>
   </Grid>
 </UserControl>
