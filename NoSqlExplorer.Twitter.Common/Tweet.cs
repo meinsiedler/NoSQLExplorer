@@ -8,19 +8,28 @@ namespace NoSqlExplorer.Twitter.Common
 {
   public class Tweet
   {
-    public Tweet(long id, string text, string source, long userId, DateTime timestamp)
+    public Tweet() { }
+
+    public Tweet(long id, string text, string source, long userId, int followers, DateTime timestamp)
     {
       Id = id;
       Text = text;
       Source = source;
       UserId = userId;
+      Followers = followers;
       Timestamp = timestamp;
     }
 
-    public long Id { get; }
-    public string Text { get; }
-    public string Source { get; }
-    public long UserId { get; }
-    public DateTime Timestamp { get; }
+    public long Id { get; set; }
+    public string Text { get; set; }
+    public string Source { get; set; }
+    public long UserId { get; set; }
+    public int Followers { get; set; }
+    public DateTime Timestamp { get; set; }
+
+    public override string ToString()
+    {
+      return $"Id: {Id}, Text: {Text?.Substring(0, 20) ?? "-"}, Timestamp: {Timestamp}";
+    }
   }
 }

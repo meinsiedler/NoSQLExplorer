@@ -1,28 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using NoSqlExplorer.DockerAdapter.Configuration;
 
-namespace NoSqlExplorer.TweetImporter
+namespace NoSqlExplorer.DatabaseInteraction
 {
-  public static class TweetImporterFactory
+  public static class DatabaseInteractorFactory
   {
-    public static ITweetImporter CreateTweetImporter(string name, string host, DockerConfigSection dockerConfigSection)
+    public static IDatabaseInteractor CreateDatabaseInteractor(string name, string host, DockerConfigSection dockerConfigSection)
     {
       var containerConfigElement = dockerConfigSection.DockerContainer.Single(e => e.Name == name);
       if (name == "/crate")
       {
-        return new CrateTweetImporter(
+        return new CrateDatabaseInteractor(
           containerName: name,
           host: host,
           crateUrl: $"http://{host}:{containerConfigElement.Port}",
           shards: dockerConfigSection.DockerInstances.Count);
       }
-      if (name == "/mongo-shard")
+      if (name == "/mongo-router")
       {
-        return new MongoTweetImporter(
+        return new MongoDatabaseInteractor(
           containerName: name,
           host: host,
           port: containerConfigElement.Port,

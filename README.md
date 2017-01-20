@@ -40,7 +40,7 @@ The configuration can be found in the `Config\Docker.config` file:
   </dockerInstances>
   <dockerContainer>
     <dockerContainer name="/crate" port="4200" />
-    <dockerContainer name="/mongo-shard" port="27019"/>
+    <dockerContainer name="/mongo-router" port="27019"/>
   </dockerContainer>
 </dockerConfig>
 ```

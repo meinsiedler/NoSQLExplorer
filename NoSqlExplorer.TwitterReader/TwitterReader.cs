@@ -74,8 +74,9 @@ namespace NoSqlExplorer.TwitterReader
       var text = json["text"].ToString();
       var source = json["source"].ToString();
       var userId = long.Parse(json["user"].SelectToken("id").ToString());
+      var followers = int.Parse(json["user"].SelectToken("followers_count").ToString());
       var timestamp = TimestampConverter.TimestampToDateTime(long.Parse(json["timestamp_ms"].ToString()));
-      var tweet = new Tweet(id, text, source, userId, timestamp);
+      var tweet = new Tweet(id, text, source, userId, followers, timestamp);
       return tweet;
     }
     private string CreateAuthorizationHeader(string accessToken, string accessTokenSecret)

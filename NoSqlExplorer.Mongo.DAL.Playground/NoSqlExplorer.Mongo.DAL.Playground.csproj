@@ -59,6 +59,10 @@
       <Project>{3b97a4fb-1343-4cde-a148-6536347480c7}</Project>
       <Name>NoSqlExplorer.DAL.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NoSqlExplorer.DatabaseInteraction\NoSqlExplorer.DatabaseInteraction.csproj">
+      <Project>{5B9B996A-B032-4753-9A63-6E2E5EBE2E0C}</Project>
+      <Name>NoSqlExplorer.DatabaseInteraction</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NoSqlExplorer.Mongo.DAL\NoSqlExplorer.Mongo.DAL.csproj">
       <Project>{8745a793-0313-46d9-ad76-3855df399841}</Project>
       <Name>NoSqlExplorer.Mongo.DAL</Name>

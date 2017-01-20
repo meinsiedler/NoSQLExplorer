@@ -39,6 +39,10 @@
       <HintPath>..\packages\Docker.DotNet.2.124.3\lib\net45\Docker.DotNet.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Dragablz, Version=0.0.3.182, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dragablz.0.0.3.182\lib\net45\Dragablz.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="GalaSoft.MvvmLight, Version=5.3.0.19026, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
       <Private>True</Private>
@@ -96,11 +100,34 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Messages\DatabaseInteractorsMessage.cs" />
+    <Compile Include="Messages\ReevaluateDatabaseInteractorsMessage.cs" />
+    <Compile Include="ViewModels\AnalysisTabViewModel.cs" />
+    <Compile Include="ViewModels\Queries\GetAverageFollowersQueryViewModel.cs" />
+    <Compile Include="ViewModels\Queries\GetTweetsWithHashtagQueryViewModel.cs" />
+    <Compile Include="ViewModels\Queries\IQueryViewModel.cs" />
+    <Compile Include="ViewModels\StartTabViewModel.cs" />
+    <Compile Include="Views\AnalysisTabControl.xaml.cs">
+      <DependentUpon>AnalysisTabControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Queries\GetAverageFollowersQueryControl.xaml.cs">
+      <DependentUpon>GetAverageFollowersQueryControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Queries\GetTweetsWithHashtagQueryControl.xaml.cs">
+      <DependentUpon>GetTweetsWithHashtagQueryControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StartTabControl.xaml.cs">
+      <DependentUpon>StartTabControl.xaml</DependentUpon>
+    </Compile>
     <Page Include="Resources\Converter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\DataTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AnalysisTabControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -122,7 +149,6 @@
     </Compile>
     <Compile Include="AsyncCommand.cs" />
     <Compile Include="Converter\BooleanToVisibilityConverter.cs" />
-    <Compile Include="Messages\IsLoadingMessage.cs" />
     <Compile Include="Messages\ReportContainersMessage.cs" />
     <Compile Include="Messages\SnackbarMessage.cs" />
     <Compile Include="ViewModels\DockerContainerViewModel.cs" />
@@ -139,6 +165,18 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\Queries\GetAverageFollowersQueryControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Queries\GetTweetsWithHashtagQueryControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StartTabControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -190,9 +228,9 @@
       <Project>{C09ED21A-F3A2-4E52-9C0B-325815059DFD}</Project>
       <Name>NoSqlExplorer.DockerAdapter</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NoSqlExplorer.TweetImporter\NoSqlExplorer.TweetImporter.csproj">
+    <ProjectReference Include="..\NoSqlExplorer.DatabaseInteraction\NoSqlExplorer.DatabaseInteraction.csproj">
       <Project>{5B9B996A-B032-4753-9A63-6E2E5EBE2E0C}</Project>
-      <Name>NoSqlExplorer.TweetImporter</Name>
+      <Name>NoSqlExplorer.DatabaseInteraction</Name>
     </ProjectReference>
     <ProjectReference Include="..\NoSqlExplorer.Twitter.Common\NoSqlExplorer.Twitter.Common.csproj">
       <Project>{0AEDC367-9D17-4E69-BC57-177D0E153A48}</Project>
