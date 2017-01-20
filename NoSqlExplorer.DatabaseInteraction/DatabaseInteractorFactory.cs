@@ -16,7 +16,7 @@ namespace NoSqlExplorer.DatabaseInteraction
           crateUrl: $"http://{host}:{containerConfigElement.Port}",
           shards: dockerConfigSection.DockerInstances.Count);
       }
-      if (name == "/mongo")
+      if (name == "/mongo-shard")
       {
         return new MongoDatabaseInteractor(
           containerName: name,
