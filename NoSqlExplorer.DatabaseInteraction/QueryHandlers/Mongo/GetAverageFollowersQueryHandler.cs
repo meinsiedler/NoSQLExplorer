@@ -16,6 +16,7 @@ namespace NoSqlExplorer.DatabaseInteraction.QueryHandlers.Mongo
 
     public override Task<QueryResult<double>> HandleAsync(GetAverageFollowersQuery query)
     {
+      // TODO: handle optional Hashtag, if Hashtag is not provided: calculate average followers for all tweets
       throw new NotImplementedException();
     }
   }

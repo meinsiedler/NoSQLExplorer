@@ -8,5 +8,18 @@ namespace NoSqlExplorer.DatabaseInteraction.Queries
 {
   public class GetAverageFollowersQuery : IQuery<double>
   {
+    public GetAverageFollowersQuery()
+    {
+    }
+
+    public GetAverageFollowersQuery(string hashtag)
+    {
+      if (!hashtag.StartsWith("#"))
+        throw new ArgumentException("Hashtag must start with '#'");
+
+      Hashtag = hashtag;
+    }
+
+    public string Hashtag { get; }
   }
 }

@@ -22,14 +22,19 @@ namespace NoSqlExplorer.DatabaseInteraction.QueryHandlers.Crate
     {
     }
 
-    private string BuildQuery()
+    private string BuildQuery(GetAverageFollowersQuery query)
     {
-      return "SELECT AVG(Followers) AS Followers FROM Tweets";
+      var sb = new StringBuilder("SELECT AVG(Followers) AS Followers FROM Tweets");
+      if (!string.IsNullOrEmpty(query.Hashtag))
+      {
+        sb.Append($" WHERE Text LIKE '%{query.Hashtag}%'");
+      }
+      return sb.ToString();
     }
 
     public override async Task<QueryResult<double>> HandleAsync(GetAverageFollowersQuery query)
     {
-      var response = await GetResponse<ResultWrapper>(BuildQuery());
+      var response = await GetResponse<ResultWrapper>(BuildQuery(query));
       var result = GetResultOrThrow(response);
 
       if (result.Result.Count != 1)
