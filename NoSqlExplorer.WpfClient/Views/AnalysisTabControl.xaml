@@ -29,14 +29,17 @@
         <Grid Grid.Row="2">
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
           </Grid.ColumnDefinitions>
-          <TextBlock Grid.Column="0" Text="Select Database: " Margin="16 4 0 4" VerticalAlignment="Center" />
-          <ComboBox Grid.Column="1" Margin="16 4 16 4" Width="150" HorizontalAlignment="Left"
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+          </Grid.RowDefinitions>
+          <TextBlock Grid.Column="0" Grid.Row="0" Text="Choose Database: " Margin="16 4 0 0" VerticalAlignment="Center" />
+          <ComboBox Grid.Column="0" Grid.Row="1" Margin="16 0 0 4" Width="150" HorizontalAlignment="Left"
                     ItemsSource="{Binding DatabaseInteractors}" DisplayMemberPath="ContainerName"
                     SelectedItem="{Binding SelecteDatabaseInteractor}"/>
-          <Button Grid.Column="2" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignToolForegroundButton}" Width="30" Padding="2 0 2 0"
+          <Button Grid.RowSpan="2" Grid.Column="1" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignToolForegroundButton}" Width="30" Padding="2 0 2 0"
                 m:RippleAssist.IsCentered="True" ToolTip="Submit Query" Command="{Binding StartQueryCommand}">
             <m:PackIcon Kind="PlayCircleOutline" />
           </Button>

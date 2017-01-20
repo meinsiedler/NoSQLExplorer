@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -71,11 +72,29 @@ namespace NoSqlExplorer.WpfClient.ViewModels
       await ReevaluateDatabaseInteractors();
     }
 
-    private async Task<bool> ReevaluateDatabaseInteractors()
+    private enum DatabaseInteractionStatus
     {
-      var sucess = await CreateDatabaseInteractors();
-      Messenger.Default.Send(new DatabaseInteractorsMessage(_databaseInteractors));
-      return sucess;
+      Success,
+      Incomplete,
+      Cancelled
+    }
+
+    private readonly CancellationTokenSource _cts = new CancellationTokenSource();
+    private Task<DatabaseInteractionStatus> _createDatabaseInteractorsTask;
+
+    private async Task<DatabaseInteractionStatus> ReevaluateDatabaseInteractors()
+    {
+      if (_createDatabaseInteractorsTask != null && !_createDatabaseInteractorsTask.IsCompleted)
+      {
+        _cts.Cancel();
+      }
+      _createDatabaseInteractorsTask = CreateDatabaseInteractors(_cts.Token);
+      var status = await _createDatabaseInteractorsTask;
+      if (status != DatabaseInteractionStatus.Cancelled)
+      {
+        Messenger.Default.Send(new DatabaseInteractorsMessage(_databaseInteractors));
+      }
+      return status;
     }
 
     private void DefineCommands()
@@ -181,8 +200,8 @@ namespace NoSqlExplorer.WpfClient.ViewModels
 
     private async Task StartReadingFeedCommandHandler()
     {
-      var success = await ReevaluateDatabaseInteractors();
-      if (success)
+      var status = await ReevaluateDatabaseInteractors();
+      if (status == DatabaseInteractionStatus.Success)
       {
         await StartReadingFeed();
       }
@@ -224,7 +243,7 @@ namespace NoSqlExplorer.WpfClient.ViewModels
       SendSnackbarMessage(new SnackbarMessage("Loading of Twitter messages stopped."));
     }
 
-    private async Task<bool> CreateDatabaseInteractors()
+    private async Task<DatabaseInteractionStatus> CreateDatabaseInteractors(CancellationToken cancellationToken)
     {
       _databaseInteractors.Clear();
 
@@ -238,7 +257,7 @@ namespace NoSqlExplorer.WpfClient.ViewModels
         if (containerWithName.All(c => c.ContainerState != DockerContainerState.Started))
         {
           SendSnackbarMessage(new SnackbarMessage($"Inserting cannot be started since no container with name '{containerConfig.Name}' is started.", "DISMISS"));
-          return false;
+          return DatabaseInteractionStatus.Incomplete;
         }
 
         var host = containerWithName.First(c => c.ContainerState == DockerContainerState.Started).Host;
@@ -250,14 +269,20 @@ namespace NoSqlExplorer.WpfClient.ViewModels
         if (databaseInteractor == null)
         {
           SendSnackbarMessage(new SnackbarMessage($"No Twitter loader available for container '{containerConfig.Name}'.", "DISMISS"));
-          return false;
+          return DatabaseInteractionStatus.Incomplete;
         }
 
         await databaseInteractor.EnsureTableExistsAsync();
+
+        if (cancellationToken.IsCancellationRequested)
+        {
+          return DatabaseInteractionStatus.Cancelled;
+        }
+
         _databaseInteractors.Add(databaseInteractor);
       }
 
-      return true;
+      return DatabaseInteractionStatus.Success;
     }
 
     private async void OnNewTweetHandler(Tweet tweet)
