@@ -8,6 +8,7 @@ namespace NoSqlExplorer.Crate.DAL.Response
 {
   public interface ICrateResponse
   {
+    TimeSpan? ExecutionTime { get; set; }
   }
 
   public interface ICrateResponse<T> : ICrateResponse
