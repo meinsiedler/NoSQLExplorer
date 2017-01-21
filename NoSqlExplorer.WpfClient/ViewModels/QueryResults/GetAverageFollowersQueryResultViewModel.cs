@@ -14,7 +14,7 @@ namespace NoSqlExplorer.WpfClient.ViewModels.QueryResults
     {
       Hashtag = !string.IsNullOrEmpty(hashtag) ? hashtag : "<all tweets>" ;
       AverageFollowers = queryResult.Result;
-      DurationMillis = queryResult.DurationMillis;
+      DurationMillis = queryResult.DurationMillis.GetValueOrDefault();
     }
 
     private string _hashtag;

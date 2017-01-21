@@ -11,7 +11,7 @@ namespace NoSqlExplorer.WpfClient.ViewModels.QueryResults
     {
       Hashtag = hashtag;
       TweetCount = queryResult.Result.Count;
-      DurationMillis = queryResult.DurationMillis;
+      DurationMillis = queryResult.DurationMillis.GetValueOrDefault();
     }
 
     private string _hashtag;
