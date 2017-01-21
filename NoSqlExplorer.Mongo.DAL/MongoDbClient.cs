@@ -60,6 +60,7 @@ namespace NoSqlExplorer.Mongo.DAL
 
         var queryable = this.database
           .GetCollection<T>(Helper.GetTableName(typeof(T)))
+          .WithReadPreference(ReadPreference.PrimaryPreferred)
           .AsQueryable();
 
         var stopWatch = new Stopwatch();
@@ -81,7 +82,8 @@ namespace NoSqlExplorer.Mongo.DAL
       try
       {
         var collection = this.database
-          .GetCollection<T>(Helper.GetTableName(typeof(T)));
+          .GetCollection<T>(Helper.GetTableName(typeof(T)))
+          .WithReadPreference(ReadPreference.PrimaryPreferred);
 
         var stopWatch = new Stopwatch();
         stopWatch.Start();
@@ -100,6 +102,7 @@ namespace NoSqlExplorer.Mongo.DAL
     {
       var aggregateDoc = this.database
         .GetCollection<T>(Helper.GetTableName(typeof(T)))
+        .WithReadPreference(ReadPreference.PrimaryPreferred)
         .Aggregate()
         .Match(match)
         .Group(grouping);
