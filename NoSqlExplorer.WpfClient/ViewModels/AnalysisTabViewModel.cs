@@ -22,7 +22,7 @@ namespace NoSqlExplorer.WpfClient.ViewModels
       RegisterMessages();
       DefineCommands();
       InitializeQueryViewModels();
-      
+      InitializeQueryResultViewModels();
     }
 
     private void RegisterMessages()
@@ -31,7 +31,7 @@ namespace NoSqlExplorer.WpfClient.ViewModels
         m =>
         {
           DatabaseInteractors = new ObservableCollection<IDatabaseInteractor>(m.DatabaseInteractors);
-          InitializeQueryResultViewModels();
+          UpdateQueryResultViewModels();
         });
     }
 
@@ -52,7 +52,15 @@ namespace NoSqlExplorer.WpfClient.ViewModels
 
     private void InitializeQueryResultViewModels()
     {
-      QueryResultViewModels = new ObservableCollection<QueryResultViewModel>(QueryViewModels.Select(q => new QueryResultViewModel(q, DatabaseInteractors)));
+      QueryResultViewModels = new ObservableCollection<QueryResultViewModel>(QueryViewModels.Select(q => new QueryResultViewModel(q)));
+    }
+
+    private void UpdateQueryResultViewModels()
+    {
+      foreach (var queryResultViewModel in QueryResultViewModels)
+      {
+        queryResultViewModel.UpdateDatabaseResultViewModels(DatabaseInteractors);
+      }
     }
 
     public AsyncCommand StartQueryCommand { get; private set; }

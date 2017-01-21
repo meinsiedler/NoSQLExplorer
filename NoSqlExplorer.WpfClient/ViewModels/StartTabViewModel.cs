@@ -247,42 +247,57 @@ namespace NoSqlExplorer.WpfClient.ViewModels
     {
       _databaseInteractors.Clear();
 
+      var status = DatabaseInteractionStatus.Success;
+
       foreach (var containerConfig in _dockerConfigSection.DockerContainer)
       {
-        var containerWithName = DockerInstanceViewModels
+        var result = await CreateDatabaseInteractor(containerConfig, cancellationToken);
+        if (result.Item2 == DatabaseInteractionStatus.Success)
+        {
+          _databaseInteractors.Add(result.Item1);
+        }
+        else
+        {
+          status = result.Item2;
+        }
+      }
+
+      return status;
+    }
+
+    private async Task<Tuple<IDatabaseInteractor, DatabaseInteractionStatus>> CreateDatabaseInteractor(DockerContainerConfigElement containerConfig, CancellationToken cancellationToken)
+    {
+      var containerWithName = DockerInstanceViewModels
           .SelectMany(i => i.DockerContainerViewModels)
           .Where(c => c.ContainerName == containerConfig.Name)
           .ToList();
 
-        if (containerWithName.All(c => c.ContainerState != DockerContainerState.Started))
-        {
-          SendSnackbarMessage(new SnackbarMessage($"Inserting cannot be started since no container with name '{containerConfig.Name}' is started.", "DISMISS"));
-          return DatabaseInteractionStatus.Incomplete;
-        }
-
-        var host = containerWithName.First(c => c.ContainerState == DockerContainerState.Started).Host;
-        IDatabaseInteractor databaseInteractor = DatabaseInteractorFactory.CreateDatabaseInteractor(
-          containerConfig.Name,
-          host,
-          _dockerConfigSection);
-
-        if (databaseInteractor == null)
-        {
-          SendSnackbarMessage(new SnackbarMessage($"No Twitter loader available for container '{containerConfig.Name}'.", "DISMISS"));
-          return DatabaseInteractionStatus.Incomplete;
-        }
-
-        await databaseInteractor.EnsureTableExistsAsync();
-
-        if (cancellationToken.IsCancellationRequested)
-        {
-          return DatabaseInteractionStatus.Cancelled;
-        }
-
-        _databaseInteractors.Add(databaseInteractor);
+      if (containerWithName.All(c => c.ContainerState != DockerContainerState.Started))
+      {
+        SendSnackbarMessage(new SnackbarMessage($"Inserting cannot be started since no container with name '{containerConfig.Name}' is started.", "DISMISS"));
+        return Tuple.Create<IDatabaseInteractor, DatabaseInteractionStatus>(null, DatabaseInteractionStatus.Incomplete);
       }
 
-      return DatabaseInteractionStatus.Success;
+      var host = containerWithName.First(c => c.ContainerState == DockerContainerState.Started).Host;
+      IDatabaseInteractor databaseInteractor = DatabaseInteractorFactory.CreateDatabaseInteractor(
+        containerConfig.Name,
+        host,
+        _dockerConfigSection);
+
+      if (databaseInteractor == null)
+      {
+        SendSnackbarMessage(new SnackbarMessage($"No Twitter loader available for container '{containerConfig.Name}'.", "DISMISS"));
+        return Tuple.Create<IDatabaseInteractor, DatabaseInteractionStatus>(null, DatabaseInteractionStatus.Incomplete);
+      }
+
+      await databaseInteractor.EnsureTableExistsAsync();
+
+      if (cancellationToken.IsCancellationRequested)
+      {
+        return Tuple.Create<IDatabaseInteractor, DatabaseInteractionStatus>(null, DatabaseInteractionStatus.Cancelled);
+      }
+
+      return Tuple.Create(databaseInteractor, DatabaseInteractionStatus.Success);
     }
 
     private async void OnNewTweetHandler(Tweet tweet)

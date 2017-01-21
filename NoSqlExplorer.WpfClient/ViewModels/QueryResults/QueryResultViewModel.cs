@@ -12,15 +12,25 @@ namespace NoSqlExplorer.WpfClient.ViewModels.QueryResults
 {
   public class QueryResultViewModel : ViewModelBase
   {
-    public QueryResultViewModel(IQueryViewModel queryViewModelViewModel, IList<IDatabaseInteractor> databaseInteractors)
+    public QueryResultViewModel(IQueryViewModel queryViewModelViewModel)
     {
       QueryViewModel = queryViewModelViewModel;
       QueryName = queryViewModelViewModel.QueryName;
-      DatabaseResultViewModels = new ObservableCollection<DatabaseResultViewModel>(databaseInteractors.Select(di => new DatabaseResultViewModel(di.ContainerName)));
+      DatabaseResultViewModels = new ObservableCollection<DatabaseResultViewModel>();
     }
 
     public IQueryViewModel QueryViewModel { get; }
     public string QueryName { get; }
+
+    public void UpdateDatabaseResultViewModels(IList<IDatabaseInteractor> databaseInteractors)
+    {
+      var newDatabaseInteractors = databaseInteractors.Where(di => DatabaseResultViewModels.All(vm => vm.ContainerName != di.ContainerName));
+      foreach (var newDatabaseInteractor in newDatabaseInteractors)
+      {
+        DatabaseResultViewModels.Add(new DatabaseResultViewModel(newDatabaseInteractor.ContainerName));
+      }
+      DatabaseResultViewModels = new ObservableCollection<DatabaseResultViewModel>(DatabaseResultViewModels.OrderBy(vm => vm.ContainerName));
+    }
 
     private ObservableCollection<DatabaseResultViewModel> _databaseResultViewModels;
     public ObservableCollection<DatabaseResultViewModel> DatabaseResultViewModels
