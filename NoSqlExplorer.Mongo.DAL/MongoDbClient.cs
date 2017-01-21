@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -56,14 +57,17 @@ namespace NoSqlExplorer.Mongo.DAL
     {
       try
       {
-        var execTime = this.GetExecutionTime(expression);
 
-        var result = await this.database
-        .GetCollection<T>(Helper.GetTableName(typeof(T)))
-        .AsQueryable()
-        .SingleOrDefaultAsync(expression);
+        var queryable = this.database
+          .GetCollection<T>(Helper.GetTableName(typeof(T)))
+          .AsQueryable();
 
-        return new MongoResponse<T>(result) { ExecutionTime = execTime };
+        var stopWatch = new Stopwatch();
+        stopWatch.Start();
+        var result = await queryable.SingleOrDefaultAsync(expression);
+        stopWatch.Stop();
+
+        return new MongoResponse<T>(result) { ExecutionTime = stopWatch.Elapsed.TotalMilliseconds };
 
       }
       catch (Exception ex)
@@ -76,12 +80,15 @@ namespace NoSqlExplorer.Mongo.DAL
     {
       try
       {
-        var execTime = this.GetExecutionTime(expression);
+        var collection = this.database
+          .GetCollection<T>(Helper.GetTableName(typeof(T)));
 
-        var result = await this.database
-          .GetCollection<T>(Helper.GetTableName(typeof(T)))
-          .FindAsync(expression);
-        return new MongoResponse<IEnumerable<T>>(result.ToList()) { ExecutionTime = execTime };
+        var stopWatch = new Stopwatch();
+        stopWatch.Start();
+        var result = await collection.FindAsync(expression);
+        stopWatch.Stop();
+
+        return new MongoResponse<IEnumerable<T>>(result.ToList()) { ExecutionTime = stopWatch.Elapsed.TotalMilliseconds };
       }
       catch (Exception ex)
       {
