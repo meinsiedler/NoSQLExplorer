@@ -11,6 +11,7 @@ using NoSqlExplorer.DatabaseInteraction;
 using NoSqlExplorer.DatabaseInteraction.Queries;
 using NoSqlExplorer.WpfClient.Messages;
 using NoSqlExplorer.WpfClient.ViewModels.Queries;
+using NoSqlExplorer.WpfClient.ViewModels.QueryResults;
 
 namespace NoSqlExplorer.WpfClient.ViewModels
 {
@@ -21,6 +22,7 @@ namespace NoSqlExplorer.WpfClient.ViewModels
       RegisterMessages();
       DefineCommands();
       InitializeQueryViewModels();
+      InitializeQueryResultViewModels();
     }
 
     private void RegisterMessages()
@@ -42,6 +44,11 @@ namespace NoSqlExplorer.WpfClient.ViewModels
         new GetTweetsWithHashtagQueryViewModel(),
         new GetAverageFollowersQueryViewModel()
       };
+    }
+
+    private void InitializeQueryResultViewModels()
+    {
+      QueryResultViewModels = new ObservableCollection<QueryResultViewModel>(QueryViewModels.Select(q => new QueryResultViewModel(q.QueryName)));
     }
 
     public AsyncCommand StartQueryCommand { get; private set; }
@@ -72,6 +79,13 @@ namespace NoSqlExplorer.WpfClient.ViewModels
     {
       get { return _queryViewModels; }
       set { Set(ref _queryViewModels, value); }
+    }
+
+    private ObservableCollection<QueryResultViewModel> _queryResultViewModels;
+    public ObservableCollection<QueryResultViewModel> QueryResultViewModels
+    {
+      get { return _queryResultViewModels; }
+      set { Set(ref _queryResultViewModels, value); }
     }
 
     private async Task StartQueryCommandHandler()

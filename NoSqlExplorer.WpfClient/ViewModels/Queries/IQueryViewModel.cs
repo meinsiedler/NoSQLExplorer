@@ -9,6 +9,7 @@ namespace NoSqlExplorer.WpfClient.ViewModels.Queries
 {
   public interface IQueryViewModel
   {
+    string QueryName { get; }
     bool IsValid { get; }
   }
 }

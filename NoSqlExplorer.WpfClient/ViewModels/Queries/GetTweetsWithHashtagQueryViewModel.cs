@@ -27,6 +27,8 @@ namespace NoSqlExplorer.WpfClient.ViewModels.Queries
       }
     }
 
+    public string QueryName => "Get Tweets with Hashtag";
+
     public bool IsValid => !string.IsNullOrEmpty(Hashtag);
 
     public GetTweetsWithHashtagQuery Query { get; private set; }

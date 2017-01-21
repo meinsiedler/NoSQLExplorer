@@ -10,6 +10,8 @@ namespace NoSqlExplorer.WpfClient.ViewModels.Queries
 {
   public class GetAverageFollowersQueryViewModel : ViewModelBase, IQueryViewModel
   {
+    public string QueryName => "Get Average Followers";
+
     public bool IsValid => true;
 
     private string _hashtag;

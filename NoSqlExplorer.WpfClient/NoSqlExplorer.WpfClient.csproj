@@ -106,6 +106,9 @@
     <Compile Include="ViewModels\Queries\GetAverageFollowersQueryViewModel.cs" />
     <Compile Include="ViewModels\Queries\GetTweetsWithHashtagQueryViewModel.cs" />
     <Compile Include="ViewModels\Queries\IQueryViewModel.cs" />
+    <Compile Include="ViewModels\QueryResults\DatabaseResultViewModel.cs" />
+    <Compile Include="ViewModels\QueryResults\IQueryResultRow.cs" />
+    <Compile Include="ViewModels\QueryResults\QueryResultViewModel.cs" />
     <Compile Include="ViewModels\StartTabViewModel.cs" />
     <Compile Include="Views\AnalysisTabControl.xaml.cs">
       <DependentUpon>AnalysisTabControl.xaml</DependentUpon>
@@ -115,6 +118,12 @@
     </Compile>
     <Compile Include="Views\Queries\GetTweetsWithHashtagQueryControl.xaml.cs">
       <DependentUpon>GetTweetsWithHashtagQueryControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\QueryResults\DatabaseResultControl.xaml.cs">
+      <DependentUpon>DatabaseResultControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\QueryResults\QueryResultControl.xaml.cs">
+      <DependentUpon>QueryResultControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\StartTabControl.xaml.cs">
       <DependentUpon>StartTabControl.xaml</DependentUpon>
@@ -170,6 +179,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Queries\GetTweetsWithHashtagQueryControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\QueryResults\DatabaseResultControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\QueryResults\QueryResultControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -3,7 +3,9 @@
                     xmlns:viewModels="clr-namespace:NoSqlExplorer.WpfClient.ViewModels"
                     xmlns:views="clr-namespace:NoSqlExplorer.WpfClient.Views"
                     xmlns:queryVms="clr-namespace:NoSqlExplorer.WpfClient.ViewModels.Queries"
-                    xmlns:queryViews="clr-namespace:NoSqlExplorer.WpfClient.Views.Queries">
+                    xmlns:queryViews="clr-namespace:NoSqlExplorer.WpfClient.Views.Queries"
+                    xmlns:queryResultVms="clr-namespace:NoSqlExplorer.WpfClient.ViewModels.QueryResults"
+                    xmlns:queryResultViews="clr-namespace:NoSqlExplorer.WpfClient.Views.QueryResults">
   <DataTemplate DataType="{x:Type viewModels:DockerInstanceViewModel}">
     <views:DockerInstanceControl />
   </DataTemplate>
@@ -18,6 +20,10 @@
 
   <DataTemplate DataType="{x:Type queryVms:GetAverageFollowersQueryViewModel}">
     <queryViews:GetAverageFollowersQueryControl />
+  </DataTemplate>
+  
+  <DataTemplate DataType="{x:Type queryResultVms:QueryResultViewModel}">
+    <queryResultViews:QueryResultControl />
   </DataTemplate>
 
 </ResourceDictionary>
