@@ -51,7 +51,7 @@
       </Grid>
     </m:Card>
     
-    <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
+    <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
       <ItemsControl HorizontalAlignment="Stretch" ItemsSource="{Binding QueryResultViewModels}" />
     </ScrollViewer>
 

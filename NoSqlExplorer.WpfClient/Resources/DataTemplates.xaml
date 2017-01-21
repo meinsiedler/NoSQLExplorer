@@ -25,5 +25,17 @@
   <DataTemplate DataType="{x:Type queryResultVms:QueryResultViewModel}">
     <queryResultViews:QueryResultControl />
   </DataTemplate>
+  
+  <DataTemplate DataType="{x:Type queryResultVms:DatabaseResultViewModel}">
+    <queryResultViews:DatabaseResultControl />
+  </DataTemplate>
+
+  <DataTemplate DataType="{x:Type queryResultVms:GetTweetsWithHashtagQueryResultViewModel}">
+    <queryResultViews:GetTweetsWithHashtagQueryResultControl />
+  </DataTemplate>
+  
+  <DataTemplate DataType="{x:Type queryResultVms:GetAverageFollowersQueryResultViewModel}">
+    <queryResultViews:GetAverageFollowersQueryResultControl />
+  </DataTemplate>
 
 </ResourceDictionary>

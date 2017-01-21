@@ -107,7 +107,9 @@
     <Compile Include="ViewModels\Queries\GetTweetsWithHashtagQueryViewModel.cs" />
     <Compile Include="ViewModels\Queries\IQueryViewModel.cs" />
     <Compile Include="ViewModels\QueryResults\DatabaseResultViewModel.cs" />
-    <Compile Include="ViewModels\QueryResults\IQueryResultRow.cs" />
+    <Compile Include="ViewModels\QueryResults\GetAverageFollowersQueryResultViewModel.cs" />
+    <Compile Include="ViewModels\QueryResults\GetTweetsWithHashtagQueryResultViewModel.cs" />
+    <Compile Include="ViewModels\QueryResults\IQueryResultRowViewModel.cs" />
     <Compile Include="ViewModels\QueryResults\QueryResultViewModel.cs" />
     <Compile Include="ViewModels\StartTabViewModel.cs" />
     <Compile Include="Views\AnalysisTabControl.xaml.cs">
@@ -121,6 +123,12 @@
     </Compile>
     <Compile Include="Views\QueryResults\DatabaseResultControl.xaml.cs">
       <DependentUpon>DatabaseResultControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\QueryResults\GetAverageFollowersQueryResultControl.xaml.cs">
+      <DependentUpon>GetAverageFollowersQueryResultControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\QueryResults\GetTweetsWithHashtagQueryResultControl.xaml.cs">
+      <DependentUpon>GetTweetsWithHashtagQueryResultControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\QueryResults\QueryResultControl.xaml.cs">
       <DependentUpon>QueryResultControl.xaml</DependentUpon>
@@ -183,6 +191,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\QueryResults\DatabaseResultControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\QueryResults\GetAverageFollowersQueryResultControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\QueryResults\GetTweetsWithHashtagQueryResultControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

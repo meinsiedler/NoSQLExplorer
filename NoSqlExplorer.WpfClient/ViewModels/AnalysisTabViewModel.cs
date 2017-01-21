@@ -22,13 +22,17 @@ namespace NoSqlExplorer.WpfClient.ViewModels
       RegisterMessages();
       DefineCommands();
       InitializeQueryViewModels();
-      InitializeQueryResultViewModels();
+      
     }
 
     private void RegisterMessages()
     {
       Messenger.Default.Register<DatabaseInteractorsMessage>(this,
-        m => DatabaseInteractors = new ObservableCollection<IDatabaseInteractor>(m.DatabaseInteractors));
+        m =>
+        {
+          DatabaseInteractors = new ObservableCollection<IDatabaseInteractor>(m.DatabaseInteractors);
+          InitializeQueryResultViewModels();
+        });
     }
 
     private void DefineCommands()
@@ -48,7 +52,7 @@ namespace NoSqlExplorer.WpfClient.ViewModels
 
     private void InitializeQueryResultViewModels()
     {
-      QueryResultViewModels = new ObservableCollection<QueryResultViewModel>(QueryViewModels.Select(q => new QueryResultViewModel(q.QueryName)));
+      QueryResultViewModels = new ObservableCollection<QueryResultViewModel>(QueryViewModels.Select(q => new QueryResultViewModel(q, DatabaseInteractors)));
     }
 
     public AsyncCommand StartQueryCommand { get; private set; }
@@ -99,14 +103,16 @@ namespace NoSqlExplorer.WpfClient.ViewModels
       if (getTweetsWithHashtagQueryViewModel != null)
       {
         var result = await SelecteDatabaseInteractor.GetQueryResultAsync(getTweetsWithHashtagQueryViewModel.Query);
-        MessageBox.Show($"got result!{Environment.NewLine}{string.Join(Environment.NewLine, result.Result.Take(3))}{Environment.NewLine}Duration: {result.DurationMillis}");
+        var queryResultViewModel = QueryResultViewModels.SingleOrDefault(vm => vm.QueryViewModel == getTweetsWithHashtagQueryViewModel);
+        queryResultViewModel?.PrependResult(SelecteDatabaseInteractor.ContainerName, new GetTweetsWithHashtagQueryResultViewModel(getTweetsWithHashtagQueryViewModel.Hashtag, result));
       }
 
       var getAverageFollowersViewModel = SelectedQueryViewModel as GetAverageFollowersQueryViewModel;
       if (getAverageFollowersViewModel != null)
       {
         var result = await SelecteDatabaseInteractor.GetQueryResultAsync(getAverageFollowersViewModel.Query);
-        MessageBox.Show($"got result!{Environment.NewLine}{result.Result}{Environment.NewLine}Duration: {result.DurationMillis}");
+        var queryResultViewModel = QueryResultViewModels.SingleOrDefault(vm => vm.QueryViewModel == getAverageFollowersViewModel);
+        queryResultViewModel?.PrependResult(SelecteDatabaseInteractor.ContainerName, new GetAverageFollowersQueryResultViewModel(getAverageFollowersViewModel.Hashtag, result));
       }
     }
   }

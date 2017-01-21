@@ -13,14 +13,14 @@ namespace NoSqlExplorer.WpfClient.ViewModels.QueryResults
 {
   public class DatabaseResultViewModel : ViewModelBase
   {
-    public DatabaseResultViewModel(string databaseName)
+    public DatabaseResultViewModel(string containerName)
     {
-      DatabaseName = databaseName;
-      QueryResultRows = new ObservableCollection<IQueryResultRow>();
+      ContainerName = containerName;
+      QueryResultRows = new ObservableCollection<IQueryResultRowViewModel>();
       QueryResultRows.CollectionChanged += QueryResultRowsOnCollectionChanged;
     }
 
-    public string DatabaseName { get; }
+    public string ContainerName { get; }
 
     public int Runs => QueryResultRows.Count;
     public double AverageDuration => QueryResultRows.Any() ? QueryResultRows.Average(r => r.DurationMillis) : 0;
@@ -28,9 +28,9 @@ namespace NoSqlExplorer.WpfClient.ViewModels.QueryResults
     private ICommand _clearResultsCommand;
     public ICommand ClearResultsCommand => _clearResultsCommand ?? (_clearResultsCommand = new RelayCommand(() => QueryResultRows.Clear()));
 
-    private ObservableCollection<IQueryResultRow> _queryResultRows;
+    private ObservableCollection<IQueryResultRowViewModel> _queryResultRows;
 
-    public ObservableCollection<IQueryResultRow> QueryResultRows
+    public ObservableCollection<IQueryResultRowViewModel> QueryResultRows
     {
       get { return _queryResultRows; }
       set { Set(ref _queryResultRows, value); }

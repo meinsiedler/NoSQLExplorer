@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NoSqlExplorer.WpfClient.ViewModels.QueryResults
 {
-  public interface IQueryResultRow
+  public interface IQueryResultRowViewModel
   {
     double DurationMillis { get; set; }
   }

@@ -9,7 +9,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance queryResults:DatabaseResultViewModel}">
-  <m:Card Padding="0">
+  <m:Card Padding="0" Margin="4">
     <Grid>
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
@@ -18,7 +18,7 @@
         <RowDefinition Height="Auto" />
         <RowDefinition Height="*" />
       </Grid.RowDefinitions>
-      <TextBlock Grid.Row="0" Text="{Binding DatabaseName}" Margin="16 12 8 4" Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
+      <TextBlock Grid.Row="0" Text="{Binding ContainerName}" Margin="16 12 8 4" Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
       <Separator Grid.Row="1" Style="{StaticResource MaterialDesignDarkSeparator}"/>
       <Grid Grid.Row="2" Margin="16 0 0 0">
         <Grid.ColumnDefinitions>
@@ -46,7 +46,7 @@
 
       </Grid>
       <Separator Grid.Row="3" Style="{StaticResource MaterialDesignDarkSeparator}"/>
-      <ScrollViewer Grid.Row="4" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+      <ScrollViewer Grid.Row="4" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" MaxHeight="200">
         <ListBox HorizontalContentAlignment="Stretch" ItemsSource="{Binding QueryResultRows}" />
       </ScrollViewer>
     </Grid>

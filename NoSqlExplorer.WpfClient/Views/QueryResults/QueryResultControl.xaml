@@ -22,15 +22,13 @@
       </TextBlock>
       <Separator Grid.Row="1" Style="{StaticResource MaterialDesignDarkSeparator}"/>
 
-      <Grid Grid.Row="2">
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="*" />
-          <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-
-        <local:DatabaseResultControl Grid.Column="0" Margin="16 4 8 16" DataContext="{Binding CrateResultViewModel, Mode=OneTime}" />
-        <local:DatabaseResultControl Grid.Column="1" Margin="8 4 16 16" DataContext="{Binding MongoResultViewModel, Mode=OneTime}" />
-      </Grid>
+      <ItemsControl Grid.Row="2" Margin="12 0 12 12" ItemsSource="{Binding DatabaseResultViewModels}">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <UniformGrid Columns="{Binding Path=Items.Count, RelativeSource={RelativeSource AncestorType=ItemsControl}}" VerticalAlignment="Top" />
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+      </ItemsControl>
     </Grid>
   </m:Card>
 </UserControl>
