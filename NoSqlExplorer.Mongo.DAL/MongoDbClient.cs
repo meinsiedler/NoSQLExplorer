@@ -96,27 +96,27 @@ namespace NoSqlExplorer.Mongo.DAL
       }
     }
 
+    public async Task<IMongoResponse<IEnumerable<BsonDocument>>> Aggregate<T>(BsonDocument match, BsonDocument grouping)
+    {
+      var aggregateDoc = this.database
+        .GetCollection<T>(Helper.GetTableName(typeof(T)))
+        .Aggregate()
+        .Match(match)
+        .Group(grouping);
+      var stopWatch = new Stopwatch();
+      stopWatch.Start();
+
+      var result = aggregateDoc.ToList();
+
+      stopWatch.Stop();
+
+      return new MongoResponse<IEnumerable<BsonDocument>>(result) { ExecutionTime = stopWatch.Elapsed.TotalMilliseconds };
+    }
+
     private string BuildConnectionString(string host, int port, string user, string password)
     {
       return (user == string.Empty) ? $"mongodb://{host}:{port}"
                                     : $"mongodb://{user}:{password}@{host}:{port}";
-    }
-
-    private double? GetExecutionTime<T>(Expression<Func<T, bool>> expression)
-    {
-      var options = new FindOptions
-      {
-        Modifiers = new BsonDocument("$explain", true)
-      };
-
-      var coll = this.database.GetCollection<T>(Helper.GetTableName(typeof(T)));
-      var explainResult = coll.Find(expression, options).Project(new BsonDocument()).FirstOrDefault();
-      if (explainResult.ElementCount == 3)
-      {
-        return explainResult["executionStats"]["executionTimeMillis"].ToDouble();
-      }
-
-      return null;
     }
   }
 }
