@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Documents;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Messaging;
 using NoSqlExplorer.DockerAdapter;
+using NoSqlExplorer.WpfClient.Messages;
 
 namespace NoSqlExplorer.WpfClient.ViewModels
 {
@@ -67,6 +69,7 @@ namespace NoSqlExplorer.WpfClient.ViewModels
     private void UpdateState()
     {
       this.ContainerState = _container.State;
+      Messenger.Default.Send(new ReevaluateDatabaseInteractorsMessage());
     }
   }
 }

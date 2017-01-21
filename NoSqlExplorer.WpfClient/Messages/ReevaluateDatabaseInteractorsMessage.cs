@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace NoSqlExplorer.WpfClient.Messages
 {
-  public class IsLoadingMessage
+  public class ReevaluateDatabaseInteractorsMessage
   {
-    public bool IsLoading { get; set; }
-    public string Reason { get; set; }
   }
 }

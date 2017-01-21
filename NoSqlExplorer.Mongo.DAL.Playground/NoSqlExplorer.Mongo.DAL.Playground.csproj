@@ -39,6 +39,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.0.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -58,6 +62,10 @@
     <ProjectReference Include="..\NoSqlExplorer.DAL.Common\NoSqlExplorer.DAL.Common.csproj">
       <Project>{3b97a4fb-1343-4cde-a148-6536347480c7}</Project>
       <Name>NoSqlExplorer.DAL.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NoSqlExplorer.DatabaseInteraction\NoSqlExplorer.DatabaseInteraction.csproj">
+      <Project>{5B9B996A-B032-4753-9A63-6E2E5EBE2E0C}</Project>
+      <Name>NoSqlExplorer.DatabaseInteraction</Name>
     </ProjectReference>
     <ProjectReference Include="..\NoSqlExplorer.Mongo.DAL\NoSqlExplorer.Mongo.DAL.csproj">
       <Project>{8745a793-0313-46d9-ad76-3855df399841}</Project>
