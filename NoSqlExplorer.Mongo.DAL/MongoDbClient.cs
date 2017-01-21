@@ -58,10 +58,10 @@ namespace NoSqlExplorer.Mongo.DAL
       try
       {
 
-        var queryable = this.database
+        var queryable = await Task.Run(() => this.database
           .GetCollection<T>(Helper.GetTableName(typeof(T)))
           .WithReadPreference(ReadPreference.PrimaryPreferred)
-          .AsQueryable();
+          .AsQueryable());
 
         var stopWatch = new Stopwatch();
         stopWatch.Start();
@@ -81,16 +81,16 @@ namespace NoSqlExplorer.Mongo.DAL
     {
       try
       {
-        var collection = this.database
+        var collection = await Task.Run(() => this.database
           .GetCollection<T>(Helper.GetTableName(typeof(T)))
-          .WithReadPreference(ReadPreference.PrimaryPreferred);
+          .WithReadPreference(ReadPreference.PrimaryPreferred));
 
         var stopWatch = new Stopwatch();
         stopWatch.Start();
         var result = await collection.FindAsync(expression);
         stopWatch.Stop();
 
-        return new MongoResponse<IEnumerable<T>>(result.ToList()) { ExecutionTime = stopWatch.Elapsed.TotalMilliseconds };
+        return new MongoResponse<IEnumerable<T>>(await Task.Run(() => result.ToList())) { ExecutionTime = stopWatch.Elapsed.TotalMilliseconds };
       }
       catch (Exception ex)
       {
@@ -100,16 +100,16 @@ namespace NoSqlExplorer.Mongo.DAL
 
     public async Task<IMongoResponse<IEnumerable<BsonDocument>>> Aggregate<T>(BsonDocument match, BsonDocument grouping)
     {
-      var aggregateDoc = this.database
+      var aggregateDoc = await Task.Run(() => this.database
         .GetCollection<T>(Helper.GetTableName(typeof(T)))
         .WithReadPreference(ReadPreference.PrimaryPreferred)
         .Aggregate()
         .Match(match)
-        .Group(grouping);
+        .Group(grouping));
       var stopWatch = new Stopwatch();
       stopWatch.Start();
 
-      var result = aggregateDoc.ToList();
+      var result = await Task.Run(() => aggregateDoc.ToList());
 
       stopWatch.Stop();
 
