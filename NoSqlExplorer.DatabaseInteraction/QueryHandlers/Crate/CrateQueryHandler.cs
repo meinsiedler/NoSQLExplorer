@@ -37,7 +37,7 @@ namespace NoSqlExplorer.DatabaseInteraction.QueryHandlers.Crate
       var successResponse = response as SuccessResponse<T>;
       if (successResponse != null)
       {
-        return new QueryResult<IList<T>>(successResponse.Result, successResponse.Duration);
+        return new QueryResult<IList<T>>(successResponse.Result, successResponse.ExecutionTime?.TotalMilliseconds);
       }
 
       throw new InvalidOperationException("Response is neither ErrorResponse nor SuccessResponse");

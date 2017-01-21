@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
+using System;
 
 namespace NoSqlExplorer.Crate.DAL
 {
@@ -53,8 +55,11 @@ namespace NoSqlExplorer.Crate.DAL
       {
         var request = new CrateRequest(query);
         var content = this.ObjectToHttpContent(request);
+        var stopWatch = new Stopwatch();
+        stopWatch.Start();
         var httpResponse = await client.PostAsync(this.GetRequestAddress(), content);
-        var response = await this.HttpResponseToResponse<T>(httpResponse);
+        stopWatch.Stop();
+        var response = await this.HttpResponseToResponse<T>(httpResponse, stopWatch.Elapsed);
         return response;
       }
     }
@@ -90,18 +95,22 @@ namespace NoSqlExplorer.Crate.DAL
       }
     }
 
-    private async Task<ICrateResponse<T>> HttpResponseToResponse<T>(HttpResponseMessage response)
+    private async Task<ICrateResponse<T>> HttpResponseToResponse<T>(HttpResponseMessage response, TimeSpan executionTime)
     {
       var responseContent = await response.Content.ReadAsStringAsync();
+      ICrateResponse<T> result = null;
       if (response.StatusCode != System.Net.HttpStatusCode.OK)
       {
-        return JsonConvert.DeserializeObject<ErrorResponse<T>>(responseContent);
+        result = JsonConvert.DeserializeObject<ErrorResponse<T>>(responseContent);
       }
       else
       {
-        var result = JsonConvert.DeserializeObject<SuccessResponse<T>>(responseContent);
-        return result.MapResult();
+        result = JsonConvert.DeserializeObject<SuccessResponse<T>>(responseContent);
+        (result as SuccessResponse<T>).MapResult();
       }
+
+      result.ExecutionTime = executionTime;
+      return result;
     }
   }
 }

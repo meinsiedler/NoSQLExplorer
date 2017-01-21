@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -56,14 +57,17 @@ namespace NoSqlExplorer.Mongo.DAL
     {
       try
       {
-        var execTime = this.GetExecutionTime(expression);
 
-        var result = await this.database
-        .GetCollection<T>(Helper.GetTableName(typeof(T)))
-        .AsQueryable()
-        .SingleOrDefaultAsync(expression);
+        var queryable = this.database
+          .GetCollection<T>(Helper.GetTableName(typeof(T)))
+          .AsQueryable();
 
-        return new MongoResponse<T>(result) { ExecutionTime = execTime };
+        var stopWatch = new Stopwatch();
+        stopWatch.Start();
+        var result = await queryable.SingleOrDefaultAsync(expression);
+        stopWatch.Stop();
+
+        return new MongoResponse<T>(result) { ExecutionTime = stopWatch.Elapsed.TotalMilliseconds };
 
       }
       catch (Exception ex)
@@ -76,12 +80,15 @@ namespace NoSqlExplorer.Mongo.DAL
     {
       try
       {
-        var execTime = this.GetExecutionTime(expression);
+        var collection = this.database
+          .GetCollection<T>(Helper.GetTableName(typeof(T)));
 
-        var result = await this.database
-          .GetCollection<T>(Helper.GetTableName(typeof(T)))
-          .FindAsync(expression);
-        return new MongoResponse<IEnumerable<T>>(result.ToList()) { ExecutionTime = execTime };
+        var stopWatch = new Stopwatch();
+        stopWatch.Start();
+        var result = await collection.FindAsync(expression);
+        stopWatch.Stop();
+
+        return new MongoResponse<IEnumerable<T>>(result.ToList()) { ExecutionTime = stopWatch.Elapsed.TotalMilliseconds };
       }
       catch (Exception ex)
       {
@@ -89,27 +96,27 @@ namespace NoSqlExplorer.Mongo.DAL
       }
     }
 
+    public async Task<IMongoResponse<IEnumerable<BsonDocument>>> Aggregate<T>(BsonDocument match, BsonDocument grouping)
+    {
+      var aggregateDoc = this.database
+        .GetCollection<T>(Helper.GetTableName(typeof(T)))
+        .Aggregate()
+        .Match(match)
+        .Group(grouping);
+      var stopWatch = new Stopwatch();
+      stopWatch.Start();
+
+      var result = aggregateDoc.ToList();
+
+      stopWatch.Stop();
+
+      return new MongoResponse<IEnumerable<BsonDocument>>(result) { ExecutionTime = stopWatch.Elapsed.TotalMilliseconds };
+    }
+
     private string BuildConnectionString(string host, int port, string user, string password)
     {
       return (user == string.Empty) ? $"mongodb://{host}:{port}"
                                     : $"mongodb://{user}:{password}@{host}:{port}";
-    }
-
-    private double? GetExecutionTime<T>(Expression<Func<T, bool>> expression)
-    {
-      var options = new FindOptions
-      {
-        Modifiers = new BsonDocument("$explain", true)
-      };
-
-      var coll = this.database.GetCollection<T>(Helper.GetTableName(typeof(T)));
-      var explainResult = coll.Find(expression, options).Project(new BsonDocument()).FirstOrDefault();
-      if (explainResult.ElementCount == 3)
-      {
-        return explainResult["executionStats"]["executionTimeMillis"].ToDouble();
-      }
-
-      return null;
     }
   }
 }

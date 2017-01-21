@@ -12,6 +12,8 @@ namespace NoSqlExplorer.Crate.DAL.Response
     [JsonProperty("error")]
     public Data.Error Error { get; set; }
 
+    public TimeSpan? ExecutionTime { get; set; }
+
     public override string ToString()
     {
       return $"Code: {this.Error.Code}; Error: {this.Error.Message}";
