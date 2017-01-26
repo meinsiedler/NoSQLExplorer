@@ -2,7 +2,10 @@
 
 A tool for comparing NoSQL databases, in particular [Crate.io](https://crate.io/) and [MongoDB](https://www.mongodb.com/).
 
-We host your NoSQL databases on Azure using Docker container.
+We host our NoSQL databases on Azure using Docker container.
+
+![Container View](/screenshots/docker.png)
+![Analysis View](/screenshots/analysis.png)
 
 ## Setup
 
