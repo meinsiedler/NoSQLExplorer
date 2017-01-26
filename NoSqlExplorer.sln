@@ -1,0 +1,102 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSqlExplorer.WpfClient", "NoSqlExplorer.WpfClient\NoSqlExplorer.WpfClient.csproj", "{386949F2-4A1B-4456-9DF2-E9DC9B39DF0C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSqlExplorer.DockerAdapter", "NoSqlExplorer.DockerAdapter\NoSqlExplorer.DockerAdapter.csproj", "{C09ED21A-F3A2-4E52-9C0B-325815059DFD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSqlExplorer.TwitterReader", "NoSqlExplorer.TwitterReader\NoSqlExplorer.TwitterReader.csproj", "{EF8AEBBD-FB6E-4E62-B10D-BDFD17E38C39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSqlExplorer.AzureAdapter", "NoSqlExplorer.AzureAdapter\NoSqlExplorer.AzureAdapter.csproj", "{CC62B22C-BC23-4C1B-A2A6-EB6607F768E3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAccess", "DataAccess", "{B0A31943-A0A9-44BE-B6B0-617E6E0625D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSqlExplorer.Crate.DAL", "NoSqlExplorer.Crate.DAL\NoSqlExplorer.Crate.DAL.csproj", "{BD995F98-09E3-4DF4-A977-327C9C3DCD02}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSqlExplorer.Crate.DAL.Playground", "NoSqlExplorer.Crate.DAL.Playground\NoSqlExplorer.Crate.DAL.Playground.csproj", "{A76FF959-9DCA-44F8-9F8D-6FA52B021484}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSqlExplorer.DAL.Common", "NoSqlExplorer.DAL.Common\NoSqlExplorer.DAL.Common.csproj", "{3B97A4FB-1343-4CDE-A148-6536347480C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSqlExplorer.Utils", "NoSqlExplorer.Utils\NoSqlExplorer.Utils.csproj", "{92BD2399-02CB-4CC3-9347-556BEBFD6852}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSqlExplorer.DatabaseInteraction", "NoSqlExplorer.DatabaseInteraction\NoSqlExplorer.DatabaseInteraction.csproj", "{5B9B996A-B032-4753-9A63-6E2E5EBE2E0C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSqlExplorer.Twitter.Common", "NoSqlExplorer.Twitter.Common\NoSqlExplorer.Twitter.Common.csproj", "{0AEDC367-9D17-4E69-BC57-177D0E153A48}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Twitter", "Twitter", "{E00FA7B4-0BEE-4684-8FFA-D411AD5218BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSqlExplorer.Mongo.DAL", "NoSqlExplorer.Mongo.DAL\NoSqlExplorer.Mongo.DAL.csproj", "{8745A793-0313-46D9-AD76-3855DF399841}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSqlExplorer.Mongo.DAL.Playground", "NoSqlExplorer.Mongo.DAL.Playground\NoSqlExplorer.Mongo.DAL.Playground.csproj", "{8FE62CED-A0FB-4791-9C0C-5F357C7D1412}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{386949F2-4A1B-4456-9DF2-E9DC9B39DF0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{386949F2-4A1B-4456-9DF2-E9DC9B39DF0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{386949F2-4A1B-4456-9DF2-E9DC9B39DF0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{386949F2-4A1B-4456-9DF2-E9DC9B39DF0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C09ED21A-F3A2-4E52-9C0B-325815059DFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C09ED21A-F3A2-4E52-9C0B-325815059DFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C09ED21A-F3A2-4E52-9C0B-325815059DFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C09ED21A-F3A2-4E52-9C0B-325815059DFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF8AEBBD-FB6E-4E62-B10D-BDFD17E38C39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF8AEBBD-FB6E-4E62-B10D-BDFD17E38C39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF8AEBBD-FB6E-4E62-B10D-BDFD17E38C39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF8AEBBD-FB6E-4E62-B10D-BDFD17E38C39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC62B22C-BC23-4C1B-A2A6-EB6607F768E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC62B22C-BC23-4C1B-A2A6-EB6607F768E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC62B22C-BC23-4C1B-A2A6-EB6607F768E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC62B22C-BC23-4C1B-A2A6-EB6607F768E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD995F98-09E3-4DF4-A977-327C9C3DCD02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD995F98-09E3-4DF4-A977-327C9C3DCD02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD995F98-09E3-4DF4-A977-327C9C3DCD02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD995F98-09E3-4DF4-A977-327C9C3DCD02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A76FF959-9DCA-44F8-9F8D-6FA52B021484}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A76FF959-9DCA-44F8-9F8D-6FA52B021484}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A76FF959-9DCA-44F8-9F8D-6FA52B021484}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A76FF959-9DCA-44F8-9F8D-6FA52B021484}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B97A4FB-1343-4CDE-A148-6536347480C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B97A4FB-1343-4CDE-A148-6536347480C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B97A4FB-1343-4CDE-A148-6536347480C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B97A4FB-1343-4CDE-A148-6536347480C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92BD2399-02CB-4CC3-9347-556BEBFD6852}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92BD2399-02CB-4CC3-9347-556BEBFD6852}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92BD2399-02CB-4CC3-9347-556BEBFD6852}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92BD2399-02CB-4CC3-9347-556BEBFD6852}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B9B996A-B032-4753-9A63-6E2E5EBE2E0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B9B996A-B032-4753-9A63-6E2E5EBE2E0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B9B996A-B032-4753-9A63-6E2E5EBE2E0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B9B996A-B032-4753-9A63-6E2E5EBE2E0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AEDC367-9D17-4E69-BC57-177D0E153A48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AEDC367-9D17-4E69-BC57-177D0E153A48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AEDC367-9D17-4E69-BC57-177D0E153A48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AEDC367-9D17-4E69-BC57-177D0E153A48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8745A793-0313-46D9-AD76-3855DF399841}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8745A793-0313-46D9-AD76-3855DF399841}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8745A793-0313-46D9-AD76-3855DF399841}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8745A793-0313-46D9-AD76-3855DF399841}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FE62CED-A0FB-4791-9C0C-5F357C7D1412}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FE62CED-A0FB-4791-9C0C-5F357C7D1412}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FE62CED-A0FB-4791-9C0C-5F357C7D1412}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FE62CED-A0FB-4791-9C0C-5F357C7D1412}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EF8AEBBD-FB6E-4E62-B10D-BDFD17E38C39} = {E00FA7B4-0BEE-4684-8FFA-D411AD5218BB}
+		{BD995F98-09E3-4DF4-A977-327C9C3DCD02} = {B0A31943-A0A9-44BE-B6B0-617E6E0625D8}
+		{A76FF959-9DCA-44F8-9F8D-6FA52B021484} = {B0A31943-A0A9-44BE-B6B0-617E6E0625D8}
+		{3B97A4FB-1343-4CDE-A148-6536347480C7} = {B0A31943-A0A9-44BE-B6B0-617E6E0625D8}
+		{5B9B996A-B032-4753-9A63-6E2E5EBE2E0C} = {B0A31943-A0A9-44BE-B6B0-617E6E0625D8}
+		{0AEDC367-9D17-4E69-BC57-177D0E153A48} = {E00FA7B4-0BEE-4684-8FFA-D411AD5218BB}
+		{8745A793-0313-46D9-AD76-3855DF399841} = {B0A31943-A0A9-44BE-B6B0-617E6E0625D8}
+		{8FE62CED-A0FB-4791-9C0C-5F357C7D1412} = {B0A31943-A0A9-44BE-B6B0-617E6E0625D8}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5B9B996A-B032-4753-9A63-6E2E5EBE2E0C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NoSqlExplorer.DatabaseInteraction</RootNamespace>
+    <AssemblyName>NoSqlExplorer.DatabaseInteraction</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MongoDB.Bson, Version=2.4.1.18, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Bson.2.4.1\lib\net45\MongoDB.Bson.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CrateDatabaseInteractor.cs" />
+    <Compile Include="DatabaseException.cs" />
+    <Compile Include="IDatabaseInteractor.cs" />
+    <Compile Include="MongoDatabaseInteractor.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DatabaseInteractorFactory.cs" />
+    <Compile Include="Queries\GetAverageFollowersQuery.cs" />
+    <Compile Include="QueryHandlers\Crate\CrateQueryHandler.cs" />
+    <Compile Include="QueryHandlers\Crate\GetAverageFollowersQueryHandler.cs" />
+    <Compile Include="QueryHandlers\Crate\GetTweetsWithHashtagQueryHandler.cs" />
+    <Compile Include="QueryHandlers\IQueryHandler.cs" />
+    <Compile Include="Queries\GetTweetsWithHashtagQuery.cs" />
+    <Compile Include="Queries\IQuery.cs" />
+    <Compile Include="QueryHandlers\Mongo\GetAverageFollowersQueryHandler.cs" />
+    <Compile Include="QueryHandlers\Mongo\GetTweetsWithHashtagQueryHandler.cs" />
+    <Compile Include="QueryHandlers\Mongo\MongoQueryHandler.cs" />
+    <Compile Include="QueryResult.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NoSqlExplorer.Crate.DAL\NoSqlExplorer.Crate.DAL.csproj">
+      <Project>{BD995F98-09E3-4DF4-A977-327C9C3DCD02}</Project>
+      <Name>NoSqlExplorer.Crate.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NoSqlExplorer.DAL.Common\NoSqlExplorer.DAL.Common.csproj">
+      <Project>{3B97A4FB-1343-4CDE-A148-6536347480C7}</Project>
+      <Name>NoSqlExplorer.DAL.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NoSqlExplorer.DockerAdapter\NoSqlExplorer.DockerAdapter.csproj">
+      <Project>{C09ED21A-F3A2-4E52-9C0B-325815059DFD}</Project>
+      <Name>NoSqlExplorer.DockerAdapter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NoSqlExplorer.Mongo.DAL\NoSqlExplorer.Mongo.DAL.csproj">
+      <Project>{8745a793-0313-46d9-ad76-3855df399841}</Project>
+      <Name>NoSqlExplorer.Mongo.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NoSqlExplorer.Twitter.Common\NoSqlExplorer.Twitter.Common.csproj">
+      <Project>{0AEDC367-9D17-4E69-BC57-177D0E153A48}</Project>
+      <Name>NoSqlExplorer.Twitter.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NoSqlExplorer.Utils\NoSqlExplorer.Utils.csproj">
+      <Project>{92BD2399-02CB-4CC3-9347-556BEBFD6852}</Project>
+      <Name>NoSqlExplorer.Utils</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
